@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empire Roleplay — FiveM GTA V Roleplay Server</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060504;
+      --panel: #0f0d0b;
+      --panel2: #161310;
+      --gold: #f6b13a;
+      --gold2: #ff7200;
+      --gold-dim: rgba(246,177,58,.18);
+      --text: #f2ede4;
+      --muted: #a89880;
+      --line: rgba(246,177,58,.18);
+      --danger: #ff3c3c;
+      --green: #39ff82;
+      --r: 22px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%;
+      height: 70px;
+      background: rgba(6,5,4,.82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+      transition: background .3s;
+    }
+    .nav.scrolled { background: rgba(6,5,4,.97); }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 22px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .brand img {
+      height: 40px;
+      filter: drop-shadow(0 0 12px rgba(246,177,58,.5));
+      animation: float 3.2s ease-in-out infinite;
+    }
+    .nav-links {
+      display: flex; gap: 26px; align-items: center;
+      font-weight: 800; font-size: 13px; color: var(--muted);
+      letter-spacing: .05em; text-transform: uppercase;
+    }
+    .nav-links a { transition: color .2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links .btn-nav {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #160b00; border-radius: 999px; padding: 9px 20px;
+      font-weight: 900; font-size: 13px;
+      box-shadow: 0 0 20px rgba(255,114,0,.3);
+      transition: .2s; border: none;
+    }
+    .nav-links .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(255,114,0,.5); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--gold); border-radius: 2px; transition: .3s;
+    }
+    .mobile-menu {
+      display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99;
+      background: rgba(6,5,4,.97); border-bottom: 1px solid var(--line);
+      padding: 20px 6%; flex-direction: column; gap: 14px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-weight: 800; font-size: 15px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .05em; padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid rgba(246,177,58,.5);
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #160b00; font-weight: 900; font-size: 15px;
+      border-radius: 999px; padding: 14px 26px;
+      box-shadow: 0 0 24px rgba(255,114,0,.25);
+      transition: .2s; cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,114,0,.45); }
+    .btn.ghost {
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      border-color: rgba(255,255,255,.15);
+      box-shadow: none;
+    }
+    .btn.ghost:hover { background: rgba(255,255,255,.1); border-color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid; place-items: center;
+      text-align: center;
+      padding: 100px 6% 70px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1800&q=80')
+        center/cover no-repeat;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(6,5,4,.6) 0%, rgba(6,5,4,.92) 100%);
+    }
+    .hero-glow {
+      position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse, rgba(255,114,0,.22) 0%, transparent 65%);
+      z-index: 1; pointer-events: none;
+    }
+    /* floating particles */
+    .particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute; border-radius: 50%;
+      background: rgba(246,177,58,.55);
+      animation: rise var(--dur,14s) var(--del,0s) ease-in infinite;
+      opacity: 0;
+    }
+    @keyframes rise {
+      0% { opacity: 0; transform: translateY(0) scale(1); }
+      15% { opacity: .7; }
+      85% { opacity: .3; }
+      100% { opacity: 0; transform: translateY(-110vh) scale(.4); }
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 8px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      color: var(--gold); font-weight: 900; font-size: 13px;
+      letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.3)} }
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(56px, 9vw, 120px);
+      font-weight: 900; line-height: .92;
+      text-transform: uppercase; letter-spacing: -.02em;
+      text-shadow: 0 0 60px rgba(255,114,0,.3);
+      margin-bottom: 20px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      max-width: 680px; margin: 0 auto 36px;
+      color: var(--muted); font-size: clamp(16px,2vw,20px); line-height: 1.65;
+    }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 12px;
+      max-width: 900px; margin: 0 auto;
+    }
+    .hstat {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      border-radius: 18px; padding: 22px 16px;
+      transition: border-color .3s;
+    }
+    .hstat:hover { border-color: rgba(246,177,58,.5); }
+    .hstat b {
+      display: block; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 36px; font-weight: 900; color: var(--gold);
+      line-height: 1; margin-bottom: 4px;
+    }
+    .hstat span { color: var(--muted); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 6%; }
+    .section-label { color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .2em; font-size: 12px; margin-bottom: 12px; }
+    h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(38px, 5.5vw, 72px);
+      font-weight: 900; letter-spacing: -.02em;
+      line-height: .95; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .section-head { text-align: center; max-width: 760px; margin: 0 auto 56px; }
+    .section-head p { color: var(--muted); font-size: 18px; line-height: 1.65; }
+
+    /* ── FEATURES GRID ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .feat-card {
+      background: linear-gradient(160deg, rgba(255,255,255,.055) 0%, rgba(255,255,255,.02) 100%);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 32px 28px;
+      box-shadow: 0 8px 36px rgba(0,0,0,.3);
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .feat-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(246,177,58,.45);
+      box-shadow: 0 16px 50px rgba(0,0,0,.4), 0 0 30px rgba(246,177,58,.07);
+    }
+    .feat-icon { font-size: 36px; margin-bottom: 14px; display: block; }
+    .feat-card h3 { color: var(--gold); font-size: 20px; font-weight: 900; margin-bottom: 10px; }
+    .feat-card p { color: var(--muted); line-height: 1.7; font-size: 15px; }
+
+    /* ── DIVIDER ── */
+    .divider { border: none; border-top: 1px solid var(--line); max-width: 1200px; margin: 0 auto; }
+
+    /* ── FAQ ── */
+    .faq-list { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+    .faq-item {
+      background: rgba(255,255,255,.035);
+      border: 1px solid var(--line);
+      border-radius: 16px; overflow: hidden;
+      transition: border-color .2s;
+    }
+    .faq-item.open { border-color: rgba(246,177,58,.4); }
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 26px; cursor: pointer;
+      font-weight: 800; font-size: 17px;
+      user-select: none;
+    }
+    .faq-q .arrow { color: var(--gold); font-size: 20px; transition: transform .3s; }
+    .faq-item.open .arrow { transform: rotate(45deg); }
+    .faq-a { display: none; padding: 0 26px 22px; color: var(--muted); line-height: 1.7; font-size: 15px; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: linear-gradient(135deg, rgba(246,177,58,.1), rgba(255,114,0,.05));
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(255,114,0,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section .section-head { position: relative; z-index: 1; margin-bottom: 32px; }
+    .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 50px 6%;
+      display: flex; justify-content: space-between; gap: 28px; flex-wrap: wrap;
+      color: var(--muted); border-top: 1px solid var(--line);
+      background: #030302;
+      font-size: 14px;
+    }
+    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
+    .footer-brand img { height: 50px; filter: drop-shadow(0 0 16px rgba(246,177,58,.3)); }
+    .footer-brand p { max-width: 280px; line-height: 1.6; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; padding-top: 4px; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { color: rgba(168,152,128,.5); font-size: 12px; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s, transform .6s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .hero-stats { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 600px) {
+      .features-grid, .hero-stats { grid-template-columns: 1fr; }
+      section { padding: 70px 5%; }
+      .hero { padding: 90px 5% 60px; }
+      .nav { padding: 0 5%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="mainNav">
+    <a class="brand" href="#home">
+      <img src="empire-logo.png" alt="Empire RP Logo">
+      <span>Empire RP</span>
+    </a>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="rules.html">Rules</a>
+      <a href="#features">Why Empire</a>
+      <a href="#faq">FAQ</a>
+      <a href="#discord">Discord</a>
+      <a href="#" class="btn-nav">▸ Play Now</a>
+    </div>
+    <div class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home" onclick="closeMobile()">Home</a>
+    <a href="rules.html">Rules</a>
+    <a href="#features" onclick="closeMobile()">Why Empire</a>
+    <a href="#faq" onclick="closeMobile()">FAQ</a>
+    <a href="#discord" onclick="closeMobile()">Discord</a>
+    <a href="#" class="btn" style="text-align:center">▸ Play Now</a>
+  </div>
+
+  <!-- HERO -->
+  <header id="home" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="particles" id="particles"></div>
+    <div class="hero-content">
+      <div class="live-badge"><span class="dot"></span> Empire Roleplay is Live</div>
+      <h1>Rule the Streets.<br><em>Build Your Empire.</em></h1>
+      <p class="hero-sub">A serious FiveM GTA V roleplay city built for gangs, businesses, PD, EMS, and players who want real stories — not boring scenes.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#">▸ Play Now</a>
+        <a class="btn ghost" href="#">Join Discord</a>
+        <a class="btn ghost" href="rules.html">Read Rules</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><b>24/7</b><span>City Online</span></div>
+        <div class="hstat"><b>PD</b><span>Active Police</span></div>
+        <div class="hstat"><b>EMS</b><span>Active Medical</span></div>
+        <div class="hstat"><b>RP</b><span>Story Driven</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="section-head reveal">
+      <div class="section-label">Why Empire Roleplay</div>
+      <h2>Everything you need to make a name</h2>
+      <p>From street politics to legal businesses, Empire gives every player a lane to build their story.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card reveal"><span class="feat-icon">👑</span><h3>Gang & Turf RP</h3><p>Structured faction systems, beef validation, turf nights, airdrops, and RP-focused events that keep the streets active.</p></div>
+      <div class="feat-card reveal"><span class="feat-icon">🚓</span><h3>Police & EMS</h3><p>Whitelisted departments with room for serious character development, investigations, medical scenes, and city-wide involvement.</p></div>
+      <div class="feat-card reveal"><span class="feat-icon">🏪</span><h3>Player Businesses</h3><p>Player-owned businesses, mechanic shops, invoices, employees, and oversight to keep the economy fair and active.</p></div>
+      <div class="feat-card reveal"><span class="feat-icon">⚙️</span><h3>Active Development</h3><p>Regular updates, balanced systems, and scripts built around creating better roleplay instead of easy shortcuts.</p></div>
+      <div class="feat-card reveal"><span class="feat-icon">🎭</span><h3>Quality Roleplay</h3><p>Empire is built around interaction, story, consequences, and scenes that make players want to come back.</p></div>
+      <div class="feat-card reveal"><span class="feat-icon">💬</span><h3>Community First</h3><p>Helpful staff, support tickets, events, and clear rules so new and veteran players know what to expect.</p></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="section-head reveal">
+      <div class="section-label">Got Questions?</div>
+      <h2>Frequently Asked Questions</h2>
+      <p>Everything you need to know before connecting to the city.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-q">How do I join the server? <span class="arrow">+</span></div>
+        <div class="faq-a">Install FiveM, join the Discord, read the rules, then connect using the Play Now button with your server link. It only takes a few minutes to get in city.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Do I need to apply to play? <span class="arrow">+</span></div>
+        <div class="faq-a">General access can be open, but PD, EMS, gangs, staff, and businesses may require applications or interviews. Check Discord for current requirements.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Can I start my own gang? <span class="arrow">+</span></div>
+        <div class="faq-a">Yes. Open a Faction Support ticket in Discord and follow the current gang creation requirements. Active rosters and RP history help your application.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What is beef validation? <span class="arrow">+</span></div>
+        <div class="faq-a">Gang wars must be escalated through Faction Support before going official. This protects both sides and ensures fair, story-driven conflict instead of random wars.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">How are rule breaks handled? <span class="arrow">+</span></div>
+        <div class="faq-a">Open a support ticket with clip evidence. Staff review reports and take action based on severity. Repeat offenses carry harsher consequences.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="discord" class="cta-section">
+    <div class="section-head">
+      <div class="section-label">The streets are waiting</div>
+      <h2>Start Your Empire Story Now</h2>
+      <p>Add your Discord invite, CFX connect link, and Tebex store URL to the buttons below.</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn" href="#">▸ Play Now</a>
+      <a class="btn ghost" href="#">Join Discord</a>
+      <a id="store" class="btn ghost" href="#">Store</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <img src="empire-logo.png" alt="Empire RP">
+      <p>A premium GTA V roleplay community. Built by players, for players.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="rules.html">Rules</a>
+      <a href="#features">Why Empire</a>
+      <a href="#faq">FAQ</a>
+      <a href="#">Discord</a>
+      <a href="#">Store</a>
+    </div>
+    <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Mobile menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobile() { mobileMenu.classList.remove('open'); }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // stagger cards in a grid
+          const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal'));
+          const idx = siblings.indexOf(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, Math.min(idx * 80, 400));
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    // Floating particles
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 3 + 1;
+      p.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%;
+        bottom:${Math.random()*30}%;
+        --dur:${12+Math.random()*16}s;
+        --del:${Math.random()*12}s;
+      `;
+      container.appendChild(p);
+    }
+  </script>
+</body>
+</html>

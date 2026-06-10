@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empire Roleplay — Rules of Conduct</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060504;
+      --panel: #0f0d0b;
+      --panel2: #161310;
+      --gold: #f6b13a;
+      --gold2: #ff7200;
+      --gold-dim: rgba(246,177,58,.18);
+      --text: #f2ede4;
+      --muted: #a89880;
+      --line: rgba(246,177,58,.18);
+      --danger: #ff3c3c;
+      --green: #39ff82;
+      --r: 22px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 70px;
+      background: rgba(6,5,4,.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 22px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .brand img {
+      height: 40px;
+      filter: drop-shadow(0 0 12px rgba(246,177,58,.5));
+      animation: float 3.2s ease-in-out infinite;
+    }
+    .nav-links {
+      display: flex; gap: 26px; align-items: center;
+      font-weight: 800; font-size: 13px; color: var(--muted);
+      letter-spacing: .05em; text-transform: uppercase;
+    }
+    .nav-links a { transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--gold); border-radius: 2px; }
+    .mobile-menu {
+      display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99;
+      background: rgba(6,5,4,.97); border-bottom: 1px solid var(--line);
+      padding: 20px 6%; flex-direction: column; gap: 14px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-weight: 800; font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    /* HERO */
+    .rules-hero {
+      min-height: 46vh; display: grid; place-items: center;
+      text-align: center; padding: 120px 6% 60px;
+      position: relative; overflow: hidden;
+    }
+    .rules-hero::before {
+      content: ''; position: absolute; inset: 0; z-index: 0;
+      background:
+        linear-gradient(rgba(6,5,4,.55), rgba(6,5,4,.92)),
+        url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1800&q=80') center/cover;
+    }
+    .rules-hero::after {
+      content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(ellipse, rgba(255,114,0,.2) 0%, transparent 65%);
+      z-index: 1; pointer-events: none;
+    }
+    .rules-hero-content { position: relative; z-index: 2; }
+    .rules-logo {
+      width: min(360px, 80vw); margin-bottom: 18px;
+      filter: drop-shadow(0 14px 30px rgba(255,114,0,.3));
+      animation: float 3.2s ease-in-out infinite;
+    }
+    .eyebrow { color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .2em; font-size: 12px; margin-bottom: 12px; }
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(48px, 7vw, 90px);
+      font-weight: 900; letter-spacing: -.02em;
+      text-transform: uppercase; line-height: .95;
+      margin-bottom: 14px;
+    }
+    .hero-sub { color: var(--muted); font-size: 17px; line-height: 1.65; max-width: 640px; margin: 0 auto 26px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid rgba(246,177,58,.5);
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #160b00; font-weight: 900; font-size: 14px;
+      border-radius: 999px; padding: 12px 24px;
+      box-shadow: 0 0 24px rgba(255,114,0,.2); transition: .2s; cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,114,0,.4); }
+    .btn.ghost { background: rgba(255,255,255,.05); color: var(--text); border-color: rgba(255,255,255,.15); box-shadow: none; }
+    .btn.ghost:hover { border-color: var(--gold); }
+
+    /* SEARCH */
+    .search-shell {
+      max-width: 1100px; margin: -28px auto 40px; padding: 0 6%; position: relative; z-index: 10;
+    }
+    .search-box {
+      background: rgba(8,7,5,.95);
+      border: 1px solid var(--line); border-radius: 20px;
+      padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 16px 50px rgba(0,0,0,.5);
+      transition: border-color .2s;
+    }
+    .search-box:focus-within { border-color: var(--gold); box-shadow: 0 16px 50px rgba(0,0,0,.5), 0 0 0 3px rgba(246,177,58,.12); }
+    .search-icon { font-size: 22px; color: var(--gold); flex-shrink: 0; }
+    .search-box input {
+      flex: 1; background: none; border: none; outline: none;
+      color: var(--text); font-size: 16px; font-family: inherit;
+    }
+    .search-box input::placeholder { color: var(--muted); }
+    .search-clear {
+      display: none; cursor: pointer; color: var(--muted);
+      font-size: 20px; line-height: 1; padding: 0 4px;
+      transition: color .2s;
+    }
+    .search-clear:hover { color: var(--gold); }
+    .rule-count { color: var(--muted); font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .12em; margin-top: 10px; text-align: center; }
+
+    /* RULES LAYOUT */
+    .rules-shell { max-width: 1200px; margin: 0 auto; padding: 0 6% 100px; }
+    .rules-wrap { display: grid; grid-template-columns: 260px 1fr; gap: 22px; align-items: start; }
+
+    /* SIDEBAR */
+    .rule-menu {
+      position: sticky; top: 90px;
+      background: rgba(255,255,255,.035); border: 1px solid var(--line);
+      border-radius: var(--r); padding: 12px; overflow: hidden;
+    }
+    .menu-label { color: var(--muted); font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .15em; padding: 8px 12px 12px; }
+    .rule-menu a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; border-radius: 12px; color: var(--muted);
+      font-weight: 800; font-size: 13px; transition: .2s;
+    }
+    .rule-menu a:hover { background: rgba(246,177,58,.12); color: var(--gold); }
+    .rule-menu a.active { background: rgba(246,177,58,.15); color: var(--gold); }
+    .menu-icon { font-size: 16px; flex-shrink: 0; }
+
+    /* RULE SECTIONS */
+    .rule-section {
+      background: rgba(255,255,255,.032); border: 1px solid var(--line);
+      border-radius: 22px; margin-bottom: 14px; overflow: hidden;
+      transition: border-color .2s;
+    }
+    .rule-section:hover { border-color: rgba(246,177,58,.28); }
+    .rule-header {
+      padding: 20px 26px;
+      background: linear-gradient(90deg, rgba(246,177,58,.12) 0%, transparent 60%);
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .rule-header-icon { font-size: 22px; }
+    .rule-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 900; color: var(--gold);
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .rule-count-badge {
+      margin-left: auto; background: rgba(246,177,58,.14);
+      border: 1px solid var(--line); border-radius: 999px;
+      padding: 3px 10px; font-size: 11px; font-weight: 900;
+      color: var(--gold); letter-spacing: .08em;
+    }
+    .rule-list { padding: 6px 0; }
+    .rule {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 26px; border-bottom: 1px solid rgba(255,255,255,.06);
+      line-height: 1.65; color: #e2d9cc; font-size: 15px;
+      transition: background .15s;
+    }
+    .rule:last-child { border-bottom: none; }
+    .rule:hover { background: rgba(255,255,255,.025); }
+    .rule b { color: var(--text); }
+    .tag {
+      display: inline-flex; align-items: center; flex-shrink: 0;
+      background: rgba(246,177,58,.12); border: 1px solid var(--line);
+      color: var(--gold); border-radius: 8px; padding: 4px 10px;
+      font-size: 11px; font-weight: 900; letter-spacing: .06em;
+      text-transform: uppercase; min-width: 70px; justify-content: center;
+      margin-top: 1px;
+    }
+    .tag.danger { background: rgba(255,60,60,.12); border-color: rgba(255,60,60,.25); color: var(--danger); }
+    .rule-text { flex: 1; }
+    mark { background: rgba(246,177,58,.28); color: #fff; border-radius: 4px; padding: 0 2px; }
+    .rule.no-match { display: none; }
+    .rule-section.no-match { display: none; }
+    .no-results {
+      display: none; text-align: center; padding: 60px 20px; color: var(--muted);
+    }
+    .no-results.show { display: block; }
+    .no-results h3 { color: var(--text); font-size: 22px; margin-bottom: 8px; }
+
+    /* CTA */
+    .rules-cta {
+      text-align: center; padding: 80px 6%;
+      background: linear-gradient(135deg, rgba(246,177,58,.1), rgba(255,114,0,.05));
+      border-top: 1px solid var(--line);
+    }
+    .rules-cta h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(32px, 5vw, 60px); font-weight: 900;
+      text-transform: uppercase; margin-bottom: 14px; letter-spacing: -.02em;
+    }
+    .rules-cta p { color: var(--muted); font-size: 17px; margin-bottom: 28px; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* FOOTER */
+    footer {
+      padding: 46px 6%; display: flex; justify-content: space-between;
+      gap: 28px; flex-wrap: wrap; color: var(--muted);
+      border-top: 1px solid var(--line); background: #030302; font-size: 14px;
+    }
+    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
+    .footer-brand img { height: 46px; filter: drop-shadow(0 0 14px rgba(246,177,58,.3)); }
+    .footer-brand p { max-width: 260px; line-height: 1.6; }
+    .footer-copy { color: rgba(168,152,128,.5); font-size: 12px; }
+    .footer-links { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; padding-top: 4px; }
+    .footer-links a:hover { color: var(--gold); }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .rules-wrap { grid-template-columns: 1fr; }
+      .rule-menu { position: relative; top: 0; }
+    }
+    @media (max-width: 600px) {
+      .rules-shell { padding: 0 5% 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <img src="empire-logo.png" alt="Empire RP Logo">
+      <span>Empire RP</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="rules.html" class="active">Rules</a>
+      <a href="index.html#features">Why Empire</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="#">Discord</a>
+      <a href="index.html" class="btn ghost" style="padding:9px 18px;font-size:13px;">← Back Home</a>
+    </div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="rules.html">Rules</a>
+    <a href="index.html#features">Why Empire</a>
+    <a href="#">Discord</a>
+    <a href="index.html">← Back Home</a>
+  </div>
+
+  <!-- HERO -->
+  <header class="rules-hero">
+    <div class="rules-hero-content">
+      <img class="rules-logo" src="empire-logo.png" alt="Empire Roleplay Logo">
+      <div class="eyebrow">Rules of Conduct</div>
+      <h1>Empire RP Rules</h1>
+      <p class="hero-sub">Search by keyword, tag, or category. Staff may update rules at any time to protect roleplay quality.</p>
+    </div>
+  </header>
+
+  <!-- SEARCH -->
+  <div class="search-shell">
+    <div class="search-box">
+      <span class="search-icon">⌕</span>
+      <input id="ruleSearch" type="search" placeholder="Search rules… try: RDM, robbery, gang, business" autocomplete="off">
+      <span class="search-clear" id="searchClear">✕</span>
+    </div>
+    <div id="ruleCount" class="rule-count">Showing all rules</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="rules-shell">
+    <div class="rules-wrap">
+      <!-- Sidebar -->
+      <aside class="rule-menu" id="sideMenu">
+        <div class="menu-label">Jump to section</div>
+        <a href="#general"><span class="menu-icon">🛡</span> General Rules</a>
+        <a href="#roleplay"><span class="menu-icon">🎭</span> Roleplay Rules</a>
+        <a href="#combat"><span class="menu-icon">⚔️</span> Combat Rules</a>
+        <a href="#gangs"><span class="menu-icon">👑</span> Gang / Faction</a>
+        <a href="#robbery"><span class="menu-icon">💰</span> Robbery Rules</a>
+        <a href="#business"><span class="menu-icon">🏪</span> Business Rules</a>
+      </aside>
+
+      <!-- Rules list -->
+      <main id="rulesList">
+        <div id="noResults" class="no-results"><h3>No rules found</h3><p>Try a different keyword or <a href="#" id="clearSearch" style="color:var(--gold)">clear the search</a>.</p></div>
+
+        <div id="general" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">🛡</span>
+            <span class="rule-title">General Rules</span>
+            <span class="rule-count-badge">4 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Respect</span><span class="rule-text"><b>No toxicity, hate speech, harassment, or OOC drama.</b> Keep problems in tickets, not in chat.</span></div>
+            <div class="rule"><span class="tag">TOS</span><span class="rule-text">All players must follow FiveM/CFX, Discord, and Rockstar platform guidelines at all times.</span></div>
+            <div class="rule"><span class="tag">Clips</span><span class="rule-text">Reports require proof. Clip rulebreaks and submit through the correct support ticket.</span></div>
+            <div class="rule"><span class="tag danger">Exploits</span><span class="rule-text">No cheating, bug abuse, duplication, mod menus, crosshairs, or third-party advantages.</span></div>
+          </div>
+        </div>
+
+        <div id="roleplay" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">🎭</span>
+            <span class="rule-title">Roleplay Rules</span>
+            <span class="rule-count-badge">4 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Interaction</span><span class="rule-text"><b>Empire is interaction first.</b> Give players a real chance to respond before escalating scenes.</span></div>
+            <div class="rule"><span class="tag">45 Sec</span><span class="rule-text">General hostile RP requires proper interaction before shooting, robbing, or forcing a scene.</span></div>
+            <div class="rule"><span class="tag">30 Sec</span><span class="rule-text">Hot zones / red zones may use a shorter interaction standard when posted by staff.</span></div>
+            <div class="rule"><span class="tag">NVL</span><span class="rule-text">Value your life. If you are outnumbered, held at gunpoint, or trapped — roleplay the fear properly.</span></div>
+          </div>
+        </div>
+
+        <div id="combat" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">⚔️</span>
+            <span class="rule-title">Combat Rules</span>
+            <span class="rule-count-badge">4 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">RDM</span><span class="rule-text">No random killing. Every shooting must have valid roleplay build-up or approved event rules.</span></div>
+            <div class="rule"><span class="tag danger">VDM</span><span class="rule-text">No using vehicles as weapons unless the scene clearly supports it and staff rules allow it.</span></div>
+            <div class="rule"><span class="tag danger">F8 Quit</span><span class="rule-text">No combat logging, F8 quitting, respawning, or disconnecting to avoid consequences.</span></div>
+            <div class="rule"><span class="tag">Scenes</span><span class="rule-text">Do not return to active scenes after death unless staff or event rules clearly allow it.</span></div>
+          </div>
+        </div>
+
+        <div id="gangs" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">👑</span>
+            <span class="rule-title">Gang / Faction Rules</span>
+            <span class="rule-count-badge">4 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Flag</span><span class="rule-text">Faction members must wear proper gang attire when representing their gang.</span></div>
+            <div class="rule"><span class="tag">Beef</span><span class="rule-text">Gang wars require beef validation through Faction Support before becoming official.</span></div>
+            <div class="rule"><span class="tag">Events</span><span class="rule-text">Airdrops, turfs, and Empire Games follow event-specific rules posted by staff.</span></div>
+            <div class="rule"><span class="tag">Accountability</span><span class="rule-text">Gang leaders are responsible for their members. Cheating or major rulebreaks can affect the whole gang.</span></div>
+          </div>
+        </div>
+
+        <div id="robbery" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">💰</span>
+            <span class="rule-title">Robbery Rules</span>
+            <span class="rule-count-badge">4 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Comms</span><span class="rule-text">You may take a phone OR radio, not both. Players must be left with one communication method.</span></div>
+            <div class="rule"><span class="tag">Flatback</span><span class="rule-text">Flatback may be used only within allowed rules and never to protect friends from being robbed.</span></div>
+            <div class="rule"><span class="tag">No Rob</span><span class="rule-text">No robbing during events when staff posts "no robbing" for that event.</span></div>
+            <div class="rule"><span class="tag">Proof</span><span class="rule-text">Keep clips of major robberies, kidnaps, gang scenes, and disputes.</span></div>
+          </div>
+        </div>
+
+        <div id="business" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">🏪</span>
+            <span class="rule-title">Business Rules</span>
+            <span class="rule-count-badge">4 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Use</span><span class="rule-text">Businesses must be used as actual businesses, not personal stashes or faction supply machines.</span></div>
+            <div class="rule"><span class="tag">Invoices</span><span class="rule-text">Employees must invoice properly and cannot abuse billing for themselves, friends, or gangs.</span></div>
+            <div class="rule"><span class="tag">Transfers</span><span class="rule-text">Ownership transfers require Business Oversight approval before any purchase or agreement.</span></div>
+            <div class="rule"><span class="tag">Activity</span><span class="rule-text">Owners are expected to stay active, provide logs when asked, and follow oversight instructions.</span></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="rules-cta">
+    <h2>Ready to play by the rules?</h2>
+    <p>Join the Discord and connect to city. The streets are waiting.</p>
+    <div class="cta-btns">
+      <a class="btn" href="#">▸ Play Now</a>
+      <a class="btn ghost" href="#">Join Discord</a>
+      <a class="btn ghost" href="index.html">← Back Home</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-brand">
+      <img src="empire-logo.png" alt="Empire RP">
+      <p>A premium GTA V roleplay community. Built by players, for players.</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="rules.html">Rules</a>
+      <a href="#">Discord</a>
+      <a href="#">Store</a>
+    </div>
+    <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+  </footer>
+
+  <script>
+    // Mobile menu
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    });
+
+    // Search
+    const input = document.getElementById('ruleSearch');
+    const countEl = document.getElementById('ruleCount');
+    const clearBtn = document.getElementById('searchClear');
+    const noResults = document.getElementById('noResults');
+    const rules = Array.from(document.querySelectorAll('.rule'));
+    const sections = Array.from(document.querySelectorAll('.rule-section'));
+    const originals = new Map(rules.map(r => [r, r.querySelector('.rule-text').innerHTML]));
+
+    function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function filterRules() {
+      const q = input.value.trim();
+      const ql = q.toLowerCase();
+      let visible = 0;
+
+      rules.forEach(rule => {
+        const rt = rule.querySelector('.rule-text');
+        rt.innerHTML = originals.get(rule);
+        const tag = rule.querySelector('.tag').textContent;
+        const text = `${tag} ${rt.textContent}`.toLowerCase();
+        const match = !ql || text.includes(ql);
+        rule.classList.toggle('no-match', !match);
+        if (match) {
+          visible++;
+          if (ql) {
+            const re = new RegExp(`(${escRe(q)})`, 'gi');
+            rt.innerHTML = rt.innerHTML.replace(re, '<mark>$1</mark>');
+          }
+        }
+      });
+
+      let sectVisible = 0;
+      sections.forEach(sec => {
+        const has = Array.from(sec.querySelectorAll('.rule')).some(r => !r.classList.contains('no-match'));
+        sec.classList.toggle('no-match', !has);
+        if (has) sectVisible++;
+      });
+
+      noResults.classList.toggle('show', sectVisible === 0 && ql.length > 0);
+      clearBtn.style.display = ql ? 'block' : 'none';
+      countEl.textContent = ql
+        ? `${visible} matching rule${visible === 1 ? '' : 's'} for "${q}"`
+        : 'Showing all rules';
+    }
+
+    input.addEventListener('input', filterRules);
+    clearBtn.addEventListener('click', () => { input.value = ''; filterRules(); input.focus(); });
+    document.getElementById('clearSearch')?.addEventListener('click', (e) => { e.preventDefault(); input.value=''; filterRules(); });
+
+    // Sidebar active on scroll
+    const menuLinks = Array.from(document.querySelectorAll('.rule-menu a'));
+    const ruleSections = Array.from(document.querySelectorAll('.rule-section[id]'));
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          menuLinks.forEach(a => a.classList.remove('active'));
+          const link = document.querySelector(`.rule-menu a[href="#${entry.target.id}"]`);
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+    ruleSections.forEach(s => obs.observe(s));
+
+    filterRules();
+  </script>
+</body>
+</html>
