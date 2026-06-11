@@ -42,6 +42,8 @@
     .btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,114,0,.4); }
     .btn.ghost { background: rgba(255,255,255,.05); color: var(--text); border-color: rgba(255,255,255,.15); box-shadow: none; }
     .btn.ghost:hover { border-color: var(--gold); color: var(--gold); }
+    .btn.discord-btn { background: linear-gradient(135deg, #5865F2, #4752c4); border-color: rgba(88,101,242,.5); color: #fff; }
+    .btn.discord-btn:hover { box-shadow: 0 0 30px rgba(88,101,242,.5); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
     .hamburger span { display: block; width: 24px; height: 2px; background: var(--gold); border-radius: 2px; }
     .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99; background: rgba(6,5,4,.97); border-bottom: 1px solid var(--line); padding: 20px 6%; flex-direction: column; gap: 14px; }
@@ -71,7 +73,7 @@
 
     /* ── TICKER ── */
     .ticker-wrap { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(246,177,58,.04); padding: 11px 0; }
-    .ticker { display: flex; animation: ticker 22s linear infinite; white-space: nowrap; }
+    .ticker { display: flex; animation: ticker 30s linear infinite; white-space: nowrap; }
     .ticker-item { display: inline-flex; align-items: center; gap: 12px; padding: 0 26px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
     .ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
@@ -100,6 +102,13 @@
       border-color: rgba(255,255,255,.75);
       box-shadow: 0 0 6px rgba(255,255,255,.5), 0 0 20px rgba(246,177,58,.45), 0 0 50px rgba(255,114,0,.2);
     }
+    .event-card.live-posted {
+      border-color: rgba(88,101,242,.4);
+    }
+    .event-card.live-posted:hover {
+      border-color: rgba(88,101,242,.8);
+      box-shadow: 0 0 6px rgba(88,101,242,.5), 0 0 20px rgba(88,101,242,.45), 0 0 50px rgba(88,101,242,.2);
+    }
 
     /* Date block */
     .event-date {
@@ -119,6 +128,18 @@
     .event-time { font-size: 12px; color: var(--muted); font-weight: 800; display: flex; align-items: center; gap: 5px; }
     .event-desc { font-size: 13px; color: var(--muted); line-height: 1.55; margin-top: 4px; }
 
+    /* Posted-by attribution */
+    .event-posted-by {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .posted-pfp { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(88,101,242,.4); }
+    .posted-pfp-placeholder { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg,#5865F2,#4752c4); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: #fff; flex-shrink: 0; }
+    .posted-info { font-size: 11px; color: var(--muted); }
+    .posted-info strong { color: #a5b4fc; font-weight: 800; }
+    .discord-tag { font-size: 10px; color: rgba(165,180,252,.6); margin-left: 4px; }
+
     /* Type pills */
     .epill {
       display: inline-flex; align-items: center; gap: 4px;
@@ -130,6 +151,7 @@
     .epill.community  { background: rgba(120,80,255,.15); border: 1px solid rgba(120,80,255,.3); color: #a78bfa; }
     .epill.pvp        { background: rgba(255,60,60,.1); border: 1px solid rgba(255,60,60,.25); color: var(--danger); }
     .epill.new        { background: rgba(255,114,0,.15); border: 1px solid rgba(255,114,0,.35); color: var(--gold2); }
+    .epill.oversight  { background: rgba(88,101,242,.15); border: 1px solid rgba(88,101,242,.35); color: #a5b4fc; }
 
     /* Status badge */
     .event-status { padding: 16px 18px; display: flex; align-items: center; justify-content: center; }
@@ -141,6 +163,7 @@
     .status-dot.upcoming { background: var(--gold); box-shadow: 0 0 8px rgba(246,177,58,.6); animation: pulse 2s ease-in-out infinite; }
     .status-dot.weekly   { background: #39ff82; box-shadow: 0 0 8px rgba(57,255,130,.6); animation: pulse 2s ease-in-out infinite; }
     .status-dot.monthly  { background: #a78bfa; box-shadow: 0 0 8px rgba(167,139,250,.6); }
+    .status-dot.live     { background: #5865F2; box-shadow: 0 0 8px rgba(88,101,242,.6); animation: pulse 2s ease-in-out infinite; }
     .status-text { font-size: 10px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
@@ -180,7 +203,6 @@
     .cal-day.event-main::after { background: var(--gold2); }
     .cal-day:hover { background: rgba(255,255,255,.06); }
 
-    /* Calendar legend */
     .cal-legend { padding: 0 16px 16px; display: flex; gap: 14px; flex-wrap: wrap; }
     .leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); font-weight: 700; }
     .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -202,6 +224,59 @@
     }
     .discord-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
     .discord-card p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+
+    /* ── OVERSIGHT PORTAL ── */
+    .oversight-portal {
+      background: rgba(88,101,242,.06);
+      border: 1px solid rgba(88,101,242,.25);
+      border-radius: var(--r); overflow: hidden;
+    }
+    .oversight-header {
+      background: linear-gradient(90deg, rgba(88,101,242,.2), transparent);
+      padding: 16px 20px; border-bottom: 1px solid rgba(88,101,242,.2);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .oversight-header h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: #a5b4fc; }
+    .oversight-badge { background: rgba(88,101,242,.3); border: 1px solid rgba(88,101,242,.5); border-radius: 6px; padding: 2px 8px; font-size: 10px; font-weight: 900; color: #a5b4fc; letter-spacing: .1em; text-transform: uppercase; }
+    .oversight-body { padding: 20px; }
+
+    /* Login state */
+    .oversight-login { text-align: center; }
+    .oversight-login p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+    .oversight-login .lock-icon { font-size: 32px; margin-bottom: 12px; }
+
+    /* Logged-in state */
+    .oversight-user { display: none; }
+    .user-info { display: flex; align-items: center; gap: 12px; padding: 14px; background: rgba(88,101,242,.1); border: 1px solid rgba(88,101,242,.2); border-radius: 12px; margin-bottom: 16px; }
+    .user-pfp { width: 42px; height: 42px; border-radius: 50%; border: 2px solid rgba(88,101,242,.5); }
+    .user-pfp-placeholder { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg,#5865F2,#4752c4); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; color: #fff; flex-shrink: 0; }
+    .user-details { flex: 1; }
+    .user-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; color: var(--text); }
+    .user-role { font-size: 11px; color: #a5b4fc; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .user-discord { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .logout-btn { background: none; border: 1px solid rgba(255,255,255,.1); color: var(--muted); border-radius: 8px; padding: 6px 10px; font-size: 11px; cursor: pointer; transition: .2s; font-family: 'Inter', sans-serif; }
+    .logout-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+    /* Post form */
+    .post-form { display: flex; flex-direction: column; gap: 10px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+    .form-group input, .form-group textarea, .form-group select {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; padding: 10px 14px; color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 13px;
+      transition: border-color .2s; outline: none;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: rgba(88,101,242,.6);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group select option { background: #1a1a2e; color: var(--text); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .post-btn { background: linear-gradient(135deg, #5865F2, #4752c4); color: #fff; border: none; border-radius: 999px; padding: 12px 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: .2s; width: 100%; }
+    .post-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(88,101,242,.5); }
+    .post-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .post-success { display: none; background: rgba(57,255,130,.1); border: 1px solid rgba(57,255,130,.25); border-radius: 10px; padding: 12px 14px; color: #39ff82; font-size: 13px; font-weight: 800; text-align: center; }
 
     /* ── RECURRING SECTION ── */
     .recurring-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 32px; }
@@ -230,6 +305,20 @@
     .footer-links { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; padding-top: 4px; }
     .footer-links a:hover { color: var(--gold); }
 
+    /* Toast notification */
+    .toast {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+      background: rgba(15,13,11,.95); border: 1px solid rgba(57,255,130,.3);
+      border-radius: 14px; padding: 14px 20px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14px; font-weight: 700; color: #39ff82;
+      backdrop-filter: blur(20px);
+      transform: translateY(100px); opacity: 0;
+      transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+      max-width: 320px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
     @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
@@ -243,10 +332,14 @@
       .event-card { grid-template-columns: 70px 1fr; }
       .event-status { display: none; }
       .recurring-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">✅ Event posted live!</div>
 
   <!-- NAV -->
   <nav class="nav">
@@ -284,19 +377,23 @@
 
   <!-- TICKER -->
   <div class="ticker-wrap">
-    <div class="ticker">
+    <div class="ticker" id="tickerInner">
+      <span class="ticker-item"><span class="ticker-dot"></span> Killer Clown Maze — June 2 · 10PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Murder Mystery — June 4 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Spirit Week — June 7–13</span>
       <span class="ticker-item"><span class="ticker-dot"></span> Watermelon Wednesday — Every Week</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Airdrops — Random City Events</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Turf Night — Monthly</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Pool Parties — Summer Season</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Empire Games — Quarterly</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Car Meets — Bi-Weekly</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Among Us — June 17 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Evidence Transport — June 15 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Red Light Green Light — June 25 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Cayo Bloobath — June 28</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Killer Clown Maze — June 2 · 10PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Murder Mystery — June 4 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Spirit Week — June 7–13</span>
       <span class="ticker-item"><span class="ticker-dot"></span> Watermelon Wednesday — Every Week</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Airdrops — Random City Events</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Turf Night — Monthly</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Pool Parties — Summer Season</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Empire Games — Quarterly</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Car Meets — Bi-Weekly</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Among Us — June 17 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Evidence Transport — June 15 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Red Light Green Light — June 25 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Cayo Bloobath — June 28</span>
     </div>
   </div>
 
@@ -306,15 +403,87 @@
     <!-- LEFT: Event List -->
     <div>
       <div class="sec-label">Schedule</div>
-      <div class="sec-title">Upcoming <em>Events</em></div>
+      <div class="sec-title">June <em>Events</em></div>
 
       <div class="events-list" id="eventsList">
 
-        <!-- Event 1 -->
+        <!-- June 2 - Killer Clown Maze -->
         <div class="event-card">
           <div class="event-date">
-            <div class="month" data-month="true"></div>
-            <div class="day">14</div>
+            <div class="month">JUN</div>
+            <div class="day">2</div>
+            <div class="dow">Mon</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">🤡 Killer Clown Maze</div>
+            <div class="event-meta">
+              <span class="epill special">⭐ Special Event</span>
+              <span class="epill community">🌆 City Event</span>
+              <span class="event-time">⏰ 10 PM EST</span>
+            </div>
+            <div class="event-desc">Navigate a terrifying clown maze designed to test your nerves. Can you make it out alive? This is a one-night-only staff-hosted experience. Watch Discord for the entry point.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot upcoming"></div>
+              <div class="status-text">Special</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- June 4 - Murder Mystery -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month">JUN</div>
+            <div class="day">4</div>
+            <div class="dow">Wed</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">🔍 Murder Mystery</div>
+            <div class="event-meta">
+              <span class="epill special">⭐ Special Event</span>
+              <span class="epill community">🌆 City Event</span>
+              <span class="event-time">⏰ 9 PM EST</span>
+            </div>
+            <div class="event-desc">Someone's been murdered in the city — and it could be anyone. Work with or against the city to uncover the killer before it's too late. Full roleplay event, staff-hosted.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot upcoming"></div>
+              <div class="status-text">Special</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- June 7-13 - Spirit Week -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month">JUN</div>
+            <div class="day">7</div>
+            <div class="dow">Sun</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">🎉 Spirit Week</div>
+            <div class="event-meta">
+              <span class="epill new">🔥 Multi-Day</span>
+              <span class="epill community">🌆 City Event</span>
+              <span class="event-time">⏰ June 7–13</span>
+            </div>
+            <div class="event-desc">A full week of themed daily events celebrating Empire spirit. Each day has its own theme and activity. Sub-events include: Beach Bum Day (Sun), Last Day of School (Mon), Pool Party Day (Tue), Watermelon Wednesday (Wed), Campfire & Cabin Day (Thu), Vacation Destination Day (Fri), and Summer Festival Day (Sat).</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot upcoming"></div>
+              <div class="status-text">Week</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- June 10 - Watermelon Wednesday -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month">JUN</div>
+            <div class="day">10</div>
             <div class="dow">Wed</div>
           </div>
           <div class="event-body">
@@ -322,7 +491,7 @@
             <div class="event-meta">
               <span class="epill recurring">🔁 Weekly</span>
               <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ 7 PM EST</span>
+              <span class="event-time">⏰ 9 PM EST</span>
             </div>
             <div class="event-desc">Empire's signature weekly event. Come dressed to match the theme, link up with the city, and enjoy the vibes. Staff-hosted, open to all players. Look for the announcement in Discord.</div>
           </div>
@@ -334,117 +503,117 @@
           </div>
         </div>
 
-        <!-- Event 2 -->
+        <!-- June 15 - Evidence Transport -->
         <div class="event-card">
           <div class="event-date">
-            <div class="month" data-month="true"></div>
-            <div class="day">17</div>
-            <div class="dow">Sat</div>
+            <div class="month">JUN</div>
+            <div class="day">15</div>
+            <div class="dow">Sun</div>
           </div>
           <div class="event-body">
-            <div class="event-name">🚗 Empire Car Meet</div>
+            <div class="event-name">🚔 Evidence Transport</div>
             <div class="event-meta">
-              <span class="epill recurring">🔁 Bi-Weekly</span>
-              <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ 6 PM EST</span>
+              <span class="epill pvp">💀 PvP Event</span>
+              <span class="epill special">⭐ Staff Event</span>
+              <span class="event-time">⏰ 9 PM EST</span>
             </div>
-            <div class="event-desc">Show off your build, flex your drip, and link with the city. No drama, no shootouts — just cars and culture. Location dropped in Discord the day of.</div>
+            <div class="event-desc">LSPD is moving critical evidence across the city. Criminals have one shot to intercept the convoy before it reaches lockup. High stakes, high action. PD and criminals welcome.</div>
           </div>
           <div class="event-status">
             <div class="status-badge">
               <div class="status-dot upcoming"></div>
-              <div class="status-text">Upcoming</div>
+              <div class="status-text">PvP</div>
             </div>
           </div>
         </div>
 
-        <!-- Event 3 -->
+        <!-- June 17 - Among Us -->
         <div class="event-card">
           <div class="event-date">
-            <div class="month" data-month="true"></div>
-            <div class="day">20</div>
+            <div class="month">JUN</div>
+            <div class="day">17</div>
             <div class="dow">Tue</div>
           </div>
           <div class="event-body">
-            <div class="event-name">📦 City Airdrop</div>
-            <div class="event-meta">
-              <span class="epill pvp">💀 KOS Zone</span>
-              <span class="epill special">⭐ Staff Event</span>
-              <span class="event-time">⏰ Time TBA</span>
-            </div>
-            <div class="event-desc">An airdrop is dropping somewhere in the city. Once you enter the marked zone it's KOS — no robbing, no exceptions. Last crew standing takes the loot. Watch Discord for the drop location.</div>
-          </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot upcoming"></div>
-              <div class="status-text">Upcoming</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Event 4 -->
-        <div class="event-card">
-          <div class="event-date">
-            <div class="month" data-month="true"></div>
-            <div class="day">21</div>
-            <div class="dow">Wed</div>
-          </div>
-          <div class="event-body">
-            <div class="event-name">🍉 Watermelon Wednesday</div>
-            <div class="event-meta">
-              <span class="epill recurring">🔁 Weekly</span>
-              <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ 7 PM EST</span>
-            </div>
-            <div class="event-desc">Empire's weekly staple. Come dressed in the theme, vibe out, and enjoy some low-pressure city RP. Check Discord for this week's specific theme.</div>
-          </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot weekly"></div>
-              <div class="status-text">Weekly</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Event 5 -->
-        <div class="event-card">
-          <div class="event-date">
-            <div class="month" data-month="true"></div>
-            <div class="day">24</div>
-            <div class="dow">Sat</div>
-          </div>
-          <div class="event-body">
-            <div class="event-name">🌊 Pool Party</div>
+            <div class="event-name">🔴 Among Us</div>
             <div class="event-meta">
               <span class="epill special">⭐ Special Event</span>
               <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ 6 PM EST</span>
+              <span class="event-time">⏰ 9 PM EST</span>
             </div>
-            <div class="event-desc">Mansion pool party, open to the whole city. Come in character, keep it classy, and bring the RP. Staff enforces green zone rules. 15-minute peace time after the event ends.</div>
+            <div class="event-desc">Empire's take on the classic Among Us experience, brought into FiveM. Crewmates vs. impostors in a custom-designed lobby. Staff-run, open sign-ups in Discord.</div>
           </div>
           <div class="event-status">
             <div class="status-badge">
               <div class="status-dot upcoming"></div>
-              <div class="status-text">Upcoming</div>
+              <div class="status-text">Special</div>
             </div>
           </div>
         </div>
 
-        <!-- Event 6 -->
+        <!-- June 22 - Protect the VIP -->
         <div class="event-card">
           <div class="event-date">
-            <div class="month" data-month="true"></div>
-            <div class="day">27</div>
-            <div class="dow">Tue</div>
+            <div class="month">JUN</div>
+            <div class="day">22</div>
+            <div class="dow">Sun</div>
           </div>
           <div class="event-body">
-            <div class="event-name">👑 Turf Night</div>
+            <div class="event-name">💰 Protect the VIP</div>
             <div class="event-meta">
-              <span class="epill pvp">💀 Faction Only</span>
-              <span class="epill special">⭐ Monthly</span>
-              <span class="event-time">⏰ 8 PM EST</span>
+              <span class="epill pvp">💀 PvP Event</span>
+              <span class="epill special">⭐ Staff Event</span>
+              <span class="event-time">⏰ 9 PM EST</span>
             </div>
-            <div class="event-desc">Factions compete for control of designated turf zones. Beef must be validated before participation. PD and civilians are excluded. Winners hold the turf until the next Turf Night. Rules posted in Faction Support.</div>
+            <div class="event-desc">A high-value target needs to be escorted safely across the city. One team protects, the other hunts. Cash prizes involved. Pick your side and show up locked in.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot upcoming"></div>
+              <div class="status-text">PvP</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- June 25 - Red Light Green Light -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month">JUN</div>
+            <div class="day">25</div>
+            <div class="dow">Wed</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">🚦 Red Light Green Light</div>
+            <div class="event-meta">
+              <span class="epill special">⭐ Special Event</span>
+              <span class="epill community">🌆 City Event</span>
+              <span class="event-time">⏰ 9 PM EST</span>
+            </div>
+            <div class="event-desc">Inspired by Squid Game — move when the light is green, freeze when it's red. Get caught moving and you're out. Last player standing wins. No weapons, pure nerve.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot upcoming"></div>
+              <div class="status-text">Special</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- June 28 - Cayo Bloobath -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month">JUN</div>
+            <div class="day">28</div>
+            <div class="dow">Sat</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">💥 Cayo Bloobath</div>
+            <div class="event-meta">
+              <span class="epill pvp">💀 KOS Zone</span>
+              <span class="epill new">🔥 Monthly</span>
+              <span class="event-time">⏰ TBA</span>
+            </div>
+            <div class="event-desc">Full chaos on Cayo. Everyone drops in, last crew standing walks away with the loot. KOS from the moment you land. No rules, no safe zones. Check Discord for drop time.</div>
           </div>
           <div class="event-status">
             <div class="status-badge">
@@ -454,55 +623,10 @@
           </div>
         </div>
 
-        <!-- Event 7 -->
-        <div class="event-card">
-          <div class="event-date">
-            <div class="month" data-month="true"></div>
-            <div class="day">28</div>
-            <div class="dow">Wed</div>
-          </div>
-          <div class="event-body">
-            <div class="event-name">🍉 Watermelon Wednesday</div>
-            <div class="event-meta">
-              <span class="epill recurring">🔁 Weekly</span>
-              <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ 7 PM EST</span>
-            </div>
-            <div class="event-desc">Weekly community event. Watch the Empire Discord for this week's theme drop and location pin. Always a good time.</div>
-          </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot weekly"></div>
-              <div class="status-text">Weekly</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Event 8 -->
-        <div class="event-card">
-          <div class="event-date">
-            <div class="month" data-month="true"></div>
-            <div class="day">30</div>
-            <div class="dow">Fri</div>
-          </div>
-          <div class="event-body">
-            <div class="event-name">🏆 Empire Games</div>
-            <div class="event-meta">
-              <span class="epill new">🔥 Quarterly</span>
-              <span class="epill special">⭐ Mega Event</span>
-              <span class="event-time">⏰ 7 PM EST</span>
-            </div>
-            <div class="event-desc">Empire's biggest quarterly event. City-wide competitions, custom mini-games, prizes, and bragging rights. Everyone is invited — this is a full city shutdown event. Details in Discord.</div>
-          </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot upcoming"></div>
-              <div class="status-text">Upcoming</div>
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      <!-- Live-posted events will appear here -->
+      <div id="liveEventsList" style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px;"></div>
 
       <!-- RECURRING EVENTS -->
       <div style="margin-top: 48px;">
@@ -512,38 +636,38 @@
           <div class="rec-card">
             <div class="rec-icon">🍉</div>
             <div class="rec-name">Watermelon Wednesday</div>
-            <div class="rec-when">Every Wednesday • 7 PM EST</div>
+            <div class="rec-when">Every Wednesday · 9 PM EST</div>
             <div class="rec-desc">Empire's signature weekly event. Themed fits, good vibes, open to the whole city. The most consistent W on the calendar.</div>
           </div>
           <div class="rec-card">
             <div class="rec-icon">📦</div>
             <div class="rec-name">Airdrops</div>
-            <div class="rec-when">Random • Staff Announced</div>
+            <div class="rec-when">Random · Staff Announced</div>
             <div class="rec-desc">Drops anywhere in the city without warning. KOS inside the zone — no robbing. Watch Discord or you'll miss it.</div>
           </div>
           <div class="rec-card">
             <div class="rec-icon">🚗</div>
             <div class="rec-name">Car Meets</div>
-            <div class="rec-when">Bi-Weekly • Saturdays</div>
+            <div class="rec-when">Bi-Weekly · Saturdays</div>
             <div class="rec-desc">Flex your build, meet the city, and keep it peaceful. Location dropped day-of in the announcements channel.</div>
           </div>
           <div class="rec-card">
-            <div class="rec-icon">👑</div>
-            <div class="rec-name">Turf Night</div>
-            <div class="rec-when">Monthly • Faction Only</div>
-            <div class="rec-desc">Factions fight for territory control. Beef validation required. Winners hold turf until the next round. Real stakes, real RP.</div>
+            <div class="rec-icon">🔍</div>
+            <div class="rec-name">Murder Mystery</div>
+            <div class="rec-when">Monthly · Staff Hosted</div>
+            <div class="rec-desc">City-wide whodunit RP experience. Work with the city or go rogue. Every round has a different killer and setting.</div>
           </div>
           <div class="rec-card">
-            <div class="rec-icon">🌊</div>
-            <div class="rec-name">Pool Parties</div>
-            <div class="rec-when">Monthly • Summer Season</div>
-            <div class="rec-desc">Mansion events open to the whole city. GZ rules enforced. Come in character, bring the energy, leave the beef outside.</div>
+            <div class="rec-icon">🚔</div>
+            <div class="rec-name">Evidence Transport</div>
+            <div class="rec-when">Monthly · PvP Event</div>
+            <div class="rec-desc">LSPD moves evidence, criminals intercept. High intensity PvP with clear faction objectives and real stakes.</div>
           </div>
           <div class="rec-card">
-            <div class="rec-icon">🏆</div>
-            <div class="rec-name">Empire Games</div>
-            <div class="rec-when">Quarterly • Mega Event</div>
-            <div class="rec-desc">City-wide competitions and mini-games with prizes. Empire's biggest event of the quarter. Everyone plays, nobody sits out.</div>
+            <div class="rec-icon">💥</div>
+            <div class="rec-name">Cayo Bloobath</div>
+            <div class="rec-when">Monthly · KOS</div>
+            <div class="rec-desc">Full island drop-in chaos event. KOS the moment you land. Last crew standing takes everything. No rules, no mercy.</div>
           </div>
         </div>
       </div>
@@ -577,7 +701,7 @@
           <div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div> Today</div>
           <div class="leg-item"><div class="leg-dot" style="background:var(--gold2)"></div> Major Event</div>
           <div class="leg-item"><div class="leg-dot" style="background:#39ff82"></div> Weekly</div>
-          <div class="leg-item"><div class="leg-dot" style="background:#a78bfa"></div> Monthly</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#5865F2"></div> Live Posted</div>
         </div>
       </div>
 
@@ -609,7 +733,7 @@
           <div class="info-row-icon">💀</div>
           <div class="info-row-text">
             <strong>KOS Events</strong>
-            Airdrops and Cayo are KOS inside the zone only. No robbing inside.
+            Cayo Bloobath and Airdrops are KOS inside the zone only. No robbing inside.
           </div>
         </div>
         <div class="info-row">
@@ -618,6 +742,77 @@
             <strong>All Announcements in Discord</strong>
             Times, locations, and themes are posted in the announcements channel before every event.
           </div>
+        </div>
+      </div>
+
+      <!-- ── EVENT OVERSIGHT PORTAL ── -->
+      <div class="oversight-portal">
+        <div class="oversight-header">
+          <span style="font-size:18px;">🛡️</span>
+          <h3>Event Oversight</h3>
+          <div class="oversight-badge">Staff Only</div>
+        </div>
+        <div class="oversight-body">
+
+          <!-- Login State -->
+          <div class="oversight-login" id="oversightLogin">
+            <div class="lock-icon">🔐</div>
+            <p>Event Oversight members can post events live to this page. You must have the <strong style="color:#a5b4fc;">Event Oversight</strong> role in the Empire Discord to post.</p>
+            <button class="btn discord-btn" style="width:100%;justify-content:center;" onclick="loginWithDiscord()">
+              <svg width="20" height="20" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.5.4a40.7 40.7 0 0 0-1.8 3.7 54.1 54.1 0 0 0-16.4 0A40.7 40.7 0 0 0 25.5.4 58.4 58.4 0 0 0 10.9 5C1.6 19.2-1 33 .3 46.6A59 59 0 0 0 18.3 55a44.8 44.8 0 0 0 3.8-6.3 38.3 38.3 0 0 1-6-2.9l1.4-1.1a42 42 0 0 0 36.1 0l1.5 1.1a38.3 38.3 0 0 1-6 2.9A44.8 44.8 0 0 0 52.7 55a58.8 58.8 0 0 0 18-8.4C72.4 30.8 68 17.2 60.1 4.9ZM23.7 38.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Z" fill="#fff"/></svg>
+              Login with Discord
+            </button>
+          </div>
+
+          <!-- Logged-in State -->
+          <div class="oversight-user" id="oversightUser">
+            <div class="user-info">
+              <div class="user-pfp-placeholder" id="userPfpPlaceholder" style="display:none;"></div>
+              <img class="user-pfp" id="userPfp" src="" alt="" style="display:none;" onerror="this.style.display='none'; document.getElementById('userPfpPlaceholder').style.display='flex'">
+              <div class="user-details">
+                <div class="user-name" id="userName">—</div>
+                <div class="user-role">🛡️ Event Oversight</div>
+                <div class="user-discord" id="userDiscord">—</div>
+              </div>
+              <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="post-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Event Name</label>
+                  <input type="text" id="postName" placeholder="e.g. Street Race Night" maxlength="60">
+                </div>
+                <div class="form-group">
+                  <label>Date</label>
+                  <input type="date" id="postDate">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Time (EST)</label>
+                  <input type="text" id="postTime" placeholder="e.g. 9 PM EST">
+                </div>
+                <div class="form-group">
+                  <label>Type</label>
+                  <select id="postType">
+                    <option value="special">⭐ Special Event</option>
+                    <option value="recurring">🔁 Weekly</option>
+                    <option value="pvp">💀 PvP Event</option>
+                    <option value="community">🌆 City Event</option>
+                    <option value="new">🔥 Major Event</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea id="postDesc" placeholder="Describe what's happening, rules, and how to join..." maxlength="300"></textarea>
+              </div>
+              <div id="postSuccess" class="post-success">✅ Event posted live to the page!</div>
+              <button class="post-btn" id="postBtn" onclick="postEvent()">📢 Post Event Live</button>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -650,22 +845,30 @@
   </footer>
 
   <script>
-    // Mobile menu
+    // ── MOBILE MENU ──
     document.getElementById('hamburger').addEventListener('click', () => {
       document.getElementById('mobileMenu').classList.toggle('open');
     });
 
     // ── CALENDAR ──
     const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    const DAYS_SHORT = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 
-    // Event days this month (day numbers)
-    // weekly = Wednesdays | bi-weekly Sat | specific dates
-    const eventDays = {
-      major:    [20, 24, 30],   // airdrop, pool party, empire games
-      weekly:   [14, 21, 28],   // watermelon wednesdays
-      monthly:  [27],           // turf night
-      biweekly: [17],           // car meet
+    // June 2026 events (day → type)
+    const juneEvents = {
+      2:  'major',   // Killer Clown Maze
+      4:  'major',   // Murder Mystery
+      7:  'major',   // Spirit Week start
+      8:  'major',
+      9:  'major',
+      10: 'weekly',  // Watermelon Wednesday
+      11: 'major',
+      12: 'major',
+      13: 'major',   // Spirit Week end
+      15: 'major',   // Evidence Transport
+      17: 'major',   // Among Us
+      22: 'major',   // Protect VIP
+      25: 'major',   // Red Light Green Light
+      28: 'monthly', // Cayo Bloobath
     };
 
     let calDate = new Date(2026, 5, 1); // June 2026
@@ -684,7 +887,6 @@
       const grid = document.getElementById('calDays');
       grid.innerHTML = '';
 
-      // Previous month overflow
       for (let i = firstDay - 1; i >= 0; i--) {
         const el = document.createElement('div');
         el.className = 'cal-day other-month';
@@ -692,27 +894,33 @@
         grid.appendChild(el);
       }
 
-      // Current month
       for (let day = 1; day <= daysInMonth; day++) {
         const el = document.createElement('div');
         el.textContent = day;
         let cls = 'cal-day';
+        let colorOverride = '';
 
-        if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
-          cls += ' today';
+        const isToday = year === today.getFullYear() && month === today.getMonth() && day === today.getDate();
+        if (isToday) cls += ' today';
+
+        const evType = (year === 2026 && month === 5) ? juneEvents[day] : null;
+        if (evType === 'major')   { cls += ' event-main has-event'; el.title = 'Event Day'; }
+        else if (evType === 'weekly')  { cls += ' has-event'; colorOverride = '#39ff82'; el.title = 'Weekly Event'; }
+        else if (evType === 'monthly') { cls += ' has-event'; colorOverride = '#a78bfa'; el.title = 'Monthly Event'; }
+
+        // Check live-posted events for this day
+        const liveEventsForDay = getLiveEventsForDay(year, month, day);
+        if (liveEventsForDay.length > 0) {
+          cls += ' has-event';
+          colorOverride = '#5865F2';
+          el.title = (el.title ? el.title + ' + ' : '') + 'Live Event';
         }
 
-        // Check event type (priority: major > monthly > weekly > biweekly)
-        if (eventDays.major.includes(day))    { cls += ' event-main has-event'; el.title = 'Major Event'; }
-        else if (eventDays.monthly.includes(day)) { cls += ' has-event'; el.style.color='#a78bfa'; el.title = 'Monthly Event'; }
-        else if (eventDays.weekly.includes(day))  { cls += ' has-event'; el.style.color='#39ff82'; el.title = 'Weekly Event'; }
-        else if (eventDays.biweekly.includes(day)){ cls += ' has-event'; el.title = 'Bi-Weekly Event'; }
-
         el.className = cls;
+        if (colorOverride) el.style.color = colorOverride;
         grid.appendChild(el);
       }
 
-      // Next month overflow
       const total = firstDay + daysInMonth;
       const remainder = total % 7 === 0 ? 0 : 7 - (total % 7);
       for (let i = 1; i <= remainder; i++) {
@@ -734,11 +942,285 @@
 
     buildCalendar(calDate);
 
-    // Stamp current month name on all event date blocks
-    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    document.querySelectorAll('[data-month]').forEach(el => {
-      el.textContent = monthNames[new Date().getMonth()];
-    });
+    // ── LIVE EVENTS STORAGE ──
+    // Using localStorage to persist live events in the browser.
+    // In production, replace this with a real backend API.
+
+    function getLiveEvents() {
+      try {
+        return JSON.parse(localStorage.getItem('empire_live_events') || '[]');
+      } catch { return []; }
+    }
+
+    function saveLiveEvents(events) {
+      try {
+        localStorage.setItem('empire_live_events', JSON.stringify(events));
+      } catch {}
+    }
+
+    function getLiveEventsForDay(year, month, day) {
+      return getLiveEvents().filter(ev => {
+        if (!ev.date) return false;
+        const d = new Date(ev.date + 'T00:00:00');
+        return d.getFullYear() === year && d.getMonth() === month && d.getDate() === day;
+      });
+    }
+
+    function renderLiveEvents() {
+      const events = getLiveEvents();
+      const container = document.getElementById('liveEventsList');
+      container.innerHTML = '';
+      events.forEach(ev => {
+        const card = buildLiveEventCard(ev);
+        container.appendChild(card);
+      });
+    }
+
+    function buildLiveEventCard(ev) {
+      const d = ev.date ? new Date(ev.date + 'T00:00:00') : new Date();
+      const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+      const pillMap = {
+        special:   '<span class="epill special">⭐ Special Event</span>',
+        recurring: '<span class="epill recurring">🔁 Weekly</span>',
+        pvp:       '<span class="epill pvp">💀 PvP Event</span>',
+        community: '<span class="epill community">🌆 City Event</span>',
+        new:       '<span class="epill new">🔥 Major Event</span>',
+      };
+
+      const initials = (ev.posterName || '?').charAt(0).toUpperCase();
+      const pfpHtml = ev.posterAvatar
+        ? `<img class="posted-pfp" src="${ev.posterAvatar}" alt="${ev.posterName}" onerror="this.style.display='none'">`
+        : `<div class="posted-pfp-placeholder">${initials}</div>`;
+
+      const card = document.createElement('div');
+      card.className = 'event-card live-posted';
+      card.innerHTML = `
+        <div class="event-date">
+          <div class="month">${monthNames[d.getMonth()]}</div>
+          <div class="day">${d.getDate()}</div>
+          <div class="dow">${dayNames[d.getDay()]}</div>
+        </div>
+        <div class="event-body">
+          <div class="event-name">${escapeHtml(ev.name)}</div>
+          <div class="event-meta">
+            ${pillMap[ev.type] || pillMap.special}
+            <span class="epill oversight">🛡️ Oversight</span>
+            <span class="event-time">⏰ ${escapeHtml(ev.time || 'TBA')}</span>
+          </div>
+          <div class="event-desc">${escapeHtml(ev.desc)}</div>
+          <div class="event-posted-by">
+            ${pfpHtml}
+            <div class="posted-info">
+              Posted by <strong>${escapeHtml(ev.posterName)}</strong>
+              <span class="discord-tag">${escapeHtml(ev.posterDiscord || '')}</span>
+            </div>
+          </div>
+        </div>
+        <div class="event-status">
+          <div class="status-badge">
+            <div class="status-dot live"></div>
+            <div class="status-text">Live</div>
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;');
+    }
+
+    // ── DISCORD OAUTH / AUTH SIMULATION ──
+    // Production setup: replace CLIENT_ID and REDIRECT_URI with your real values.
+    // The Discord bot must verify the "Event Oversight" role server-side.
+    // This implementation uses a demo flow for display purposes.
+
+    const DISCORD_CLIENT_ID = 'YOUR_CLIENT_ID_HERE'; // Replace with real Discord App Client ID
+    const REDIRECT_URI = encodeURIComponent(window.location.origin + window.location.pathname);
+
+    function loginWithDiscord() {
+      // Check if we have a stored demo session first
+      const stored = sessionStorage.getItem('empire_oversight_user');
+      if (stored) {
+        try {
+          const user = JSON.parse(stored);
+          showLoggedIn(user);
+          return;
+        } catch {}
+      }
+
+      // In production, redirect to Discord OAuth:
+      // window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=identify%20guilds.members.read`;
+
+      // Demo mode: simulate login with Event Oversight role
+      // Replace this block with real OAuth in production
+      showDemoLoginModal();
+    }
+
+    function showDemoLoginModal() {
+      // Create a simple demo modal to simulate Discord login
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);';
+      overlay.innerHTML = `
+        <div style="background:#0f0d0b;border:1px solid rgba(88,101,242,.4);border-radius:20px;padding:32px;max-width:400px;width:90%;text-align:center;">
+          <div style="font-size:40px;margin-bottom:12px;">🛡️</div>
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;text-transform:uppercase;color:#a5b4fc;margin-bottom:8px;">Event Oversight Portal</h3>
+          <p style="color:#a89880;font-size:13px;line-height:1.6;margin-bottom:20px;">
+            Enter your Discord details to simulate login.<br>
+            <strong style="color:#a5b4fc;">In production:</strong> this redirects to Discord OAuth and verifies your <strong style="color:#a5b4fc;">Event Oversight</strong> role automatically.
+          </p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;text-align:left;">
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <label style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#a89880;">Display Name</label>
+              <input id="demoName" type="text" placeholder="Your Discord name" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;color:#f2ede4;font-family:Inter,sans-serif;font-size:13px;outline:none;">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <label style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#a89880;">Discord Tag (e.g. @username)</label>
+              <input id="demoTag" type="text" placeholder="@yourname" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;color:#f2ede4;font-family:Inter,sans-serif;font-size:13px;outline:none;">
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button onclick="this.closest('div[style]').remove()" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:11px;color:#a89880;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;">Cancel</button>
+            <button onclick="completeDemoLogin()" style="flex:2;background:linear-gradient(135deg,#5865F2,#4752c4);border:none;border-radius:999px;padding:11px;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;">Login as Oversight</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+    }
+
+    function completeDemoLogin() {
+      const nameEl = document.getElementById('demoName');
+      const tagEl  = document.getElementById('demoTag');
+      const name   = (nameEl && nameEl.value.trim()) || 'EventOversight';
+      const tag    = (tagEl  && tagEl.value.trim())  || '@oversight';
+
+      const user = {
+        id: 'demo_' + Date.now(),
+        username: name,
+        discriminator: tag.replace('@',''),
+        avatar: null, // no real avatar in demo mode
+        hasOversightRole: true
+      };
+
+      sessionStorage.setItem('empire_oversight_user', JSON.stringify(user));
+      document.querySelectorAll('div[style*="position:fixed"]').forEach(el => {
+        if (el.style.zIndex === '9999' || el.style.zIndex == 9999) el.remove();
+      });
+      showLoggedIn(user);
+    }
+
+    function showLoggedIn(user) {
+      if (!user.hasOversightRole) {
+        alert('❌ You do not have the Event Oversight role in the Empire Discord. Contact a senior staff member to get access.');
+        return;
+      }
+
+      document.getElementById('oversightLogin').style.display = 'none';
+      document.getElementById('oversightUser').style.display = 'block';
+
+      const displayName = user.username || 'Oversight Member';
+      const discordTag = user.discriminator ? `@${user.discriminator}` : `@${user.username}`;
+
+      document.getElementById('userName').textContent = displayName;
+      document.getElementById('userDiscord').textContent = discordTag;
+
+      if (user.avatar) {
+        const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=64`;
+        document.getElementById('userPfp').src = avatarUrl;
+        document.getElementById('userPfp').style.display = 'block';
+        document.getElementById('userPfpPlaceholder').style.display = 'none';
+      } else {
+        document.getElementById('userPfp').style.display = 'none';
+        const placeholder = document.getElementById('userPfpPlaceholder');
+        placeholder.style.display = 'flex';
+        placeholder.textContent = displayName.charAt(0).toUpperCase();
+      }
+
+      // Store for form
+      window._oversightUser = user;
+    }
+
+    function logout() {
+      sessionStorage.removeItem('empire_oversight_user');
+      window._oversightUser = null;
+      document.getElementById('oversightLogin').style.display = 'block';
+      document.getElementById('oversightUser').style.display = 'none';
+    }
+
+    function postEvent() {
+      const user = window._oversightUser;
+      if (!user) return;
+
+      const name = document.getElementById('postName').value.trim();
+      const date = document.getElementById('postDate').value;
+      const time = document.getElementById('postTime').value.trim();
+      const type = document.getElementById('postType').value;
+      const desc = document.getElementById('postDesc').value.trim();
+
+      if (!name || !date || !desc) {
+        alert('Please fill in Event Name, Date, and Description.');
+        return;
+      }
+
+      const btn = document.getElementById('postBtn');
+      btn.disabled = true;
+      btn.textContent = 'Posting...';
+
+      const newEvent = {
+        id: Date.now(),
+        name, date, time, type, desc,
+        posterName:    user.username,
+        posterDiscord: user.discriminator ? `@${user.discriminator}` : `@${user.username}`,
+        posterAvatar:  user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=64` : null,
+        postedAt: new Date().toISOString()
+      };
+
+      const events = getLiveEvents();
+      events.unshift(newEvent);
+      saveLiveEvents(events);
+
+      setTimeout(() => {
+        renderLiveEvents();
+        buildCalendar(calDate); // refresh calendar to show new dot
+
+        document.getElementById('postName').value = '';
+        document.getElementById('postDate').value = '';
+        document.getElementById('postTime').value = '';
+        document.getElementById('postDesc').value = '';
+
+        const success = document.getElementById('postSuccess');
+        success.style.display = 'block';
+        setTimeout(() => success.style.display = 'none', 3000);
+
+        btn.disabled = false;
+        btn.textContent = '📢 Post Event Live';
+
+        showToast('✅ Event posted live!');
+      }, 600);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    // Auto-restore session on load
+    (function checkSession() {
+      const stored = sessionStorage.getItem('empire_oversight_user');
+      if (stored) {
+        try { showLoggedIn(JSON.parse(stored)); } catch {}
+      }
+    })();
+
+    // Render any existing live events on load
+    renderLiveEvents();
   </script>
 </body>
 </html>
