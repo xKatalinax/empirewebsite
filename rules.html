@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Empire Roleplay</title>
+  <title>Empire Roleplay — Rules</title>
   <link rel="icon" type="image/png" href="empire-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -205,6 +205,7 @@
       margin-top: 1px;
     }
     .tag.danger { background: rgba(255,60,60,.12); border-color: rgba(255,60,60,.25); color: var(--danger); }
+    .tag.green { background: rgba(57,255,130,.1); border-color: rgba(57,255,130,.25); color: var(--green); }
     .rule-text { flex: 1; }
     mark { background: rgba(246,177,58,.28); color: #fff; border-radius: 4px; padding: 0 2px; }
     .rule.no-match { display: none; }
@@ -214,6 +215,16 @@
     }
     .no-results.show { display: block; }
     .no-results h3 { color: var(--text); font-size: 22px; margin-bottom: 8px; }
+
+    /* NOTICE BANNER */
+    .notice {
+      margin: 0 26px 0; padding: 12px 16px; border-radius: 12px;
+      font-size: 14px; font-weight: 600; line-height: 1.6;
+      border: 1px solid rgba(246,177,58,.25);
+      background: rgba(246,177,58,.07);
+      color: var(--gold);
+    }
+    .notice.danger { border-color: rgba(255,60,60,.3); background: rgba(255,60,60,.07); color: var(--danger); }
 
     /* CTA */
     .rules-cta {
@@ -268,7 +279,7 @@
       <a href="faction-rules.html">Faction Rules</a>
       <a href="index.html#features">Why Empire</a>
       <a href="index.html#faq">FAQ</a>
-      <a href="#">Discord</a>
+      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
       <a href="index.html" class="btn ghost" style="padding:9px 18px;font-size:13px;">← Back Home</a>
     </div>
     <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
@@ -278,7 +289,7 @@
     <a href="rules.html">Rules</a>
     <a href="faction-rules.html">Faction Rules</a>
     <a href="index.html#features">Why Empire</a>
-    <a href="#">Discord</a>
+    <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
     <a href="index.html">← Back Home</a>
   </div>
 
@@ -286,9 +297,9 @@
   <header class="rules-hero">
     <div class="rules-hero-content">
       <img class="rules-logo" src="empire-logo.png" alt="Empire Roleplay Logo">
-      <div class="eyebrow">Rules of Conduct</div>
+      <div class="eyebrow">Official Rulebook</div>
       <h1>Empire RP Rules</h1>
-      <p class="hero-sub">Search by keyword, tag, or category. Staff may update rules at any time to protect roleplay quality.</p>
+      <p class="hero-sub">Empire RP is a serious, 18+ GTA V roleplay community. Rules are enforced to protect your experience and everyone else's. Read them, know them, play by them.</p>
     </div>
   </header>
 
@@ -296,7 +307,7 @@
   <div class="search-shell">
     <div class="search-box">
       <span class="search-icon">⌕</span>
-      <input id="ruleSearch" type="search" placeholder="Search rules… try: RDM, robbery, gang, business" autocomplete="off">
+      <input id="ruleSearch" type="search" placeholder="Search rules… try: RDM, robbery, metagaming, hostage, F8" autocomplete="off">
       <span class="search-clear" id="searchClear">✕</span>
     </div>
     <div id="ruleCount" class="rule-count">Showing all rules</div>
@@ -309,100 +320,324 @@
       <aside class="rule-menu" id="sideMenu">
         <div class="menu-label">Jump to section</div>
         <a href="#general"><span class="menu-icon">🛡</span> General Rules</a>
-        <a href="#roleplay"><span class="menu-icon">🎭</span> Roleplay Rules</a>
-        <a href="#combat"><span class="menu-icon">⚔️</span> Combat Rules</a>
-        <a href="#gangs"><span class="menu-icon">👑</span> Gang / Faction</a>
+        <a href="#character"><span class="menu-icon">🧍</span> Character & Conduct</a>
+        <a href="#roleplay"><span class="menu-icon">🎭</span> Roleplay Standards</a>
+        <a href="#hostile"><span class="menu-icon">⚔️</span> Hostile Interactions</a>
+        <a href="#combat"><span class="menu-icon">🔫</span> Combat Rules</a>
+        <a href="#f8"><span class="menu-icon">🚪</span> F8 / Combat Log</a>
+        <a href="#metagaming"><span class="menu-icon">📡</span> Metagaming</a>
+        <a href="#nvl"><span class="menu-icon">😰</span> Value Your Life</a>
         <a href="#robbery"><span class="menu-icon">💰</span> Robbery Rules</a>
+        <a href="#hostage"><span class="menu-icon">🔒</span> Hostage Rules</a>
         <a href="#business"><span class="menu-icon">🏪</span> Business Rules</a>
+        <a href="#gangs"><span class="menu-icon">👑</span> Gang / Faction</a>
+        <a href="#greenzones"><span class="menu-icon">🟢</span> Green Zones</a>
+        <a href="#ems"><span class="menu-icon">🚑</span> PD / EMS Rules</a>
+        <a href="#events"><span class="menu-icon">🌟</span> Events & Airdrops</a>
+        <a href="#punishments"><span class="menu-icon">⚖️</span> Punishments</a>
       </aside>
 
       <!-- Rules list -->
       <main id="rulesList">
         <div id="noResults" class="no-results"><h3>No rules found</h3><p>Try a different keyword or <a href="#" id="clearSearch" style="color:var(--gold)">clear the search</a>.</p></div>
 
+        <!-- ── GENERAL RULES ── -->
         <div id="general" class="rule-section">
           <div class="rule-header">
             <span class="rule-header-icon">🛡</span>
             <span class="rule-title">General Rules</span>
-            <span class="rule-count-badge">4 RULES</span>
+            <span class="rule-count-badge">10 RULES</span>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag">Respect</span><span class="rule-text"><b>No toxicity, hate speech, harassment, or OOC drama.</b> Keep problems in tickets, not in chat.</span></div>
+            <div class="rule"><span class="tag">18+</span><span class="rule-text"><b>Empire RP is an 18+ server.</b> Adult humor and mature conversation are part of the environment. If you are under 18, you may not play.</span></div>
+            <div class="rule"><span class="tag">Microphone</span><span class="rule-text"><b>A working microphone is required</b> to play on Empire RP. You must use it while in city.</span></div>
+            <div class="rule"><span class="tag">Clips</span><span class="rule-text"><b>You must run clipping software at all times</b> (Nvidia ShadowPlay, Medal.tv, etc.). Clips must be at least 2 minutes long with audio from both sides. Reports must be submitted within 1 hour of the scene. Failure to clip = automatic denial of item returns and in-game reports.</span></div>
+            <div class="rule"><span class="tag danger">Racism</span><span class="rule-text"><b>Zero tolerance for racism, sexism, or hateful prejudice.</b> Derogatory slurs are an immediate permanent ban. Empire RP is a community where all players should feel safe.</span></div>
+            <div class="rule"><span class="tag danger">Harassment</span><span class="rule-text"><b>No harassment of any player,</b> sexual or otherwise. Repeated pressure, intimidation, or OOC aggression toward any player is bannable. Empire actively protects female players — any female disrespect or harassment will be escalated immediately.</span></div>
             <div class="rule"><span class="tag">TOS</span><span class="rule-text">All players must follow FiveM/CFX, Discord, and Rockstar platform guidelines at all times.</span></div>
-            <div class="rule"><span class="tag">Clips</span><span class="rule-text">Reports require proof. Clip rulebreaks and submit through the correct support ticket.</span></div>
-            <div class="rule"><span class="tag danger">Exploits</span><span class="rule-text">No cheating, bug abuse, duplication, mod menus, crosshairs, or third-party advantages.</span></div>
+            <div class="rule"><span class="tag danger">Exploits</span><span class="rule-text"><b>No cheating, bug abuse, mod menus, duplication, crosshairs, or PvP advantage packs</b> (no-props, bright-night, louder footsteps, tracers, etc.). Permanent ban, no appeal.</span></div>
+            <div class="rule"><span class="tag">Clothing</span><span class="rule-text"><b>Dress realistically.</b> No 100k-or-die outfits, costume masks, animal ears, respirators, gas masks, helmets, parachutes, or neon accessories. Goggles, face paint, and sandals are allowed. Non-PD/EMS/DOJ players may not wear those faction uniforms.</span></div>
+            <div class="rule"><span class="tag">Monetization</span><span class="rule-text">No selling in-game items, currency, or services for real money. No selling or buying in-city cash with real money. No Tebex ownership transfers of mansions or businesses.</span></div>
+            <div class="rule"><span class="tag">Conduct</span><span class="rule-text">Empire staff are not here to mediate personal drama. Revenge reporting and petty tickets waste everyone's time and will be penalized. Constructive criticism is welcome — toxicity toward staff is not.</span></div>
           </div>
         </div>
 
+        <!-- ── CHARACTER & CONDUCT ── -->
+        <div id="character" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">🧍</span>
+            <span class="rule-title">Character & Conduct</span>
+            <span class="rule-count-badge">6 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Creation</span><span class="rule-text"><b>Fully customize your character before playing.</b> Default models are not allowed. Put real effort into your character's appearance or staff will require you to change it.</span></div>
+            <div class="rule"><span class="tag">Names</span><span class="rule-text">Use a realistic character name. Creative is fine — absurd or joke names that break immersion are not.</span></div>
+            <div class="rule"><span class="tag">Gender</span><span class="rule-text">Female characters must use female models; male characters must use male models. Empire RP is LGBTQ-friendly and that RP is fully welcomed.</span></div>
+            <div class="rule"><span class="tag">Multi-Char</span><span class="rule-text">Players with faction characters may not run secondary civilian characters to escape faction punishments or super-civ. PD and EMS characters are exempt from this restriction.</span></div>
+            <div class="rule"><span class="tag">Injuries</span><span class="rule-text"><b>Roleplay your injuries.</b> If you get shot, act like it. Injury RP is mandatory for everyone. Reloading your skin after dying is not allowed.</span></div>
+            <div class="rule"><span class="tag">Activity</span><span class="rule-text">Staff may revoke ownership of businesses or properties not actively being used for roleplay purposes.</span></div>
+          </div>
+        </div>
+
+        <!-- ── ROLEPLAY STANDARDS ── -->
         <div id="roleplay" class="rule-section">
           <div class="rule-header">
             <span class="rule-header-icon">🎭</span>
-            <span class="rule-title">Roleplay Rules</span>
-            <span class="rule-count-badge">4 RULES</span>
+            <span class="rule-title">Roleplay Standards</span>
+            <span class="rule-count-badge">12 RULES</span>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag">Interaction</span><span class="rule-text"><b>Empire is interaction first.</b> Give players a real chance to respond before escalating scenes.</span></div>
-            <div class="rule"><span class="tag">45 Sec</span><span class="rule-text">General hostile RP requires proper interaction before shooting, robbing, or forcing a scene.</span></div>
-            <div class="rule"><span class="tag">30 Sec</span><span class="rule-text">Hot zones / red zones may use a shorter interaction standard when posted by staff.</span></div>
-            <div class="rule"><span class="tag">NVL</span><span class="rule-text">Value your life. If you are outnumbered, held at gunpoint, or trapped — roleplay the fear properly.</span></div>
+            <div class="rule"><span class="tag green">RP First</span><span class="rule-text"><b>Empire RP is a roleplay server first, a game server second.</b> If you are offered RP, reciprocate it — even while grinding. Always be in character while in city.</span></div>
+            <div class="rule"><span class="tag">Quality</span><span class="rule-text">Empire expects high-quality, realistic RP at all times. Staff reserves the right to remove players who consistently break immersion, grief other players' experiences, or refuse to take the server seriously.</span></div>
+            <div class="rule"><span class="tag">OOC</span><span class="rule-text"><b>No OOC conversations in-city.</b> Do not break character to discuss server rules, threaten reports, or talk about game mechanics. Open a ticket. "Come out the Green Zone" is an OOC phrase and is not allowed.</span></div>
+            <div class="rule"><span class="tag">Rulesplain</span><span class="rule-text">Do not break character to explain server rules to other players. Handle rule concerns through tickets after the scene ends — not during it.</span></div>
+            <div class="rule"><span class="tag">Report After</span><span class="rule-text">If a rule is broken during a scene, report it AFTER the scenario completes. The only exceptions are major violations like racism, sexual abuse, or severe harassment.</span></div>
+            <div class="rule"><span class="tag">/me Commands</span><span class="rule-text">You must respond to /me commands from other players. Ignoring /me takes off mask, /me steals shoes, or similar commands is FailRP.</span></div>
+            <div class="rule"><span class="tag">Cop Bait</span><span class="rule-text">Intentionally provoking PD into scenes without valid RP purpose is cop baiting and is low-quality RP. Do not kidnap a cop unless they are isolated and the scene has proper setup.</span></div>
+            <div class="rule"><span class="tag">Death Run</span><span class="rule-text">No death running or walking in circles during interactions. Have real conversations without twitching or constant movement designed to avoid RP.</span></div>
+            <div class="rule"><span class="tag">Driveby</span><span class="rule-text">The driver of a vehicle cannot shoot during a driveby. The car must come to a complete stop before the driver may fire.</span></div>
+            <div class="rule"><span class="tag">Body Cam</span><span class="rule-text">To use video as in-character evidence, your character must be wearing a body camera or GoPro, or have a vehicle positioned for dashcam footage. Videos without these cannot be valid IC evidence.</span></div>
+            <div class="rule"><span class="tag">New Life</span><span class="rule-text"><b>New Life Rule:</b> After dying, you cannot remember who killed you, why, or the events leading up to your death for 15 minutes after revival. Wait at least 15 minutes before returning to the scene. Another player who was there may remind you — but it must be clipped and properly roleplayed.</span></div>
+            <div class="rule"><span class="tag">Powergaming</span><span class="rule-text"><b>No powergaming.</b> You must give other players real options for counterplay. Do not use emotes to exploit through walls, piggyback players, cancel animations to pull weapons, or perform any action that removes another player's ability to react.</span></div>
           </div>
         </div>
 
-        <div id="combat" class="rule-section">
+        <!-- ── HOSTILE INTERACTIONS ── -->
+        <div id="hostile" class="rule-section">
           <div class="rule-header">
             <span class="rule-header-icon">⚔️</span>
-            <span class="rule-title">Combat Rules</span>
-            <span class="rule-count-badge">4 RULES</span>
+            <span class="rule-title">Hostile Interactions</span>
+            <span class="rule-count-badge">8 RULES</span>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag danger">RDM</span><span class="rule-text">No random killing. Every shooting must have valid roleplay build-up or approved event rules.</span></div>
-            <div class="rule"><span class="tag danger">VDM</span><span class="rule-text">No using vehicles as weapons unless the scene clearly supports it and staff rules allow it.</span></div>
-            <div class="rule"><span class="tag danger">F8 Quit</span><span class="rule-text">No combat logging, F8 quitting, respawning, or disconnecting to avoid consequences.</span></div>
-            <div class="rule"><span class="tag">Scenes</span><span class="rule-text">Do not return to active scenes after death unless staff or event rules clearly allow it.</span></div>
+            <div class="notice" style="margin:14px 26px 6px;">⏱ All hostile interactions must follow minimum time requirements before any violent action.</div>
+            <div class="rule"><span class="tag">60 Sec</span><span class="rule-text"><b>Standard areas:</b> Hostile interactions must last at least 60 seconds before shooting or robbing. At least 45 of those seconds must be clearly hostile (threats, arguments, intimidation — not casual talking). There must be valid reasoning for the hostility in the first place.</span></div>
+            <div class="rule"><span class="tag">30 Sec</span><span class="rule-text"><b>Illegal/high-risk areas</b> (drug spots, money wash, black market, harvesting zones): A minimum of 30 seconds of hostile interaction is required before violent action.</span></div>
+            <div class="rule"><span class="tag">2 Min</span><span class="rule-text"><b>Player-owned businesses:</b> Hostile interactions must be a minimum of 2 minutes before violence occurs. You may not rob employees who are on shift or the business owner.</span></div>
+            <div class="rule"><span class="tag">Face-to-Face</span><span class="rule-text">Hostile actions must begin on foot and face-to-face. The hostile party must start the interaction on foot. If a player drives off after the interaction becomes hostile, you may then pursue and engage from your car. Players may not use vehicles to skip the interaction timer or instantly escalate to shooting.</span></div>
+            <div class="rule"><span class="tag danger">No PD Shots</span><span class="rule-text">You may never shoot at PD from inside a vehicle under any scenario.</span></div>
+            <div class="rule"><span class="tag">Valid Reasons</span><span class="rule-text">Valid reasons to escalate to violence include: stealing someone's car, threatening someone's life, or aiming a weapon at someone. Boredom, nice items, or no RP context are never valid.</span></div>
+            <div class="rule"><span class="tag">T-Count</span><span class="rule-text"><b>Maximum 8 players per side</b> in any criminal conflict. PD is excluded from this limit. All hostile scenes between two parties carry a minimum 1-hour cooldown after the scene ends.</span></div>
+            <div class="rule"><span class="tag">No Camp</span><span class="rule-text"><b>Anti-camping:</b> You may not camp spawn points, hospitals, police stations, job locations, or garages to hunt players. Any stakeout must have active, believable RP — an investigation, surveillance that progresses, or an evolving scene. Passive waiting with no RP engagement is not allowed.</span></div>
           </div>
         </div>
 
-        <div id="gangs" class="rule-section">
+        <!-- ── COMBAT RULES ── -->
+        <div id="combat" class="rule-section">
           <div class="rule-header">
-            <span class="rule-header-icon">👑</span>
-            <span class="rule-title">Gang / Faction Rules</span>
-            <span class="rule-count-badge">4 RULES</span>
+            <span class="rule-header-icon">🔫</span>
+            <span class="rule-title">Combat Rules</span>
+            <span class="rule-count-badge">6 RULES</span>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag">Flag</span><span class="rule-text">Faction members must wear proper gang attire when representing their gang.</span></div>
-            <div class="rule"><span class="tag">Beef</span><span class="rule-text">Gang wars require beef validation through Faction Support before becoming official.</span></div>
-            <div class="rule"><span class="tag">Events</span><span class="rule-text">Airdrops, turfs, and Empire Games follow event-specific rules posted by staff.</span></div>
-            <div class="rule"><span class="tag">Accountability</span><span class="rule-text">Gang leaders are responsible for their members. Cheating or major rulebreaks can affect the whole gang.</span></div>
+            <div class="rule"><span class="tag danger">RDM</span><span class="rule-text"><b>No Random Deathmatch.</b> You may not attack or engage in combat without proper, valid roleplay interaction first. This includes vehicles and drive-bys. You must give sufficient RP and counterplay before shooting.</span></div>
+            <div class="rule"><span class="tag danger">VDM</span><span class="rule-text"><b>No Vehicle Deathmatch.</b> Do not use vehicles as weapons. Repeatedly ramming a vehicle counts as VDM. Both POVs will be reviewed in cases of desync. VDM does not apply to staged executions with valid RP.</span></div>
+            <div class="rule"><span class="tag danger">Revenge Kill</span><span class="rule-text">No revenge killing. If you died and respawned, your memory was wiped. You cannot seek revenge on who killed you until proper RP is re-established.</span></div>
+            <div class="rule"><span class="tag">Third Party</span><span class="rule-text"><b>No third-partying.</b> Do not insert yourself into ongoing shootouts or active scenes between other groups and/or police.</span></div>
+            <div class="rule"><span class="tag">Warning Shots</span><span class="rule-text">If you are caught in a shootout and officers arrive, you must fire warning shots before shooting at PD. Then attempt to flee the scene as if afraid of arrest. If caught, you're caught.</span></div>
+            <div class="rule"><span class="tag">No Rooftops</span><span class="rule-text">Shooting from rooftops is not allowed.</span></div>
           </div>
         </div>
 
+        <!-- ── F8 / COMBAT LOG ── -->
+        <div id="f8" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">🚪</span>
+            <span class="rule-title">F8 / Combat Logging</span>
+            <span class="rule-count-badge">5 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="notice danger" style="margin:14px 26px 6px;">🚫 F8 quitting during active RP is one of the most serious offenses on Empire RP. There is no valid reason to disconnect during a scene.</div>
+            <div class="rule"><span class="tag danger">No F8</span><span class="rule-text"><b>Do not disconnect during active roleplay</b> for any reason — not because you were robbed, not during a chase, not during a police scene, not during an admin sit. You cannot F8 because someone else broke the rules either.</span></div>
+            <div class="rule"><span class="tag">Crashes</span><span class="rule-text">If your game genuinely crashes, you must have your crash file or a timestamped crash message as proof. Return to your last location and continue the scene. Inform PD or involved parties of what happened.</span></div>
+            <div class="rule"><span class="tag">Item Returns</span><span class="rule-text">If someone F8s on you and you lost items, submit a 2-minute clip with audio from both sides clearly showing what was lost. Your clip must not show you rule-breaking or the return will be denied. Being robbed while AFK outside a green zone is not valid for item return.</span></div>
+            <div class="rule"><span class="tag danger">F8 Offenses</span><span class="rule-text">
+              <b>1st:</b> Warning + 100 Community Service + Pocket Wipe<br>
+              <b>2nd:</b> 2-day ban + Pocket &amp; Bank Wipe + 150 Comms (reset to $10K)<br>
+              <b>3rd:</b> 1-week ban + Character Deletion + 300 Comms<br>
+              <b>4th:</b> Permanent ban
+            </span></div>
+            <div class="rule"><span class="tag">Avoid RP</span><span class="rule-text">The following are treated as rule breaks equivalent to F8: going AFK to escape a scene, pretending to be unresponsive, running/driving away unrealistically, or ignoring RP to avoid robbery or hostile scenarios. All players must respond realistically and in-character at all times.</span></div>
+          </div>
+        </div>
+
+        <!-- ── METAGAMING ── -->
+        <div id="metagaming" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">📡</span>
+            <span class="rule-title">Metagaming</span>
+            <span class="rule-count-badge">4 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">Metagaming</span><span class="rule-text"><b>Metagaming is strictly prohibited.</b> Your character may only act on information they legitimately learned in-game. Using knowledge from streams, clips, DMs, prior character lives, or any UI element you couldn't realistically know about is metagaming.</span></div>
+            <div class="rule"><span class="tag danger">Ext. Comms</span><span class="rule-text"><b>No external communication</b> (Discord calls, party chats, phone calls) while connected to the server. All communication must happen through in-game voice and radios. Sharing in-game information through outside channels is metagaming.</span></div>
+            <div class="rule"><span class="tag">Voice ID</span><span class="rule-text"><b>You may not voice-identify another player.</b> If someone is fully masked and attempting to hide their identity, you must go through in-character roleplay to find out who they are. Voice recognition is not valid IC knowledge.</span></div>
+            <div class="rule"><span class="tag">Stream Info</span><span class="rule-text">Watching someone's stream and acting on information seen there is metagaming. Clip cutting or using selectively-edited evidence will be dismissed in reports.</span></div>
+          </div>
+        </div>
+
+        <!-- ── VALUE YOUR LIFE ── -->
+        <div id="nvl" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">😰</span>
+            <span class="rule-title">Value Your Life (NVL)</span>
+            <span class="rule-count-badge">6 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">NVL</span><span class="rule-text"><b>Your character values their life.</b> In situations where you are outnumbered and/or have a gun pointed at you, you must exhibit genuine fear and comply. A gun must always be feared over a melee weapon.</span></div>
+            <div class="rule"><span class="tag">1v1</span><span class="rule-text">In a 1v1 situation: you may try to defend yourself only if your weapon is already out. If a gun is already pointed at you, you cannot reach for yours.</span></div>
+            <div class="rule"><span class="tag">2v1</span><span class="rule-text">In a 2v1: if you are not being held at gunpoint and have no weapon out, you may attempt to escape. If weapons are out and aimed at you, you cannot reach for a weapon.</span></div>
+            <div class="rule"><span class="tag">3v1+</span><span class="rule-text">In a 3v1 or greater: if weapons are out, you must fear for your life. You cannot attempt to escape or defend yourself unless your weapon was already drawn.</span></div>
+            <div class="rule"><span class="tag">Equal</span><span class="rule-text">In equal-numbers situations, you may attempt to defend or escape — but you accept the risk of dying.</span></div>
+            <div class="rule"><span class="tag">Conflicts</span><span class="rule-text">Ongoing conflicts have expiration dates. Continually engaging without giving the other party a realistic path to end the conflict is considered NVL and griefing. Character kills must be agreed upon by the player whose character is dying.</span></div>
+          </div>
+        </div>
+
+        <!-- ── ROBBERY RULES ── -->
         <div id="robbery" class="rule-section">
           <div class="rule-header">
             <span class="rule-header-icon">💰</span>
             <span class="rule-title">Robbery Rules</span>
-            <span class="rule-count-badge">4 RULES</span>
+            <span class="rule-count-badge">9 RULES</span>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag">Comms</span><span class="rule-text">You may take a phone OR radio, not both. Players must be left with one communication method.</span></div>
-            <div class="rule"><span class="tag">Flatback</span><span class="rule-text">Flatback may be used only within allowed rules and never to protect friends from being robbed.</span></div>
-            <div class="rule"><span class="tag">No Rob</span><span class="rule-text">No robbing during events when staff posts "no robbing" for that event.</span></div>
-            <div class="rule"><span class="tag">Proof</span><span class="rule-text">Keep clips of major robberies, kidnaps, gang scenes, and disputes.</span></div>
+            <div class="rule"><span class="tag">Bored RP</span><span class="rule-text"><b>No driving around looking for people to rob with no RP context.</b> Someone having a nice item or vehicle is never a valid reason to rob them. Every robbery needs legitimate roleplay buildup.</span></div>
+            <div class="rule"><span class="tag danger">Pocket Wipe</span><span class="rule-text"><b>No pocket wiping.</b> Do not take the majority of someone's items while they are downed. Taking a gun or valuable goods with quality RP is fine. Taking water, food, phones, radios, pets, shoulder toys, wings, cuffs, or plushies is not allowed.</span></div>
+            <div class="rule"><span class="tag">Scamming</span><span class="rule-text">Scam RP must be built on good roleplay — not lazy target selection. You may not scam for/with vehicles, houses, or donation vouchers. Guns, drugs, and other items are fair game (excluding pets, shoulder toys, wings, and plushies).</span></div>
+            <div class="rule"><span class="tag">Vehicles</span><span class="rule-text">Trunk and glovebox robbing is allowed. Players should not use vehicles as permanent storage. Vehicles in green zones are off-limits.</span></div>
+            <div class="rule"><span class="tag danger">No Rob Zones</span><span class="rule-text">No selling drugs, running gun deals, or making any illegal transactions in green zones.</span></div>
+            <div class="rule"><span class="tag">Ocean Dump</span><span class="rule-text">Ocean dumping a player's body is allowed for story purposes but cannot force memory loss or a character kill. If ocean dumped, the player may direct PD to where they were originally downed and build off that. You cannot ocean dump another player's vehicle without valid roleplay.</span></div>
+            <div class="rule"><span class="tag">Civ-Locked</span><span class="rule-text">If you obtain a civ-locked weapon after robbing someone, you may return it to the player for a fee of up to $50K, or open a ticket to return it for $25K compensation.</span></div>
+            <div class="rule"><span class="tag">Hitman</span><span class="rule-text">Placing hits or bounties on players is allowed with realistic RP context. The targeted player must have prior knowledge of the hit through RP. The player may not be robbed after a hit is completed.</span></div>
+            <div class="rule"><span class="tag">AFK</span><span class="rule-text">Being robbed while AFK outside a green zone is not valid grounds for an item return request.</span></div>
           </div>
         </div>
 
+        <!-- ── HOSTAGE RULES ── -->
+        <div id="hostage" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">🔒</span>
+            <span class="rule-title">Hostage Rules</span>
+            <span class="rule-count-badge">7 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Who</span><span class="rule-text">Hostages must be random civilians with no affiliation to your group or faction. You cannot use friends, faction members, or allies as staged hostages.</span></div>
+            <div class="rule"><span class="tag">Condition A</span><span class="rule-text"><b>With interaction (20–30 sec):</b> Hostage takers must present themselves as serious and threatening. You must be 3:1 outnumbering the hostage. After the interaction, takers may draw weapons.</span></div>
+            <div class="rule"><span class="tag">Condition B</span><span class="rule-text"><b>Without extended interaction:</b> Hostage takers must be 3:1 with weapons already drawn. You must clearly identify that you are taking someone hostage without intent to immediately rob.</span></div>
+            <div class="rule"><span class="tag danger">No EMS</span><span class="rule-text">You may never take EMS hostage under any circumstances.</span></div>
+            <div class="rule"><span class="tag">Limits</span><span class="rule-text">Maximum 2 hostages per scene, 3 if conducting a Pacific Bank Heist. You cannot rob the hostage. Maintain tension and seriousness throughout — hostage RP should never feel casual or friendly.</span></div>
+            <div class="rule"><span class="tag">Killing</span><span class="rule-text">You cannot kill a hostage unless PD is present and it makes absolute RP sense. If good valid RP allows, you may kill and rob — but you cannot flatback a player after robbing them.</span></div>
+            <div class="rule"><span class="tag">PD Rights</span><span class="rule-text">PD may search a hostage for evidence during an active hostage scene.</span></div>
+          </div>
+        </div>
+
+        <!-- ── BUSINESS RULES ── -->
         <div id="business" class="rule-section">
           <div class="rule-header">
             <span class="rule-header-icon">🏪</span>
             <span class="rule-title">Business Rules</span>
+            <span class="rule-count-badge">6 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Use</span><span class="rule-text">Businesses must operate as actual businesses, not personal stashes or faction supply chains. Staff may revoke ownership of businesses not actively being used for RP.</span></div>
+            <div class="rule"><span class="tag">Transfers</span><span class="rule-text">Business ownership transfers require Business Oversight approval before any deal is made. No Tebex transfers of mansions or businesses.</span></div>
+            <div class="rule"><span class="tag">Employees</span><span class="rule-text">Employees must clearly distinguish when they are on or off duty — use outfits, not /shirt commands. Invoicing must be done properly; no billing abuse for personal gain, friends, or factions.</span></div>
+            <div class="rule"><span class="tag">No Rob</span><span class="rule-text">You may not rob a business or its stashes because you were fired, left a faction, or dislike the owner. Hostile business interactions require 2 minutes of RP before violence.</span></div>
+            <div class="rule"><span class="tag">Corrupt PD/EMS</span><span class="rule-text">PD and EMS are not allowed to play corrupt characters without explicit permission. If you want to run a corrupt RP scene, open a ticket. Chiefs may authorize it for officers they trust if it makes for good RP all around.</span></div>
+            <div class="rule"><span class="tag">GZ Sales</span><span class="rule-text">No transactions, deals, or selling of any kind in green zones — this includes drugs, gun deals, wig/sneaker sales, and all other trades.</span></div>
+          </div>
+        </div>
+
+        <!-- ── GANG / FACTION ── -->
+        <div id="gangs" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">👑</span>
+            <span class="rule-title">Gang / Faction Rules</span>
+            <span class="rule-count-badge">8 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Flag Up</span><span class="rule-text">Faction members must wear proper gang attire when representing their gang. You may not flag up until Faction Support has assigned roles, a current roster screenshot has been submitted, and roles have been officially granted in Faction Discord.</span></div>
+            <div class="rule"><span class="tag">Civs vs Factions</span><span class="rule-text"><b>Civilians must show fear toward faction members at all times.</b> Civilians may not act violently against factions unless provoked first. Factions cannot target civilians unless the civ refuses to respect their life, refuses to pay taxes, or disregards faction authority.</span></div>
+            <div class="rule"><span class="tag">Robbery</span><span class="rule-text">Factions may only rob civilians if: the civilian refuses to pay taxes at a drug spot, the civilian initiates violence, the civilian scams a faction member (rob back scammed items only), or the civilian blatantly refuses to show fear or respect for faction authority.</span></div>
+            <div class="rule"><span class="tag">Spot Claims</span><span class="rule-text">Drug processing locations are claimable on a first-come, first-served basis. To claim a spot, open a ticket with proof of knowledge of all locations, proof of how to make the drug, possession of $100K worth of the drug, and a clip of taxing someone at a location.</span></div>
+            <div class="rule"><span class="tag">Taxing</span><span class="rule-text">Only the faction that owns a location may tax there. Owning factions may tax civilians up to 25%, other faction members up to 50%, and may charge civilians or factions $50K–$75K weekly to operate at the spot. The same individual may only be taxed once per hour.</span></div>
+            <div class="rule"><span class="tag">Beef</span><span class="rule-text">Gang wars require beef validation through Faction Support before becoming official. Gang leaders are responsible for their members — major rulebreaks by members can affect the entire gang.</span></div>
+            <div class="rule"><span class="tag">Events</span><span class="rule-text">Airdrops, turf events, and Empire Games follow event-specific rules posted by staff. After any event there is a 15-minute peace time — no robbing or pressing anyone during this buffer.</span></div>
+            <div class="rule"><span class="tag">Accountability</span><span class="rule-text">Gang leaders are responsible for their crew's conduct. Cheating or major rule violations can impact the entire faction's standing on Empire.</span></div>
+          </div>
+        </div>
+
+        <!-- ── GREEN ZONES ── -->
+        <div id="greenzones" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">🟢</span>
+            <span class="rule-title">Green Zones</span>
             <span class="rule-count-badge">4 RULES</span>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag">Use</span><span class="rule-text">Businesses must be used as actual businesses, not personal stashes or faction supply machines.</span></div>
-            <div class="rule"><span class="tag">Invoices</span><span class="rule-text">Employees must invoice properly and cannot abuse billing for themselves, friends, or gangs.</span></div>
-            <div class="rule"><span class="tag">Transfers</span><span class="rule-text">Ownership transfers require Business Oversight approval before any purchase or agreement.</span></div>
-            <div class="rule"><span class="tag">Activity</span><span class="rule-text">Owners are expected to stay active, provide logs when asked, and follow oversight instructions.</span></div>
+            <div class="rule"><span class="tag green">Protection</span><span class="rule-text">Green Zones are designated safe areas where players are protected from hostility. You may not initiate conflict or hostile RP in a green zone.</span></div>
+            <div class="rule"><span class="tag">GZ Locations</span><span class="rule-text">Green Zones include: Apartments, Hospitals, Cayo Perico Island Bridge, public gyms, City Hall, all legal civilian jobs (recycling, trucking, scrap yard, etc.), and active event locations during the event plus buffer time.</span></div>
+            <div class="rule"><span class="tag">Build-Up</span><span class="rule-text">You may build up RP inside a Green Zone (except the Hospital), but the hostile scene must continue and conclude outside of the GZ. You must still have valid interactions outside the zone.</span></div>
+            <div class="rule"><span class="tag">Illegal Jobs</span><span class="rule-text">Illegal civilian jobs (e.g., chop shop) require a 2-minute hostile interaction before violence may occur.</span></div>
           </div>
         </div>
+
+        <!-- ── PD / EMS RULES ── -->
+        <div id="ems" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">🚑</span>
+            <span class="rule-title">PD / EMS Rules</span>
+            <span class="rule-count-badge">8 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Fear PD</span><span class="rule-text"><b>You must fear PD as you would in real life.</b> If police attempt to arrest you, you cannot immediately shoot them. If it is 3v1 and an officer makes an arrest, you may RP out a negotiated release — you cannot RDM or rob PD.</span></div>
+            <div class="rule"><span class="tag">PD Use of Force</span><span class="rule-text">PD may use lethal force — you are considered a threat to society. If police do anything invalid during a scene, open a DOJ case. Do not break PD recording equipment.</span></div>
+            <div class="rule"><span class="tag">Impersonation</span><span class="rule-text">No impersonating law enforcement or EMS. Non-PD/EMS/DOJ players may not wear those uniforms.</span></div>
+            <div class="rule"><span class="tag">EMS Calls</span><span class="rule-text">Do not spam EMS calls. Press "G" to call EMS after dying, or use /911ems for serious situations only. Scenes are considered over once EMS arrives.</span></div>
+            <div class="rule"><span class="tag">RP with EMS</span><span class="rule-text">You must properly RP with EMS personnel. Do not ask for "taps" — roleplay your injuries. Do not rush or instruct EMS on how to do their job. EMS have the right to deny treatment if you are disrespectful.</span></div>
+            <div class="rule"><span class="tag">Stealing EMS</span><span class="rule-text">Stealing PD or EMS vehicles or weapons, kidnapping EMS workers, or robbing/assaulting EMS is a serious rule violation.</span></div>
+            <div class="rule"><span class="tag">Respawn</span><span class="rule-text">In PD scenes you may not hold "E" to respawn unless you are unreachable by PD, medical, or you are glitched. If glitched and police are on scene, turn yourself in.</span></div>
+            <div class="rule"><span class="tag">DOJ</span><span class="rule-text">If police conduct is invalid during a scene, handle it through the DOJ case system — not by RDMing officers or escalating OOC.</span></div>
+          </div>
+        </div>
+
+        <!-- ── EVENTS & AIRDROPS ── -->
+        <div id="events" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">🌟</span>
+            <span class="rule-title">Events & Airdrops</span>
+            <span class="rule-count-badge">5 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Peace Time</span><span class="rule-text">After any event, there is a mandatory 15-minute peace period. No robbing, pressing, or hostile interactions during this window — give everyone time to leave safely.</span></div>
+            <div class="rule"><span class="tag">Airdrop KOS</span><span class="rule-text">All airdrops are KOS once you enter the marked zone. City airdrops are not KOS until inside the zone. You may not shoot anyone who is outside the zone.</span></div>
+            <div class="rule"><span class="tag">No Rob Airdrop</span><span class="rule-text">You are not allowed to rob anyone at an airdrop location. Once the airdrop has been looted, combat must cease.</span></div>
+            <div class="rule"><span class="tag">Cayo Perico</span><span class="rule-text">Cayo Perico Island is a full KOS zone. Flatback robbing is allowed. Non-faction members may attend. Factions may team up with their alliances. Non-faction players going with a faction must be flagged up.</span></div>
+            <div class="rule"><span class="tag danger">Cayo Rules</span><span class="rule-text">Even on Cayo Perico: No F8, No VDM, No slur usage. These rules apply everywhere on Empire at all times.</span></div>
+          </div>
+        </div>
+
+        <!-- ── PUNISHMENTS ── -->
+        <div id="punishments" class="rule-section">
+          <div class="rule-header">
+            <span class="rule-header-icon">⚖️</span>
+            <span class="rule-title">Ban & Punishment Guidelines</span>
+            <span class="rule-count-badge">5 RULES</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag">Standard</span><span class="rule-text">
+              Standard ban ladder per offense:<br>
+              <b>1st:</b> Warning &nbsp;|&nbsp; <b>2nd:</b> 1-day ban &nbsp;|&nbsp; <b>3rd:</b> 3-day ban<br>
+              <b>4th:</b> 5-day ban &nbsp;|&nbsp; <b>5th:</b> 1-week ban &nbsp;|&nbsp; <b>6th:</b> Permanent ban<br>
+              OOC offenses: warning, then community service points.
+            </span></div>
+            <div class="rule"><span class="tag danger">Perma Ban</span><span class="rule-text"><b>Immediate permanent ban:</b> cheating/hacking, exploiting/duplication, derogatory slurs, PvP-advantage packs. No appeal for these offenses.</span></div>
+            <div class="rule"><span class="tag">Discretion</span><span class="rule-text">Empire staff reserve the right to make judgment calls based on the situation, the RP quality of those involved, and the actual damage caused by the rule break. If something leads to a genuinely positive RP experience for all parties, staff may choose not to intervene.</span></div>
+            <div class="rule"><span class="tag">Exploiting</span><span class="rule-text">Do not abuse in-game mechanics for personal gain. If something seems overpowered or broken, stop using it and report it. Abusing restart windows (30 min before/after scheduled restart) for major crime mechanics is prohibited. Selling materials meant for specific jobs outside those jobs is also exploitation.</span></div>
+            <div class="rule"><span class="tag">Staff Final</span><span class="rule-text">Empire RP staff decisions are final. The quality and intent of RP is evaluated by staff only. All punishments are subject to individual circumstance — the ladder above is a guide, not a guarantee.</span></div>
+          </div>
+        </div>
+
       </main>
     </div>
   </div>
@@ -413,7 +648,7 @@
     <p>Join the Discord and connect to city. The streets are waiting.</p>
     <div class="cta-btns">
       <a class="btn" href="#">▸ Play Now</a>
-      <a class="btn ghost" href="#">Join Discord</a>
+      <a class="btn ghost" href="https://discord.gg/empirerp" target="_blank" rel="noopener">Join Discord</a>
       <a class="btn ghost" href="index.html">← Back Home</a>
     </div>
   </div>
@@ -427,7 +662,7 @@
       <a href="index.html">Home</a>
       <a href="rules.html">Rules</a>
       <a href="faction-rules.html">Faction Rules</a>
-      <a href="#">Discord</a>
+      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
       <a href="#">Store</a>
     </div>
     <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
