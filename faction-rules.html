@@ -57,10 +57,46 @@
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
-      background: url('https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?auto=format&fit=crop&w=1800&q=80') center/cover;
+      overflow: hidden;
     }
-    .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,5,4,.5) 0%, rgba(6,5,4,.95) 100%); }
+    .hero-bg iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 177.78vh;
+      height: 56.25vw;
+      min-width: 100%; min-height: 100%;
+      border: none; opacity: .65;
+      pointer-events: none;
+    }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(6,5,4,.3) 0%, rgba(6,5,4,.6) 55%, rgba(6,5,4,.97) 100%),
+        linear-gradient(90deg, rgba(255,114,0,.07) 0%, transparent 60%);
+    }
     .hero-glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(255,114,0,.22) 0%, transparent 65%); z-index: 1; pointer-events: none; }
+    /* scanlines for cinematic feel */
+    .hero-scan {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0,0,0,.06) 3px,
+        rgba(0,0,0,.06) 4px
+      );
+    }
+    /* animated gold vignette pulse */
+    @keyframes vignette-pulse {
+      0%, 100% { opacity: .55; }
+      50% { opacity: .75; }
+    }
+    .hero-vignette {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(6,5,4,.65) 100%);
+      animation: vignette-pulse 4s ease-in-out infinite;
+    }
     .hero-content { position: relative; z-index: 2; }
     .hero-logo { width: min(280px, 65vw); margin-bottom: 20px; filter: drop-shadow(0 16px 32px rgba(255,114,0,.35)); animation: float 3.2s ease-in-out infinite; }
     .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .2em; font-size: 12px; margin-bottom: 14px; background: rgba(246,177,58,.08); border: 1px solid var(--line); border-radius: 999px; padding: 6px 16px; }
@@ -230,10 +266,19 @@
 
   <!-- HERO -->
   <header class="hero">
-    <div class="hero-bg"></div>
+    <div class="hero-bg">
+      <iframe
+        src="https://www.youtube.com/embed/1QJALnOPpAk?autoplay=1&mute=1&loop=1&playlist=1QJALnOPpAk&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&start=5"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+        title="GTA V Cinematic Background">
+      </iframe>
+    </div>
+    <div class="hero-scan"></div>
+    <div class="hero-vignette"></div>
     <div class="hero-glow"></div>
     <div class="hero-content">
-      <img class="hero-logo" src="empire-logo.png" alt="Empire Roleplay">
+
       <div class="eyebrow"><span class="eyebrow-icon">👑</span> Faction Guidelines</div>
       <h1>Faction <em>Rules</em></h1>
       <p class="hero-sub">Everything you need to run, join, or build a faction in Empire RP. Bosses are accountable — read every word. Last updated June 10, 2026.</p>
