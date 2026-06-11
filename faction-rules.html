@@ -59,16 +59,16 @@
       position: absolute; inset: 0; z-index: 0;
       overflow: hidden;
     }
-    .hero-bg iframe {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 177.78vh;
-      height: 56.25vw;
-      min-width: 100%; min-height: 100%;
-      border: none; opacity: .65;
+    .hero-bg video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 30%;
+      opacity: .68;
       pointer-events: none;
     }
+    /* Fade in the video once it starts playing */
+    .hero-bg video.loaded { animation: vidFadeIn .6s ease forwards; }
+    @keyframes vidFadeIn { from { opacity: 0; } to { opacity: .68; } }
     .hero-bg::after {
       content: ''; position: absolute; inset: 0; z-index: 1;
       background:
@@ -267,12 +267,23 @@
   <!-- HERO -->
   <header class="hero">
     <div class="hero-bg">
-      <iframe
-        src="https://www.youtube.com/embed/1QJALnOPpAk?autoplay=1&mute=1&loop=1&playlist=1QJALnOPpAk&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&start=5"
-        allow="autoplay; encrypted-media"
-        allowfullscreen
-        title="GTA V Cinematic Background">
-      </iframe>
+      <!--
+        Multiple free-use night city / GTA-vibe MP4 sources.
+        The browser picks the first one it can load.
+        All are royalty-free and direct-serve — no buffering delay.
+      -->
+      <video
+        id="heroBgVideo"
+        autoplay muted loop playsinline
+        preload="auto"
+        poster="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1800&q=80">
+        <!-- Pixabay: Night city aerial timelapse — instant load, GTA vibe -->
+        <source src="https://cdn.pixabay.com/video/2020/07/30/46269-448587562_large.mp4" type="video/mp4">
+        <!-- Pixabay: Car driving through lit city streets at night -->
+        <source src="https://cdn.pixabay.com/video/2022/10/20/135517-763921684_large.mp4" type="video/mp4">
+        <!-- Fallback: Mixkit night city loop -->
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-city-at-night-11-large.mp4" type="video/mp4">
+      </video>
     </div>
     <div class="hero-scan"></div>
     <div class="hero-vignette"></div>
@@ -701,6 +712,23 @@
   </footer>
 
   <script>
+    // Video background — force play immediately, add loaded class on first frame
+    (function() {
+      const v = document.getElementById('heroBgVideo');
+      if (!v) return;
+      // Try to play as early as possible
+      const tryPlay = () => {
+        v.play().catch(() => {});
+      };
+      tryPlay();
+      v.addEventListener('canplay', tryPlay, { once: true });
+      v.addEventListener('playing', () => v.classList.add('loaded'), { once: true });
+      // Ensure video isn't paused by visibility changes
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) v.play().catch(() => {});
+      });
+    })();
+
     // Mobile menu
     document.getElementById('hamburger').addEventListener('click', () => {
       document.getElementById('mobileMenu').classList.toggle('open');
