@@ -217,48 +217,84 @@
     .features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 14px;
       max-width: 1200px; margin: 0 auto;
     }
     .feat-card {
-      background: linear-gradient(160deg, rgba(255,255,255,.055) 0%, rgba(255,255,255,.02) 100%);
+      background: linear-gradient(155deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.018) 100%);
       border: 1px solid var(--line);
       border-radius: var(--r);
-      padding: 32px 28px;
+      padding: 30px 26px 28px;
       box-shadow: 0 8px 36px rgba(0,0,0,.3);
-      transition: transform .25s, border-color .25s, box-shadow .25s;
+      transition: transform .3s cubic-bezier(.22,1,.36,1), border-color .25s, box-shadow .3s;
+      position: relative; overflow: hidden;
+    }
+    .feat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0; transition: opacity .3s;
     }
     .feat-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(246,177,58,.45);
-      box-shadow: 0 16px 50px rgba(0,0,0,.4), 0 0 30px rgba(246,177,58,.07);
+      transform: translateY(-6px);
+      border-color: rgba(255,255,255,.75);
+      box-shadow: 0 0 6px rgba(255,255,255,.5), 0 0 22px rgba(246,177,58,.5), 0 0 50px rgba(255,114,0,.25), 0 20px 50px rgba(0,0,0,.4);
     }
-    .feat-icon { font-size: 36px; margin-bottom: 14px; display: block; }
-    .feat-card h3 { color: var(--gold); font-size: 20px; font-weight: 900; margin-bottom: 10px; }
-    .feat-card p { color: var(--muted); line-height: 1.7; font-size: 15px; }
+    .feat-card:hover::before { opacity: 1; }
+    .feat-icon-wrap {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: rgba(246,177,58,.1); border: 1px solid rgba(246,177,58,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin-bottom: 18px;
+      transition: background .2s, border-color .2s;
+    }
+    .feat-card:hover .feat-icon-wrap { background: rgba(246,177,58,.18); border-color: rgba(246,177,58,.45); }
+    .feat-card h3 { color: var(--text); font-size: 18px; font-weight: 900; margin-bottom: 10px; letter-spacing: -.01em; }
+    .feat-card h3 span { color: var(--gold); }
+    .feat-card p { color: var(--muted); line-height: 1.72; font-size: 14px; }
+    .feat-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(246,177,58,.08); border: 1px solid rgba(246,177,58,.2);
+      color: var(--gold); border-radius: 999px; padding: 3px 10px;
+      font-size: 10px; font-weight: 900; letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 12px;
+    }
 
     /* ── DIVIDER ── */
     .divider { border: none; border-top: 1px solid var(--line); max-width: 1200px; margin: 0 auto; }
 
     /* ── FAQ ── */
-    .faq-list { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+    .faq-list { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
     .faq-item {
-      background: rgba(255,255,255,.035);
+      background: rgba(255,255,255,.032);
       border: 1px solid var(--line);
-      border-radius: 16px; overflow: hidden;
-      transition: border-color .2s;
+      border-radius: 18px; overflow: hidden;
+      transition: border-color .25s, box-shadow .25s;
     }
-    .faq-item.open { border-color: rgba(246,177,58,.4); }
+    .faq-item:hover { border-color: rgba(246,177,58,.3); }
+    .faq-item.open {
+      border-color: rgba(255,255,255,.75);
+      box-shadow: 0 0 6px rgba(255,255,255,.5), 0 0 20px rgba(246,177,58,.4), 0 0 50px rgba(255,114,0,.2);
+    }
     .faq-q {
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
       padding: 22px 26px; cursor: pointer;
-      font-weight: 800; font-size: 17px;
-      user-select: none;
+      font-weight: 800; font-size: 16px;
+      user-select: none; transition: color .2s;
     }
-    .faq-q .arrow { color: var(--gold); font-size: 20px; transition: transform .3s; }
+    .faq-item.open .faq-q { color: var(--gold); }
+    .faq-q-left { display: flex; align-items: center; gap: 14px; }
+    .faq-icon { font-size: 18px; flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px; background: rgba(246,177,58,.1); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .faq-item.open .faq-icon { background: rgba(246,177,58,.2); border-color: rgba(246,177,58,.4); }
+    .faq-q .arrow { color: var(--gold); font-size: 22px; transition: transform .3s; flex-shrink: 0; }
     .faq-item.open .arrow { transform: rotate(45deg); }
-    .faq-a { display: none; padding: 0 26px 22px; color: var(--muted); line-height: 1.7; font-size: 15px; }
-    .faq-item.open .faq-a { display: block; }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s cubic-bezier(.22,1,.36,1), padding .3s;
+      padding: 0 26px 0 76px; color: var(--muted); line-height: 1.75; font-size: 15px;
+    }
+    .faq-item.open .faq-a { max-height: 400px; padding: 0 26px 22px 76px; }
+    .faq-a a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+    .faq-a a:hover { color: var(--gold2); }
 
     /* ── CTA ── */
     .cta-section {
@@ -370,16 +406,53 @@
   <section id="features">
     <div class="section-head reveal">
       <div class="section-label">Why Empire Roleplay</div>
-      <h2>Everything you need to make a name</h2>
-      <p>From street politics to legal businesses, Empire gives every player a lane to build their story.</p>
+      <h2>Your lane. Your story.<br>Your <em style="font-style:italic;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">empire.</em></h2>
+      <p>Whether you're running blocks, building a business, or protecting the city — Empire gives every character a purpose and every story a place to live.</p>
     </div>
     <div class="features-grid">
-      <div class="feat-card reveal"><span class="feat-icon">👑</span><h3>Gang & Turf RP</h3><p>Structured faction systems, beef validation, turf nights, airdrops, and RP-focused events that keep the streets active.</p></div>
-      <div class="feat-card reveal"><span class="feat-icon">🚓</span><h3>Police & EMS</h3><p>Whitelisted departments with room for serious character development, investigations, medical scenes, and city-wide involvement.</p></div>
-      <div class="feat-card reveal"><span class="feat-icon">🏪</span><h3>Player Businesses</h3><p>Player-owned businesses, mechanic shops, invoices, employees, and oversight to keep the economy fair and active.</p></div>
-      <div class="feat-card reveal"><span class="feat-icon">⚙️</span><h3>Active Development</h3><p>Regular updates, balanced systems, and scripts built around creating better roleplay instead of easy shortcuts.</p></div>
-      <div class="feat-card reveal"><span class="feat-icon">🎭</span><h3>Quality Roleplay</h3><p>Empire is built around interaction, story, consequences, and scenes that make players want to come back.</p></div>
-      <div class="feat-card reveal"><span class="feat-icon">💬</span><h3>Community First</h3><p>Helpful staff, support tickets, events, and clear rules so new and veteran players know what to expect.</p></div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">👑</div>
+        <div class="feat-tag">🔥 Street Life</div>
+        <h3>Faction & <span>Gang RP</span></h3>
+        <p>Build your crew from the ground up. Empire's faction system supports drug spots, turf ownership, beef validation, alliances, and tax collections. The streets have structure — and there's real power to be earned.</p>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🚔</div>
+        <div class="feat-tag">⚖️ Law & Order</div>
+        <h3>PD & <span>EMS</span></h3>
+        <p>Whitelisted departments with depth. Chase suspects through the city, run investigations, work medical scenes, and develop characters who actually matter to the city's story — not just NPCs with a badge.</p>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🏪</div>
+        <div class="feat-tag">💼 Civilian Life</div>
+        <h3>Player-Owned <span>Businesses</span></h3>
+        <p>Open a shop, run a mechanic bay, operate a nightclub. Empire's economy is player-driven — with real employees, invoicing, Business Oversight, and consequences if you go inactive. Build something worth protecting.</p>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🎭</div>
+        <div class="feat-tag">✨ RP First</div>
+        <h3>Story-Driven <span>Roleplay</span></h3>
+        <p>Empire is an RP server first. Every interaction has weight — beef has backstory, robberies need buildup, and scenes have consequences. We don't reward grind. We reward characters who make the city feel alive.</p>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🌟</div>
+        <div class="feat-tag">🎪 Events</div>
+        <h3>City <span>Events</span></h3>
+        <p>Airdrops, Watermelon Wednesdays, pool parties, turf nights, and more — Empire runs regular events that bring the whole city together. Some are chaos. Some are culture. All of them are content.</p>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🛡</div>
+        <div class="feat-tag">💬 Community</div>
+        <h3>Staff That <span>Actually Helps</span></h3>
+        <p>Empire's staff team is active, fair, and focused on protecting your RP experience — not micromanaging it. Clear rules, quick tickets, and a community that calls out bad behavior so good players can thrive.</p>
+      </div>
+
     </div>
   </section>
 
@@ -390,29 +463,90 @@
     <div class="section-head reveal">
       <div class="section-label">Got Questions?</div>
       <h2>Frequently Asked Questions</h2>
-      <p>Everything you need to know before connecting to the city.</p>
+      <p>Everything you need to know before your first day in Empire.</p>
     </div>
     <div class="faq-list">
+
       <div class="faq-item reveal">
-        <div class="faq-q">How do I join the server? <span class="arrow">+</span></div>
-        <div class="faq-a">Install FiveM, join the Discord, read the rules, then connect using the Play Now button with your server link. It only takes a few minutes to get in city.</div>
+        <div class="faq-q">
+          <div class="faq-q-left"><div class="faq-icon">🎮</div> How do I get into Empire RP?</div>
+          <span class="arrow">+</span>
+        </div>
+        <div class="faq-a">Download FiveM, <a href="https://discord.gg/empirerp" target="_blank">join our Discord</a>, read the rules, then hit the Play Now button to connect. The whole process takes about 10 minutes. Once you're in, fully customize your character before doing anything — default models aren't allowed.</div>
       </div>
+
       <div class="faq-item reveal">
-        <div class="faq-q">Do I need to apply to play? <span class="arrow">+</span></div>
-        <div class="faq-a">General access can be open, but PD, EMS, gangs, staff, and businesses may require applications or interviews. Check Discord for current requirements.</div>
+        <div class="faq-q">
+          <div class="faq-q-left"><div class="faq-icon">🎤</div> Do I need a mic to play?</div>
+          <span class="arrow">+</span>
+        </div>
+        <div class="faq-a">Yes — a working microphone is required. Empire RP is a serious voice-RP server. Text-only roleplay is not how we operate. If you don't have a mic, get one before joining. This is non-negotiable.</div>
       </div>
+
       <div class="faq-item reveal">
-        <div class="faq-q">Can I start my own gang? <span class="arrow">+</span></div>
-        <div class="faq-a">Yes. Open a Faction Support ticket in Discord and follow the current gang creation requirements. Active rosters and RP history help your application.</div>
+        <div class="faq-q">
+          <div class="faq-q-left"><div class="faq-icon">🎬</div> Do I need to record my gameplay?</div>
+          <span class="arrow">+</span>
+        </div>
+        <div class="faq-a">Yes. You must run clipping software at all times — Nvidia ShadowPlay, Medal.tv, or similar. Clips must be at least 2 minutes long with audio from both sides. No clip means no item returns and no valid reports. If you're not clipping, you're not protected.</div>
       </div>
+
       <div class="faq-item reveal">
-        <div class="faq-q">What is beef validation? <span class="arrow">+</span></div>
-        <div class="faq-a">Gang wars must be escalated through Faction Support before going official. This protects both sides and ensures fair, story-driven conflict instead of random wars.</div>
+        <div class="faq-q">
+          <div class="faq-q-left"><div class="faq-icon">👑</div> Can I start my own gang or faction?</div>
+          <span class="arrow">+</span>
+        </div>
+        <div class="faq-a">Yes — Empire RP supports player-created factions. Open a Faction Support ticket in Discord to get started. You'll need to show an active roster, demonstrated RP history in the city, and meet the gang creation requirements. Quality RP and commitment are what get factions approved, not just numbers.</div>
       </div>
+
       <div class="faq-item reveal">
-        <div class="faq-q">How are rule breaks handled? <span class="arrow">+</span></div>
-        <div class="faq-a">Open a support ticket with clip evidence. Staff review reports and take action based on severity. Repeat offenses carry harsher consequences.</div>
+        <div class="faq-q">
+          <div class="faq-q-left"><div class="faq-icon">⚔️</div> How does gang beef and conflict work?</div>
+          <span class="arrow">+</span>
+        </div>
+        <div class="faq-a">Conflicts between factions must be escalated through Faction Support before going official. This isn't red tape — it keeps wars story-driven and fair for both sides. Random shooting with no RP context will get you punished. Build the narrative, then bring the smoke.</div>
       </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">
+          <div class="faq-q-left"><div class="faq-icon">🚔</div> How do I join PD or EMS?</div>
+          <span class="arrow">+</span>
+        </div>
+        <div class="faq-a">PD and EMS require applications and/or interviews. Check the <a href="https://discord.gg/empirerp" target="_blank">Empire Discord</a> for current openings, requirements, and the application process. You'll need solid RP experience in the city before applying — show us you know how to play first.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">
+          <div class="faq-q-left"><div class="faq-icon">🏪</div> Can I own a business in the city?</div>
+          <span class="arrow">+</span>
+        </div>
+        <div class="faq-a">Yes. Player-owned businesses are a major part of Empire RP's economy and roleplay. Businesses must be actively operated as real businesses — not used as stashes or faction supply chains. Ownership transfers require Business Oversight approval. If you go inactive, staff may revoke the business.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">
+          <div class="faq-q-left"><div class="faq-icon">🚨</div> Someone broke the rules — what do I do?</div>
+          <span class="arrow">+</span>
+        </div>
+        <div class="faq-a">Stay in the scene and finish the roleplay first — don't break character to address it. After the scenario ends, open a support ticket in Discord with your clip. Reports require video and audio evidence from both sides, minimum 2 minutes. Reports must be submitted within 1 hour of the scene. Petty or revenge reports are penalized.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">
+          <div class="faq-q-left"><div class="faq-icon">💀</div> What happens if I F8 or disconnect mid-scene?</div>
+          <span class="arrow">+</span>
+        </div>
+        <div class="faq-a">F8 quitting during active RP is one of the most serious offenses on Empire. First offense: Warning + community service + pocket wipe. Second: 2-day ban + bank wipe. Third: 1-week ban + character deletion. Fourth: Permanent ban. There is no valid reason to leave mid-scene — if your game crashes, you must return and continue.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">
+          <div class="faq-q-left"><div class="faq-icon">💬</div> Still have questions?</div>
+          <span class="arrow">+</span>
+        </div>
+        <div class="faq-a">Join the <a href="https://discord.gg/empirerp" target="_blank">Empire RP Discord</a> and open a support ticket. Our staff and community are active and happy to help new and existing members. The city is waiting — come get your questions answered and get in.</div>
+      </div>
+
     </div>
   </section>
 

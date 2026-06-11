@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empire Roleplay — Events</title>
+  <link rel="icon" type="image/png" href="empire-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,900;1,900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060504;
+      --panel: #0f0d0b;
+      --gold: #f6b13a;
+      --gold2: #ff7200;
+      --text: #f2ede4;
+      --muted: #a89880;
+      --line: rgba(246,177,58,.18);
+      --danger: #ff3c3c;
+      --green: #39ff82;
+      --r: 20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 70px;
+      background: rgba(6,5,4,.88); backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; }
+    .brand img { height: 40px; filter: drop-shadow(0 0 12px rgba(246,177,58,.5)); animation: float 3.2s ease-in-out infinite; }
+    .nav-links { display: flex; gap: 26px; align-items: center; font-weight: 800; font-size: 13px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; }
+    .nav-links a { transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(246,177,58,.5); background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #160b00; font-weight: 900; font-size: 14px; border-radius: 999px; padding: 10px 22px; transition: .2s; cursor: pointer; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,114,0,.4); }
+    .btn.ghost { background: rgba(255,255,255,.05); color: var(--text); border-color: rgba(255,255,255,.15); box-shadow: none; }
+    .btn.ghost:hover { border-color: var(--gold); color: var(--gold); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--gold); border-radius: 2px; }
+    .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99; background: rgba(6,5,4,.97); border-bottom: 1px solid var(--line); padding: 20px 6%; flex-direction: column; gap: 14px; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-weight: 800; font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 44vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 130px 6% 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        linear-gradient(rgba(6,5,4,.45), rgba(6,5,4,.9)),
+        url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1800&q=80') center/cover;
+    }
+    .hero-glow { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(255,114,0,.2) 0%, transparent 65%); z-index: 1; pointer-events: none; }
+    .hero-content { position: relative; z-index: 2; max-width: 800px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .22em; font-size: 11px; margin-bottom: 18px; }
+    .eyebrow::before, .eyebrow::after { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); opacity: .5; }
+    h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(52px, 8vw, 100px); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; line-height: .9; margin-bottom: 18px; }
+    h1 em { font-style: italic; background: linear-gradient(135deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { color: var(--muted); font-size: 17px; line-height: 1.65; max-width: 560px; margin: 0 auto; }
+
+    /* ── TICKER ── */
+    .ticker-wrap { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(246,177,58,.04); padding: 11px 0; }
+    .ticker { display: flex; animation: ticker 22s linear infinite; white-space: nowrap; }
+    .ticker-item { display: inline-flex; align-items: center; gap: 12px; padding: 0 26px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+    /* ── PAGE LAYOUT ── */
+    .page-shell { max-width: 1300px; margin: 0 auto; padding: 60px 4% 100px; display: grid; grid-template-columns: 1fr 380px; gap: 28px; align-items: start; }
+
+    /* ── SECTION LABELS ── */
+    .sec-label { color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .18em; font-size: 11px; margin-bottom: 6px; }
+    .sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; margin-bottom: 22px; }
+    .sec-title em { font-style: italic; background: linear-gradient(135deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* ── EVENT CARDS ── */
+    .events-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .event-card {
+      background: rgba(255,255,255,.032);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      display: grid; grid-template-columns: 80px 1fr auto;
+      gap: 0; overflow: hidden;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+      cursor: default;
+    }
+    .event-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,.75);
+      box-shadow: 0 0 6px rgba(255,255,255,.5), 0 0 20px rgba(246,177,58,.45), 0 0 50px rgba(255,114,0,.2);
+    }
+
+    /* Date block */
+    .event-date {
+      background: linear-gradient(160deg, rgba(246,177,58,.15), rgba(255,114,0,.08));
+      border-right: 1px solid var(--line);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 16px 10px; text-align: center; flex-shrink: 0;
+    }
+    .event-date .month { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .14em; color: var(--gold); }
+    .event-date .day { font-family: 'Barlow Condensed', sans-serif; font-size: 38px; font-weight: 900; line-height: 1; color: var(--text); }
+    .event-date .dow { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-top: 2px; }
+
+    /* Event body */
+    .event-body { padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+    .event-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: .03em; line-height: 1; }
+    .event-meta { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .event-time { font-size: 12px; color: var(--muted); font-weight: 800; display: flex; align-items: center; gap: 5px; }
+    .event-desc { font-size: 13px; color: var(--muted); line-height: 1.55; margin-top: 4px; }
+
+    /* Type pills */
+    .epill {
+      display: inline-flex; align-items: center; gap: 4px;
+      border-radius: 999px; padding: 3px 10px;
+      font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .epill.recurring  { background: rgba(57,255,130,.1); border: 1px solid rgba(57,255,130,.25); color: #39ff82; }
+    .epill.special    { background: rgba(246,177,58,.12); border: 1px solid rgba(246,177,58,.3); color: var(--gold); }
+    .epill.community  { background: rgba(120,80,255,.15); border: 1px solid rgba(120,80,255,.3); color: #a78bfa; }
+    .epill.pvp        { background: rgba(255,60,60,.1); border: 1px solid rgba(255,60,60,.25); color: var(--danger); }
+    .epill.new        { background: rgba(255,114,0,.15); border: 1px solid rgba(255,114,0,.35); color: var(--gold2); }
+
+    /* Status badge */
+    .event-status { padding: 16px 18px; display: flex; align-items: center; justify-content: center; }
+    .status-badge {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      text-align: center; min-width: 72px;
+    }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .status-dot.upcoming { background: var(--gold); box-shadow: 0 0 8px rgba(246,177,58,.6); animation: pulse 2s ease-in-out infinite; }
+    .status-dot.weekly   { background: #39ff82; box-shadow: 0 0 8px rgba(57,255,130,.6); animation: pulse 2s ease-in-out infinite; }
+    .status-dot.monthly  { background: #a78bfa; box-shadow: 0 0 8px rgba(167,139,250,.6); }
+    .status-text { font-size: 10px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    /* ── SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 18px; }
+
+    /* Calendar */
+    .cal-card {
+      background: rgba(255,255,255,.032); border: 1px solid var(--line);
+      border-radius: var(--r); overflow: hidden;
+    }
+    .cal-header {
+      background: linear-gradient(90deg, rgba(246,177,58,.14), transparent);
+      padding: 16px 20px; border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cal-header h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: var(--gold); }
+    .cal-nav { display: flex; gap: 8px; }
+    .cal-btn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line); background: rgba(255,255,255,.04); color: var(--muted); font-size: 14px; cursor: pointer; transition: .2s; display: flex; align-items: center; justify-content: center; }
+    .cal-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .cal-grid { padding: 14px 16px 18px; }
+    .cal-dow-row { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-bottom: 6px; }
+    .cal-dow { text-align: center; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding: 4px 0; }
+    .cal-days { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+    .cal-day {
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; font-size: 13px; font-weight: 600;
+      cursor: default; transition: background .15s; position: relative;
+      color: var(--muted);
+    }
+    .cal-day.other-month { opacity: .25; }
+    .cal-day.today { background: rgba(246,177,58,.15); color: var(--gold); font-weight: 900; border: 1px solid rgba(246,177,58,.35); }
+    .cal-day.has-event { color: var(--text); font-weight: 800; }
+    .cal-day.has-event::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
+    .cal-day.event-main { background: linear-gradient(135deg, rgba(246,177,58,.2), rgba(255,114,0,.1)); color: var(--gold); font-weight: 900; border: 1px solid rgba(246,177,58,.3); }
+    .cal-day.event-main::after { background: var(--gold2); }
+    .cal-day:hover { background: rgba(255,255,255,.06); }
+
+    /* Calendar legend */
+    .cal-legend { padding: 0 16px 16px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); font-weight: 700; }
+    .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* Event info card */
+    .info-card { background: rgba(255,255,255,.032); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; }
+    .info-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase; color: var(--gold); letter-spacing: .06em; margin-bottom: 14px; }
+    .info-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 14px; }
+    .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .info-row-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .info-row-text { color: var(--muted); line-height: 1.5; }
+    .info-row-text strong { color: var(--text); font-weight: 800; display: block; margin-bottom: 2px; }
+
+    /* Discord CTA card */
+    .discord-card {
+      background: linear-gradient(135deg, rgba(246,177,58,.12), rgba(255,114,0,.06));
+      border: 1px solid rgba(246,177,58,.25); border-radius: var(--r);
+      padding: 24px 20px; text-align: center;
+    }
+    .discord-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
+    .discord-card p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+
+    /* ── RECURRING SECTION ── */
+    .recurring-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 32px; }
+    .rec-card {
+      background: rgba(255,255,255,.03); border: 1px solid var(--line);
+      border-radius: 16px; padding: 20px 18px;
+      text-align: center;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+    }
+    .rec-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,.6);
+      box-shadow: 0 0 6px rgba(255,255,255,.4), 0 0 18px rgba(246,177,58,.35), 0 0 40px rgba(255,114,0,.18);
+    }
+    .rec-icon { font-size: 28px; margin-bottom: 10px; }
+    .rec-name { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 900; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+    .rec-when { font-size: 12px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+    .rec-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    /* ── FOOTER ── */
+    footer { padding: 46px 6%; display: flex; justify-content: space-between; gap: 28px; flex-wrap: wrap; color: var(--muted); border-top: 1px solid var(--line); background: #030302; font-size: 14px; }
+    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
+    .footer-brand img { height: 46px; filter: drop-shadow(0 0 14px rgba(246,177,58,.3)); }
+    .footer-brand p { max-width: 260px; line-height: 1.6; }
+    .footer-copy { color: rgba(168,152,128,.5); font-size: 12px; }
+    .footer-links { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; padding-top: 4px; }
+    .footer-links a:hover { color: var(--gold); }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    @media (max-width: 1000px) {
+      .nav-links { display: none; } .hamburger { display: flex; }
+      .page-shell { grid-template-columns: 1fr; }
+      .sidebar { order: -1; }
+      .recurring-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .event-card { grid-template-columns: 70px 1fr; }
+      .event-status { display: none; }
+      .recurring-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a class="brand" href="index.html"><img src="empire-logo.png" alt="Empire RP"><span>Empire RP</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="rules.html">Rules</a>
+      <a href="faction-rules.html">Faction Rules</a>
+      <a href="showcase.html">Showcase</a>
+      <a href="events.html" class="active">Events</a>
+      <a href="index.html#features">Why Empire</a>
+      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+      <a href="#" class="btn" style="padding:9px 20px;font-size:13px;">▸ Play Now</a>
+    </div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="rules.html">Rules</a>
+    <a href="faction-rules.html">Faction Rules</a>
+    <a href="showcase.html">Showcase</a>
+    <a href="events.html">Events</a>
+    <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="eyebrow">Empire Roleplay</div>
+      <h1>City <em>Events</em></h1>
+      <p class="hero-sub">From weekly street events to massive city takeovers — something is always happening in Empire. Check the calendar and never miss a scene.</p>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item"><span class="ticker-dot"></span> Watermelon Wednesday — Every Week</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Airdrops — Random City Events</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Turf Night — Monthly</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Pool Parties — Summer Season</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Empire Games — Quarterly</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Car Meets — Bi-Weekly</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Watermelon Wednesday — Every Week</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Airdrops — Random City Events</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Turf Night — Monthly</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Pool Parties — Summer Season</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Empire Games — Quarterly</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Car Meets — Bi-Weekly</span>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="page-shell">
+
+    <!-- LEFT: Event List -->
+    <div>
+      <div class="sec-label">Schedule</div>
+      <div class="sec-title">Upcoming <em>Events</em></div>
+
+      <div class="events-list" id="eventsList">
+
+        <!-- Event 1 -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month" data-month="true"></div>
+            <div class="day">14</div>
+            <div class="dow">Wed</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">🍉 Watermelon Wednesday</div>
+            <div class="event-meta">
+              <span class="epill recurring">🔁 Weekly</span>
+              <span class="epill community">🌆 City Event</span>
+              <span class="event-time">⏰ 7 PM EST</span>
+            </div>
+            <div class="event-desc">Empire's signature weekly event. Come dressed to match the theme, link up with the city, and enjoy the vibes. Staff-hosted, open to all players. Look for the announcement in Discord.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot weekly"></div>
+              <div class="status-text">Weekly</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month" data-month="true"></div>
+            <div class="day">17</div>
+            <div class="dow">Sat</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">🚗 Empire Car Meet</div>
+            <div class="event-meta">
+              <span class="epill recurring">🔁 Bi-Weekly</span>
+              <span class="epill community">🌆 City Event</span>
+              <span class="event-time">⏰ 6 PM EST</span>
+            </div>
+            <div class="event-desc">Show off your build, flex your drip, and link with the city. No drama, no shootouts — just cars and culture. Location dropped in Discord the day of.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot upcoming"></div>
+              <div class="status-text">Upcoming</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 3 -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month" data-month="true"></div>
+            <div class="day">20</div>
+            <div class="dow">Tue</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">📦 City Airdrop</div>
+            <div class="event-meta">
+              <span class="epill pvp">💀 KOS Zone</span>
+              <span class="epill special">⭐ Staff Event</span>
+              <span class="event-time">⏰ Time TBA</span>
+            </div>
+            <div class="event-desc">An airdrop is dropping somewhere in the city. Once you enter the marked zone it's KOS — no robbing, no exceptions. Last crew standing takes the loot. Watch Discord for the drop location.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot upcoming"></div>
+              <div class="status-text">Upcoming</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 4 -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month" data-month="true"></div>
+            <div class="day">21</div>
+            <div class="dow">Wed</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">🍉 Watermelon Wednesday</div>
+            <div class="event-meta">
+              <span class="epill recurring">🔁 Weekly</span>
+              <span class="epill community">🌆 City Event</span>
+              <span class="event-time">⏰ 7 PM EST</span>
+            </div>
+            <div class="event-desc">Empire's weekly staple. Come dressed in the theme, vibe out, and enjoy some low-pressure city RP. Check Discord for this week's specific theme.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot weekly"></div>
+              <div class="status-text">Weekly</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 5 -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month" data-month="true"></div>
+            <div class="day">24</div>
+            <div class="dow">Sat</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">🌊 Pool Party</div>
+            <div class="event-meta">
+              <span class="epill special">⭐ Special Event</span>
+              <span class="epill community">🌆 City Event</span>
+              <span class="event-time">⏰ 6 PM EST</span>
+            </div>
+            <div class="event-desc">Mansion pool party, open to the whole city. Come in character, keep it classy, and bring the RP. Staff enforces green zone rules. 15-minute peace time after the event ends.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot upcoming"></div>
+              <div class="status-text">Upcoming</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 6 -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month" data-month="true"></div>
+            <div class="day">27</div>
+            <div class="dow">Tue</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">👑 Turf Night</div>
+            <div class="event-meta">
+              <span class="epill pvp">💀 Faction Only</span>
+              <span class="epill special">⭐ Monthly</span>
+              <span class="event-time">⏰ 8 PM EST</span>
+            </div>
+            <div class="event-desc">Factions compete for control of designated turf zones. Beef must be validated before participation. PD and civilians are excluded. Winners hold the turf until the next Turf Night. Rules posted in Faction Support.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot monthly"></div>
+              <div class="status-text">Monthly</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 7 -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month" data-month="true"></div>
+            <div class="day">28</div>
+            <div class="dow">Wed</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">🍉 Watermelon Wednesday</div>
+            <div class="event-meta">
+              <span class="epill recurring">🔁 Weekly</span>
+              <span class="epill community">🌆 City Event</span>
+              <span class="event-time">⏰ 7 PM EST</span>
+            </div>
+            <div class="event-desc">Weekly community event. Watch the Empire Discord for this week's theme drop and location pin. Always a good time.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot weekly"></div>
+              <div class="status-text">Weekly</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 8 -->
+        <div class="event-card">
+          <div class="event-date">
+            <div class="month" data-month="true"></div>
+            <div class="day">30</div>
+            <div class="dow">Fri</div>
+          </div>
+          <div class="event-body">
+            <div class="event-name">🏆 Empire Games</div>
+            <div class="event-meta">
+              <span class="epill new">🔥 Quarterly</span>
+              <span class="epill special">⭐ Mega Event</span>
+              <span class="event-time">⏰ 7 PM EST</span>
+            </div>
+            <div class="event-desc">Empire's biggest quarterly event. City-wide competitions, custom mini-games, prizes, and bragging rights. Everyone is invited — this is a full city shutdown event. Details in Discord.</div>
+          </div>
+          <div class="event-status">
+            <div class="status-badge">
+              <div class="status-dot upcoming"></div>
+              <div class="status-text">Upcoming</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RECURRING EVENTS -->
+      <div style="margin-top: 48px;">
+        <div class="sec-label">Always in the City</div>
+        <div class="sec-title">Recurring <em>Events</em></div>
+        <div class="recurring-grid">
+          <div class="rec-card">
+            <div class="rec-icon">🍉</div>
+            <div class="rec-name">Watermelon Wednesday</div>
+            <div class="rec-when">Every Wednesday • 7 PM EST</div>
+            <div class="rec-desc">Empire's signature weekly event. Themed fits, good vibes, open to the whole city. The most consistent W on the calendar.</div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-icon">📦</div>
+            <div class="rec-name">Airdrops</div>
+            <div class="rec-when">Random • Staff Announced</div>
+            <div class="rec-desc">Drops anywhere in the city without warning. KOS inside the zone — no robbing. Watch Discord or you'll miss it.</div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-icon">🚗</div>
+            <div class="rec-name">Car Meets</div>
+            <div class="rec-when">Bi-Weekly • Saturdays</div>
+            <div class="rec-desc">Flex your build, meet the city, and keep it peaceful. Location dropped day-of in the announcements channel.</div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-icon">👑</div>
+            <div class="rec-name">Turf Night</div>
+            <div class="rec-when">Monthly • Faction Only</div>
+            <div class="rec-desc">Factions fight for territory control. Beef validation required. Winners hold turf until the next round. Real stakes, real RP.</div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-icon">🌊</div>
+            <div class="rec-name">Pool Parties</div>
+            <div class="rec-when">Monthly • Summer Season</div>
+            <div class="rec-desc">Mansion events open to the whole city. GZ rules enforced. Come in character, bring the energy, leave the beef outside.</div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-icon">🏆</div>
+            <div class="rec-name">Empire Games</div>
+            <div class="rec-when">Quarterly • Mega Event</div>
+            <div class="rec-desc">City-wide competitions and mini-games with prizes. Empire's biggest event of the quarter. Everyone plays, nobody sits out.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Sidebar -->
+    <div class="sidebar">
+
+      <!-- Calendar -->
+      <div class="cal-card">
+        <div class="cal-header">
+          <h3 id="calMonthTitle">June 2026</h3>
+          <div class="cal-nav">
+            <button class="cal-btn" id="calPrev">‹</button>
+            <button class="cal-btn" id="calNext">›</button>
+          </div>
+        </div>
+        <div class="cal-grid">
+          <div class="cal-dow-row">
+            <div class="cal-dow">Su</div>
+            <div class="cal-dow">Mo</div>
+            <div class="cal-dow">Tu</div>
+            <div class="cal-dow">We</div>
+            <div class="cal-dow">Th</div>
+            <div class="cal-dow">Fr</div>
+            <div class="cal-dow">Sa</div>
+          </div>
+          <div class="cal-days" id="calDays"></div>
+        </div>
+        <div class="cal-legend">
+          <div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div> Today</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--gold2)"></div> Major Event</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#39ff82"></div> Weekly</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#a78bfa"></div> Monthly</div>
+        </div>
+      </div>
+
+      <!-- Event Info -->
+      <div class="info-card">
+        <h4>📋 Event Rules</h4>
+        <div class="info-row">
+          <div class="info-row-icon">⏱</div>
+          <div class="info-row-text">
+            <strong>15-Min Peace Time</strong>
+            After every event, no robbing or hostile RP for 15 minutes.
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">🎬</div>
+          <div class="info-row-text">
+            <strong>Always Be Clipping</strong>
+            Clip software must be running at all events. No clips = no returns.
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">🟢</div>
+          <div class="info-row-text">
+            <strong>GZ Events</strong>
+            Event locations are green zones for the duration + buffer time.
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">💀</div>
+          <div class="info-row-text">
+            <strong>KOS Events</strong>
+            Airdrops and Cayo are KOS inside the zone only. No robbing inside.
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">📢</div>
+          <div class="info-row-text">
+            <strong>All Announcements in Discord</strong>
+            Times, locations, and themes are posted in the announcements channel before every event.
+          </div>
+        </div>
+      </div>
+
+      <!-- Discord CTA -->
+      <div class="discord-card">
+        <h4>Never Miss an Event</h4>
+        <p>All event announcements, theme drops, location pins, and last-minute changes go live in Discord first. Turn on notifications so you don't miss the drop.</p>
+        <a href="https://discord.gg/empirerp" target="_blank" rel="noopener" class="btn" style="width:100%;justify-content:center;">Join the Discord</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <img src="empire-logo.png" alt="Empire RP">
+      <p>A premium GTA V roleplay community. Built by players, for players.</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="rules.html">Rules</a>
+      <a href="faction-rules.html">Faction Rules</a>
+      <a href="showcase.html">Showcase</a>
+      <a href="events.html">Events</a>
+      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+      <a href="#">Store</a>
+    </div>
+    <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+  </footer>
+
+  <script>
+    // Mobile menu
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    });
+
+    // ── CALENDAR ──
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const DAYS_SHORT = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+    // Event days this month (day numbers)
+    // weekly = Wednesdays | bi-weekly Sat | specific dates
+    const eventDays = {
+      major:    [20, 24, 30],   // airdrop, pool party, empire games
+      weekly:   [14, 21, 28],   // watermelon wednesdays
+      monthly:  [27],           // turf night
+      biweekly: [17],           // car meet
+    };
+
+    let calDate = new Date(2026, 5, 1); // June 2026
+
+    function buildCalendar(d) {
+      const year  = d.getFullYear();
+      const month = d.getMonth();
+      const today = new Date();
+
+      document.getElementById('calMonthTitle').textContent = `${MONTHS[month]} ${year}`;
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysInPrev  = new Date(year, month, 0).getDate();
+
+      const grid = document.getElementById('calDays');
+      grid.innerHTML = '';
+
+      // Previous month overflow
+      for (let i = firstDay - 1; i >= 0; i--) {
+        const el = document.createElement('div');
+        el.className = 'cal-day other-month';
+        el.textContent = daysInPrev - i;
+        grid.appendChild(el);
+      }
+
+      // Current month
+      for (let day = 1; day <= daysInMonth; day++) {
+        const el = document.createElement('div');
+        el.textContent = day;
+        let cls = 'cal-day';
+
+        if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+          cls += ' today';
+        }
+
+        // Check event type (priority: major > monthly > weekly > biweekly)
+        if (eventDays.major.includes(day))    { cls += ' event-main has-event'; el.title = 'Major Event'; }
+        else if (eventDays.monthly.includes(day)) { cls += ' has-event'; el.style.color='#a78bfa'; el.title = 'Monthly Event'; }
+        else if (eventDays.weekly.includes(day))  { cls += ' has-event'; el.style.color='#39ff82'; el.title = 'Weekly Event'; }
+        else if (eventDays.biweekly.includes(day)){ cls += ' has-event'; el.title = 'Bi-Weekly Event'; }
+
+        el.className = cls;
+        grid.appendChild(el);
+      }
+
+      // Next month overflow
+      const total = firstDay + daysInMonth;
+      const remainder = total % 7 === 0 ? 0 : 7 - (total % 7);
+      for (let i = 1; i <= remainder; i++) {
+        const el = document.createElement('div');
+        el.className = 'cal-day other-month';
+        el.textContent = i;
+        grid.appendChild(el);
+      }
+    }
+
+    document.getElementById('calPrev').addEventListener('click', () => {
+      calDate.setMonth(calDate.getMonth() - 1);
+      buildCalendar(calDate);
+    });
+    document.getElementById('calNext').addEventListener('click', () => {
+      calDate.setMonth(calDate.getMonth() + 1);
+      buildCalendar(calDate);
+    });
+
+    buildCalendar(calDate);
+
+    // Stamp current month name on all event date blocks
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    document.querySelectorAll('[data-month]').forEach(el => {
+      el.textContent = monthNames[new Date().getMonth()];
+    });
+  </script>
+</body>
+</html>
