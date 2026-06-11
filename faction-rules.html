@@ -134,6 +134,19 @@
     .tag.green   { background: rgba(57,255,130,.08); border: 1px solid rgba(57,255,130,.22); color: var(--green); }
     .tag.blue    { background: rgba(56,182,255,.08); border: 1px solid rgba(56,182,255,.22); color: var(--blue); }
 
+    /* notice blocks */
+    .notice { margin: 10px 26px 6px; border-radius: 12px; padding: 12px 18px; font-size: 13px; line-height: 1.7; }
+    .notice.warn { background: rgba(255,60,60,.07); border: 1px solid rgba(255,60,60,.22); color: #ffb3b3; }
+    .notice.info { background: rgba(56,182,255,.07); border: 1px solid rgba(56,182,255,.22); color: #aadeff; }
+    .notice.gold { background: rgba(246,177,58,.07); border: 1px solid rgba(246,177,58,.22); color: #f6d89a; }
+    .notice b { color: #fff; }
+
+    /* table inside rule-list */
+    .rule-table { width: calc(100% - 52px); margin: 6px 26px 14px; border-collapse: collapse; font-size: 13px; }
+    .rule-table th { background: rgba(246,177,58,.1); color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .06em; padding: 8px 14px; border: 1px solid var(--line); font-size: 11px; }
+    .rule-table td { padding: 9px 14px; border: 1px solid rgba(255,255,255,.07); color: #ddd5c8; vertical-align: top; }
+    .rule-table tr:nth-child(even) td { background: rgba(255,255,255,.018); }
+
     /* search highlight */
     mark { background: rgba(246,177,58,.3); color: #fff; border-radius: 3px; padding: 0 2px; }
     .rule-section.no-match { display: none; }
@@ -183,6 +196,7 @@
       .page-shell { padding: 0 5% 80px; }
       .hero { padding: 110px 5% 55px; }
       .strike-visual { flex-direction: column; }
+      .rule-table { width: 100%; margin: 6px 0 14px; }
     }
   </style>
 </head>
@@ -220,11 +234,10 @@
       <img class="hero-logo" src="empire-logo.png" alt="Empire Roleplay">
       <div class="eyebrow"><span class="eyebrow-icon">👑</span> Faction Guidelines</div>
       <h1>Faction <em>Rules</em></h1>
-      <p class="hero-sub">Everything you need to run, join, or build a faction in Empire RP. Leaders are accountable — read every word.</p>
+      <p class="hero-sub">Everything you need to run, join, or build a faction in Empire RP. Bosses are accountable — read every word. Last updated June 10, 2026.</p>
       <div class="hero-pills">
-        <span class="pill"><span class="pill-dot"></span> 9 Sections</span>
-        <span class="pill"><span class="pill-dot"></span> 43 Rules</span>
-        <span class="pill"><span class="pill-dot"></span> Last Updated 2026</span>
+        <span class="pill"><span class="pill-dot"></span> 14 Sections</span>
+        <span class="pill"><span class="pill-dot"></span> Last Updated June 10, 2026</span>
       </div>
     </div>
   </header>
@@ -233,17 +246,19 @@
   <div class="search-shell">
     <div class="search-box">
       <span class="search-icon">⌕</span>
-      <input id="ruleSearch" type="search" placeholder="Search faction rules… war, leader, turf, recruit" autocomplete="off">
+      <input id="ruleSearch" type="search" placeholder="Search faction rules… drugs, turf, POV, strikes, clothing…" autocomplete="off">
       <span class="search-clear" id="searchClear">✕</span>
     </div>
     <div class="result-bar">
-      <span id="ruleCount" class="result-count">Showing all 43 rules</span>
+      <span id="ruleCount" class="result-count">Showing all rules</span>
       <div class="section-pills">
-        <a class="spill" href="#formation">Formation</a>
-        <a class="spill" href="#leadership">Leadership</a>
-        <a class="spill" href="#wars">Wars</a>
-        <a class="spill" href="#territory">Territory</a>
-        <a class="spill" href="#discipline">Discipline</a>
+        <a class="spill" href="#general">General</a>
+        <a class="spill" href="#greenzone">Greenzone</a>
+        <a class="spill" href="#pov">POV</a>
+        <a class="spill" href="#basics">Basics</a>
+        <a class="spill" href="#strikes">Strikes</a>
+        <a class="spill" href="#drugs">Drugs</a>
+        <a class="spill" href="#pd">vs PD</a>
       </div>
     </div>
   </div>
@@ -256,15 +271,20 @@
       <aside class="sidebar">
         <div class="sidebar-card">
           <div class="sidebar-label">Jump to Section</div>
-          <a class="sidebar-link" href="#formation"><span class="s-icon">📋</span> Formation<span class="s-count">5</span></a>
-          <a class="sidebar-link" href="#leadership"><span class="s-icon">👑</span> Leadership<span class="s-count">5</span></a>
-          <a class="sidebar-link" href="#membership"><span class="s-icon">🤝</span> Membership<span class="s-count">5</span></a>
-          <a class="sidebar-link" href="#representation"><span class="s-icon">🎽</span> Representation<span class="s-count">4</span></a>
-          <a class="sidebar-link" href="#territory"><span class="s-icon">🗺️</span> Territory<span class="s-count">5</span></a>
-          <a class="sidebar-link" href="#wars"><span class="s-icon">⚔️</span> Gang Wars<span class="s-count">6</span></a>
-          <a class="sidebar-link" href="#alliances"><span class="s-icon">🔗</span> Alliances<span class="s-count">4</span></a>
-          <a class="sidebar-link" href="#events"><span class="s-icon">🏆</span> Events<span class="s-count">4</span></a>
-          <a class="sidebar-link" href="#discipline"><span class="s-icon">⚠️</span> Discipline<span class="s-count">5</span></a>
+          <a class="sidebar-link" href="#general"><span class="s-icon">📃</span> General Rules</a>
+          <a class="sidebar-link" href="#greenzone"><span class="s-icon">🟢</span> Greenzone</a>
+          <a class="sidebar-link" href="#pov"><span class="s-icon">📷</span> POV / Clipping</a>
+          <a class="sidebar-link" href="#ticketing"><span class="s-icon">🚫</span> Petty Ticketing</a>
+          <a class="sidebar-link" href="#basics"><span class="s-icon">📜</span> Faction Basics</a>
+          <a class="sidebar-link" href="#strikes"><span class="s-icon">❌</span> Strikes</a>
+          <a class="sidebar-link" href="#starting"><span class="s-icon">👥</span> Starting a Faction</a>
+          <a class="sidebar-link" href="#blockfights"><span class="s-icon">🏠</span> Block Fights</a>
+          <a class="sidebar-link" href="#onfoot"><span class="s-icon">👟</span> On-Foot & Avoiding</a>
+          <a class="sidebar-link" href="#streetfights"><span class="s-icon">🛣️</span> Street Fights</a>
+          <a class="sidebar-link" href="#drugclaiming"><span class="s-icon">💊</span> Drug Claiming</a>
+          <a class="sidebar-link" href="#drugtaxing"><span class="s-icon">💊</span> Drug Taxing</a>
+          <a class="sidebar-link" href="#factionvciv"><span class="s-icon">🧍</span> Faction vs Civ</a>
+          <a class="sidebar-link" href="#pd"><span class="s-icon">🚨</span> Faction vs PD</a>
         </div>
         <div class="sidebar-card sidebar-cta">
           <div class="sidebar-label">Quick Actions</div>
@@ -281,177 +301,325 @@
           <p>Try a different keyword or <a href="#" id="clearSearch" style="color:var(--gold)">clear the search</a>.</p>
         </div>
 
-        <!-- FORMATION -->
-        <div id="formation" class="rule-section">
+        <!-- NOTICES -->
+        <div class="notice gold" style="margin:0 0 18px;border-radius:18px;">
+          <b>📋 FACTION BOSSES — READ THIS FIRST.</b> It is your responsibility to ensure ALL of your members are reading, following, and understanding the rules. This includes both the Faction Rulebook and the Empire Rulebook.<br><br>
+          <b>⚠️ IGNORANCE OF THE RULES IS NOT AN EXCUSE.</b> By joining a faction you confirm you have read all rules and will be held <b>accountable</b>. If Faction Support catches you violating the Faction Rulebook or any Empire RP guidelines, you may be subject to removal.
+        </div>
+
+        <!-- GENERAL RULES -->
+        <div id="general" class="rule-section">
           <div class="section-header">
-            <span class="sh-icon">📋</span>
+            <span class="sh-icon">📃</span>
             <div>
-              <div class="sh-title">Formation & Recognition</div>
-              <div class="sh-desc">How to get your faction officially registered</div>
+              <div class="sh-title">General Rules</div>
+              <div class="sh-desc">Core rules and expectations for all faction members</div>
             </div>
-            <div class="sh-right"><span class="sh-count">5 RULES</span><span class="sh-toggle">▾</span></div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag default">Apply</span><span class="rule-text"><b>All new factions must submit a formation request through Faction Support.</b> Unrecognized factions cannot claim territory, declare wars, or invoke faction protections.</span></div>
-            <div class="rule"><span class="tag default">Min Size</span><span class="rule-text">A faction must have at least <b>5 active members</b> before submitting for official recognition. Staff will verify activity before approval.</span></div>
-            <div class="rule"><span class="tag blue">Concept</span><span class="rule-text">Your faction must have a clear, original roleplay concept and lore. Directly cloning another faction's identity or using real-world gang names without creative adaptation will result in rejection.</span></div>
-            <div class="rule"><span class="tag default">Approval</span><span class="rule-text">Recognition is not guaranteed. Staff may request lore revisions, a probationary period, or a trial event before granting full status.</span></div>
-            <div class="rule"><span class="tag danger">Inactive</span><span class="rule-text">Factions with fewer than 3 active members for <b>14+ consecutive days</b> may be dissolved by staff. Leaders are responsible for maintaining activity and notifying staff of gaps.</span></div>
+            <div class="rule"><span class="tag default">City Rules</span><span class="rule-text"><b>All factions must follow all city rules listed in the Empire Rulebook at all times.</b></span></div>
+            <div class="rule"><span class="tag danger">Alliances</span><span class="rule-text"><b>Faction alliances are NOT permitted.</b> There is no teaming up or shooting alongside opposing factions or civilians.</span></div>
+            <div class="rule"><span class="tag danger">Harassment</span><span class="rule-text"><b>"Running a faction out of the city" is considered harassment.</b> Any attempt to force another faction to leave the city will be treated as harassing an individual and will result in punishment. This applies to both in-city and out-of-city interactions.</span></div>
+            <div class="rule"><span class="tag danger">Exploiting</span><span class="rule-text"><b>Reloading skin is NOT allowed</b> — treated as exploiting. <b>B-reloading is NOT allowed</b> — treated as exploiting. Binding emotes to GTA keybinds to gain an advantage is considered exploiting.</span></div>
+            <div class="rule"><span class="tag danger">Power Gaming</span><span class="rule-text">Once an interaction has begun, you may NOT access your stash for any reason. Stashing items during an interaction is power gaming. <b>Tackling is NOT allowed</b> — considered power gaming.</span></div>
+            <div class="rule"><span class="tag default">Registration</span><span class="rule-text">You may NOT flag up until Faction Support has assigned roles, an updated roster screenshot is submitted, and roles are officially given in Faction Discord.</span></div>
+            <div class="rule"><span class="tag blue">8v8 Rule</span><span class="rule-text"><b>Factions are limited to 8 active participants per side</b> in any scene (shootouts, criminal activities, car chases). Any extra members MUST disengage and leave the area — they cannot assist, act as lookout, or provide callouts.</span></div>
+            <div class="rule"><span class="tag danger">Fail RP</span><span class="rule-text"><b>Deliberately flatbacking your own faction members</b> to prevent them from being robbed is strictly prohibited and WILL be considered Fail RP.</span></div>
+            <div class="rule"><span class="tag danger">Roofs</span><span class="rule-text"><b>Roofs are NOT allowed under any circumstances</b> — block pushes, street fights, fights vs PD or civilians. The only exception is if specifically listed in an event.</span></div>
+            <div class="rule"><span class="tag default">Weed</span><span class="rule-text">Weed is a civilian drug. You may go there to get weed to sell, but there is <b>NO taxing anyone for weed</b>.</span></div>
+            <div class="rule"><span class="tag danger">Factions + Civs</span><span class="rule-text">Factions are NOT permitted to team up with civilians under any circumstances (killing, robbing, any criminal activity). You can farm drugs together, but if civilians start getting pressed by other civs/gangs, your gang must not interfere — and vice versa.</span></div>
+            <div class="notice warn" style="margin:8px 0 4px;">
+              <b>🚫 DO NOT F8 DURING AN ACTIVE SCENE.</b> Your pockets/items WILL be taken if you disconnect during a scene. You will be handled for an F8 offense. Repeated situations may lead to gang-wide consequences.<br>
+              <b>What counts as an F8:</b> Leaving during a shooting or hostile interaction · Disconnecting to avoid being robbed, captured, or killed · Crashing intentionally to avoid RP outcomes.<br>
+              <b>If you genuinely crash:</b> Return as quickly as possible and communicate with involved players or staff.
+            </div>
+            <div class="rule"><span class="tag blue">EMS</span><span class="rule-text"><b>EMS must be allowed to safely perform their duties without interference during active scenes.</b> Once EMS is cleared to enter the scene, all fighting must immediately stop. No continued shootings, punching, or hostile actions while EMS is actively treating or transporting players. If EMS arrives while the scene is still ongoing — inform EMS it is still active and wait until fighting officially ends. NOT allowed: shooting while EMS treats players, using EMS as cover, or attacking EMS personnel.</span></div>
           </div>
         </div>
 
-        <!-- LEADERSHIP -->
-        <div id="leadership" class="rule-section">
+        <!-- GREENZONE -->
+        <div id="greenzone" class="rule-section">
           <div class="section-header">
-            <span class="sh-icon">👑</span>
+            <span class="sh-icon">🟢</span>
             <div>
-              <div class="sh-title">Leadership</div>
-              <div class="sh-desc">Leader rights, responsibilities, and accountability</div>
+              <div class="sh-title">Greenzone Rules</div>
+              <div class="sh-desc">Safe zones — no hostile scenes allowed</div>
             </div>
-            <div class="sh-right"><span class="sh-count">5 RULES</span><span class="sh-toggle">▾</span></div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag danger">Accountable</span><span class="rule-text"><b>Gang leaders are directly accountable for their members' conduct.</b> Repeated rulebreaks by members reflect on leadership and can result in faction strikes or suspension.</span></div>
-            <div class="rule"><span class="tag default">Transfer</span><span class="rule-text">Leadership transfers must be reported to Faction Support within <b>24 hours</b>. Unofficial transfers are not recognized — the previous leader remains liable until confirmed.</span></div>
-            <div class="rule"><span class="tag default">Logs</span><span class="rule-text">Leaders must provide staff access to faction logs, member lists, and internal communications when requested. Refusing a log request is a strike-worthy offense.</span></div>
-            <div class="rule"><span class="tag danger">Abuse</span><span class="rule-text">Scamming members, using OOC threats to enforce IC agreements, or wielding leadership status to bypass rules are <b>bannable offenses</b>. Leadership is a privilege, not a shield.</span></div>
-            <div class="rule"><span class="tag default">LOA</span><span class="rule-text">Leaders inactive for <b>7+ days</b> without a posted Leave of Absence may be removed by staff. Designate a co-leader or officer before any extended absence.</span></div>
+            <div class="notice gold" style="margin:10px 0 4px;">🌿 <b>GREENZONES ARE SAFE ZONES — NO ACTIVE SCENES.</b> Greenzones (GZs) are controlled safe areas. No hostile scenes should be started or escalated inside a Greenzone.</div>
+            <div class="rule"><span class="tag danger">No Violence</span><span class="rule-text">Initiating or having hostile scenes inside greenzones is prohibited. Escalating interactions into shootings, fights, or killings is prohibited. Using a greenzone interaction to immediately start a scene afterward is prohibited.</span></div>
+            <div class="rule"><span class="tag default">Interaction</span><span class="rule-text">If you approach another gang inside a GZ, the interaction must remain non-violent. Talking trash inside a GZ is fine — <b>do NOT take it further than that</b>.</span></div>
+            <div class="rule"><span class="tag blue">Purpose</span><span class="rule-text">Greenzones provide safe areas around the city and prevent unnecessary conflict in public spaces. They keep RP organized and fair for everyone.</span></div>
+            <div class="rule"><span class="tag default">Clothing Stores</span><span class="rule-text">Do NOT try to kill or take hostage any member who is actively in a clothing menu. Do NOT camp outside clothing stores waiting for them to come outside.</span></div>
+            <div class="notice warn" style="margin:6px 0 10px;">⚠️ <b>FAILURE TO FOLLOW GREENZONE RULES MAY RESULT IN:</b> Punishment and scene termination · Gang-wide consequences depending on the situation.</div>
           </div>
         </div>
 
-        <!-- MEMBERSHIP -->
-        <div id="membership" class="rule-section">
+        <!-- POV -->
+        <div id="pov" class="rule-section">
           <div class="section-header">
-            <span class="sh-icon">🤝</span>
+            <span class="sh-icon">📷</span>
             <div>
-              <div class="sh-title">Membership</div>
-              <div class="sh-desc">Joining, leaving, and loyalty rules</div>
+              <div class="sh-title">POV / Clipping Rules</div>
+              <div class="sh-desc">Recording requirements, requests, and failure consequences</div>
             </div>
-            <div class="sh-right"><span class="sh-count">5 RULES</span><span class="sh-toggle">▾</span></div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag danger">One Gang</span><span class="rule-text"><b>Players may only hold ranked membership in one faction at a time.</b> Being on two rosters simultaneously — including as a prospect — is prohibited regardless of how it's framed IC.</span></div>
-            <div class="rule"><span class="tag default">Recruit</span><span class="rule-text">Recruitment must happen through in-character roleplay. OOC recruitment in Discord DMs, public chats, or community servers is prohibited and can result in recruitment bans.</span></div>
-            <div class="rule"><span class="tag default">Betrayal</span><span class="rule-text">Defecting to a rival faction is a valid IC storyline, but must be properly roleplayed. Instantly switching gangs to feed rivals your old faction's intel is treated as metagaming.</span></div>
-            <div class="rule"><span class="tag blue">Prospects</span><span class="rule-text">Prospect or hangaround status must be recognized IC. Prospects do not carry full faction protection until patched in — but they are still bound by all faction rules.</span></div>
-            <div class="rule"><span class="tag green">Leaving</span><span class="rule-text">Members may leave with a proper IC roleplay exit. Leaders <b>cannot</b> force players to stay OOC or use rules as a trap. Peaceful departures must be respected.</span></div>
+            <div class="rule"><span class="tag default">General</span><span class="rule-text"><b>All kills must be clipped and kept for 48 hours.</b> Faction Support may NOT discuss possible cheaters, punishments, or irrelevant information with other faction members.</span></div>
+            <div class="rule"><span class="tag danger">Invalid POV</span><span class="rule-text">The following will <b>automatically invalidate your POV:</b> No props, no vegetation, no water in the clip · Missing HUD elements (health bar, stamina bar, or other HUD stats) · Any rule-break by the player requesting or providing POV.</span></div>
+            <div class="rule"><span class="tag danger">Audio</span><span class="rule-text">All audio must be clearly audible — <b>game audio AND microphone audio.</b> If Faction Support determines audio cannot be clearly heard, the POV will be automatically denied.</span></div>
+            <div class="rule"><span class="tag blue">Oversight</span><span class="rule-text">POV requests are at the sole discretion of Oversight. If required, you MUST provide it. Players are NOT entitled to receiving another player's POV.</span></div>
+            <div class="rule"><span class="tag default">Requesting</span><span class="rule-text">Clip must be a <b>minimum of 60 seconds</b>: 50 seconds leading up to your death + 10 seconds after. Your POV must clearly show your death — POV will NOT be requested if you did not die. You must request POV within <b>4 hours</b> of your death. Requests submitted after 4 hours are automatically denied.</span></div>
+            <div class="rule"><span class="tag default">Providing</span><span class="rule-text">Clip must be a minimum of 60 seconds: 50 seconds leading up to your death/kill + 10 seconds after. You have <b>1 hour</b> from when Faction Support requests your POV to provide it. Failure to submit within 1 hour = punishment at Oversight discretion. Any disrespect, refusal, or arguing with staff regarding a POV request is treated as failure to provide POV.</span></div>
+            <div style="padding: 0 26px 14px;">
+              <table class="rule-table">
+                <tr><th>Offense</th><th>Consequence</th></tr>
+                <tr><td><b>1st Offense</b></td><td>Warning + 100 Comms</td></tr>
+                <tr><td><b>2nd Offense</b></td><td>100k fine + Clip Watch (1 week)</td></tr>
+                <tr><td><b>3rd Offense</b></td><td>2-week blacklist from factions + 400k buyback</td></tr>
+                <tr><td><b>4th Offense</b></td><td>Blacklisted from gang life</td></tr>
+              </table>
+              <div class="notice info" style="margin:4px 0 0;">ℹ️ Strikes fall off after 1 month.</div>
+            </div>
           </div>
         </div>
 
-        <!-- REPRESENTATION -->
-        <div id="representation" class="rule-section">
+        <!-- PETTY TICKETING -->
+        <div id="ticketing" class="rule-section">
           <div class="section-header">
-            <span class="sh-icon">🎽</span>
+            <span class="sh-icon">🚫</span>
             <div>
-              <div class="sh-title">Representation</div>
-              <div class="sh-desc">Attire, colors, vehicles, and identity</div>
+              <div class="sh-title">Petty Ticketing</div>
+              <div class="sh-desc">Requirements for valid reports — no frivolous tickets</div>
             </div>
-            <div class="sh-right"><span class="sh-count">4 RULES</span><span class="sh-toggle">▾</span></div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag default">Flag</span><span class="rule-text"><b>Members must wear approved gang attire when operating as a faction.</b> Random players cannot be treated as gang enemies based on clothing color alone — confirmed ID is required.</span></div>
-            <div class="rule"><span class="tag default">Vehicles</span><span class="rule-text">Faction vehicles should reflect your crew's aesthetic. Full Faction Support approval is required before tagging any vehicle as an official faction asset.</span></div>
-            <div class="rule"><span class="tag default">Tags</span><span class="rule-text">No graffiti or in-game markers may be placed outside your approved territory without staff permission. Rival turf must not be tagged without active declared war status.</span></div>
-            <div class="rule"><span class="tag danger">Imposter</span><span class="rule-text"><b>Impersonating another faction's colors, name, or symbols is a bannable offense.</b> This includes planting fake recruits as spies or staging incidents to frame rival factions.</span></div>
+            <div class="rule"><span class="tag default">Requirements</span><span class="rule-text">All tickets must include a <b>2–3 minute clip</b> of the full scenario with clear audio from all involved parties and IDs. If the clip doesn't include audio from both sides or IDs, the ticket will be considered invalid and closed without action.</span></div>
+            <div class="notice warn" style="margin:6px 0 10px;">🚫 <b>PETTY TICKETS WILL NOT BE TOLERATED.</b> Submitting tickets without a valid rule violation · Wasting staff time with minor issues · Spiteful or retaliatory reports. Possible punishments: Community Service, Discord timeouts, and more.</div>
           </div>
         </div>
 
-        <!-- TERRITORY -->
-        <div id="territory" class="rule-section">
+        <!-- FACTION BASICS -->
+        <div id="basics" class="rule-section">
           <div class="section-header">
-            <span class="sh-icon">🗺️</span>
+            <span class="sh-icon">📜</span>
             <div>
-              <div class="sh-title">Territory & Turf</div>
-              <div class="sh-desc">Claiming, defending, and limits on zone control</div>
+              <div class="sh-title">Faction Basics</div>
+              <div class="sh-desc">Territory, Empire Games, Warzone, and Clothing rules</div>
             </div>
-            <div class="sh-right"><span class="sh-count">5 RULES</span><span class="sh-toggle">▾</span></div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag default">Claim</span><span class="rule-text"><b>Territory is assigned by staff based on faction strength, activity, and lore.</b> You cannot declare an area yours by simply showing up. File a territory claim through Faction Support.</span></div>
-            <div class="rule"><span class="tag default">Defend</span><span class="rule-text">Defending your turf from confirmed hostiles is permitted without a war declaration, but all combat rules still apply. You may not execute trespassers on sight without prior RP interaction.</span></div>
-            <div class="rule"><span class="tag blue">Cap</span><span class="rule-text">No single faction may control more than <b>3 active territory zones</b> at one time. Exceeding this requires staff approval and triggers increased faction oversight.</span></div>
-            <div class="rule"><span class="tag default">Neutral</span><span class="rule-text">Certain areas are designated <b>neutral zones</b> by staff. Open faction warfare, gang executions, and sustained conflict in these zones results in immediate scene termination and strikes.</span></div>
-            <div class="rule"><span class="tag danger">Griefing</span><span class="rule-text">Camping another faction's turf solely to block their activities — without an active war or story justification — is turf griefing and subject to immediate staff intervention.</span></div>
+            <div class="notice gold" style="margin:10px 0 4px;">🗺️ <b>TERRITORIES ARE CONTROLLED BY ACTIVITY, NOT KILLS.</b> Each action a gang member performs inside a zone increases their control percentage. This is NOT a kill zone — killing another gang will NOT gain territory. You must follow interaction guidelines.</div>
+            <div class="rule"><span class="tag blue">Territory</span><span class="rule-text"><b>Ways to build control:</b> Graffiti Tagging (coming soon) · Selling Drugs — completing sales in a zone increases influence, and selling in your territory also increases your drug payout. Control of a zone shifts dynamically based on which gang is most active there.</span></div>
+            <div class="rule"><span class="tag default">Empire Games</span><span class="rule-text">Every month there will be one event at the end of the month (rotating format — RP, Hunger Games style, etc.).</span></div>
+            <div class="rule"><span class="tag blue">Warzone</span><span class="rule-text">Unlimited T-count allowed. Grenades and sticky bombs are allowed. Only <b>consumables</b> are to be robbed. Everyone MUST stay in the zone — going out of zone will result in you or your team getting /killed. Everyone will be starting inside a helicopter piloted by staff. Once the helicopter gets into the zone everyone is free to jump out.</span></div>
+            <div class="rule"><span class="tag default">Clothing</span><span class="rule-text"><b>Faction colors/flags must be worn AT ALL TIMES</b> unless working at a whitelisted business or doing a heist. Pretending to wear another faction's colors or flag to confuse others is a strike. All faction-branded clothing must be approved by Faction Oversight before being imported into the city.</span></div>
+            <div style="padding: 0 26px 14px;">
+              <table class="rule-table">
+                <tr><th>Offense</th><th>Consequence</th></tr>
+                <tr><td><b>1st Warning</b></td><td>25 Comms</td></tr>
+                <tr><td><b>2nd Warning</b></td><td>50 Comms</td></tr>
+                <tr><td><b>3rd Warning</b></td><td>75 Comms</td></tr>
+                <tr><td><b>4th Warning</b></td><td>Personal Strike</td></tr>
+                <tr><td><b>5th+ Offense</b></td><td>Deflag + removal from faction for up to 5 days. Two deflags = permanent blacklist from faction life.</td></tr>
+              </table>
+            </div>
           </div>
         </div>
 
-        <!-- WARS -->
-        <div id="wars" class="rule-section">
+        <!-- STRIKES -->
+        <div id="strikes" class="rule-section">
           <div class="section-header">
-            <span class="sh-icon">⚔️</span>
+            <span class="sh-icon">❌</span>
             <div>
-              <div class="sh-title">Gang Wars</div>
-              <div class="sh-desc">Declaration, conduct, duration, and ending wars</div>
+              <div class="sh-title">Strikes</div>
+              <div class="sh-desc">Personal and faction strike consequences</div>
             </div>
-            <div class="sh-right"><span class="sh-count">6 RULES</span><span class="sh-toggle">▾</span></div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag danger">Declare</span><span class="rule-text"><b>Wars must be declared through Faction Support with documented beef justification.</b> Mass shootings between gangs without a filed war declaration are treated as RDM, not war.</span></div>
-            <div class="rule"><span class="tag default">Beef</span><span class="rule-text">Beef must stem from in-character events. OOC grudges, Discord arguments, or personal player beef are <b>not</b> valid war justifications and will be rejected by staff.</span></div>
-            <div class="rule"><span class="tag default">KOS</span><span class="rule-text">Active war status allows KOS between <b>flagged members only</b>. Uninvolved players, civilians, and unarmed members not actively engaging must still receive proper RP interaction before escalation.</span></div>
-            <div class="rule"><span class="tag blue">Duration</span><span class="rule-text">Wars have a staff-set duration of <b>7–14 days</b>. Staff may force a peace or extend based on RP quality. Wars do not continue indefinitely regardless of IC outcomes.</span></div>
-            <div class="rule"><span class="tag green">Peace</span><span class="rule-text">Peace must be brokered IC and submitted to staff. Either faction may request a peace meeting — both leaders must sign off before war status is officially removed.</span></div>
-            <div class="rule"><span class="tag danger">Civilians</span><span class="rule-text">Mass civilian casualties, hospital camping, or targeting uninvolved players during gang wars results in <b>immediate war suspension</b> and faction strikes — regardless of which side started it.</span></div>
+            <div class="notice warn" style="margin:10px 0 4px;">⚠️ <b>UPON RECEIVING A PERSONAL STRIKE — DEFLAG IMMEDIATELY.</b> You MUST de-flag immediately and remain deflagged until the strike is resolved. Strikes fall off after 1 month.</div>
+            <div style="padding: 0 26px 10px;">
+              <div style="color:var(--gold);font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Personal Strike Consequences</div>
+              <table class="rule-table">
+                <tr><th>Strike</th><th>Consequence</th></tr>
+                <tr><td><b>1st Strike</b></td><td>Warning + 100 Comms</td></tr>
+                <tr><td><b>2nd Strike</b></td><td>100k + 200 Comms</td></tr>
+                <tr><td><b>3rd Strike</b></td><td>150k + Removal from gang life for ONE week</td></tr>
+              </table>
+            </div>
+            <div class="rule"><span class="tag danger">Faction Strikes</span><span class="rule-text">Faction strikes must be paid within <b>1 week</b>. Failure to pay may result in faction disbandment. Faction strikes remain on record for 30 days and are issued when <b>5+ members are involved in a scene</b>.</span></div>
+            <div style="padding: 0 26px 14px;">
+              <table class="rule-table">
+                <tr><th>Strike</th><th>Consequence</th></tr>
+                <tr><td><b>1st Strike</b></td><td>75k per person</td></tr>
+                <tr><td><b>2nd Strike</b></td><td>150k per person</td></tr>
+                <tr><td><b>3rd Strike</b></td><td>200k per person</td></tr>
+                <tr><td><b>4th Strike</b></td><td>Disbandment + 1-week cooldown for all members</td></tr>
+              </table>
+            </div>
+            <div class="strike-visual">
+              <div class="strike-step s1"><div class="s-num">1st</div><div class="s-label">Warning + Comms</div></div>
+              <div class="strike-step s2"><div class="s-num">2nd</div><div class="s-label">Fine + Comms</div></div>
+              <div class="strike-step s3"><div class="s-num">3rd</div><div class="s-label">Removal</div></div>
+            </div>
           </div>
         </div>
 
-        <!-- ALLIANCES -->
-        <div id="alliances" class="rule-section">
+        <!-- STARTING A FACTION -->
+        <div id="starting" class="rule-section">
           <div class="section-header">
-            <span class="sh-icon">🔗</span>
+            <span class="sh-icon">👥</span>
             <div>
-              <div class="sh-title">Alliances & Beefs</div>
-              <div class="sh-desc">Registering allies and avoiding super-alliances</div>
+              <div class="sh-title">Starting a Faction</div>
+              <div class="sh-desc">Whitelist requirements and creation process</div>
             </div>
-            <div class="sh-right"><span class="sh-count">4 RULES</span><span class="sh-toggle">▾</span></div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag default">Register</span><span class="rule-text"><b>Alliance agreements must be registered with Faction Support.</b> Unregistered alliances are not recognized — allied backup cannot be called in during official war events.</span></div>
-            <div class="rule"><span class="tag blue">Limit</span><span class="rule-text">A faction may hold a maximum of <b>2 active alliances</b> at any time. Building a dominant super-alliance is prohibited and grounds for staff-forced dissolution of the agreement.</span></div>
-            <div class="rule"><span class="tag default">Auto-War</span><span class="rule-text">If one allied faction enters a war, the other is <b>not automatically drawn in</b>. Each faction must independently file for war involvement if they choose to participate.</span></div>
-            <div class="rule"><span class="tag danger">Stacking</span><span class="rule-text">Calling in allies, off-roster players, or third parties to achieve overwhelming numbers is stacking — a serious violation. War fights must stay within numerical limits set by staff.</span></div>
+            <div class="rule"><span class="tag default">Name</span><span class="rule-text">Faction Name — No fighting over names. Must not break TOS, must be original. <b>No 'cartel', 'mafia', or real-life gang/organization names.</b></span></div>
+            <div class="rule"><span class="tag default">Colors</span><span class="rule-text">Faction Colors — No fighting over colors. Must be approved by Faction Oversight.</span></div>
+            <div class="rule"><span class="tag default">Block</span><span class="rule-text">Faction Block — No fighting over blocks. Must be approved by Faction Oversight.</span></div>
+            <div class="rule"><span class="tag blue">Roster</span><span class="rule-text">Up to <b>25 members</b> (including boss). No more than 1 boss, up to 2 underbosses, 2 captains. <b>Minimum 6 members</b> to form and remain a faction. Custom flag required (temp flag allowed initially, but custom flag must be purchased eventually).</span></div>
           </div>
         </div>
 
-        <!-- EVENTS -->
-        <div id="events" class="rule-section">
+        <!-- BLOCK FIGHTS -->
+        <div id="blockfights" class="rule-section">
           <div class="section-header">
-            <span class="sh-icon">🏆</span>
+            <span class="sh-icon">🏠</span>
             <div>
-              <div class="sh-title">Faction Events</div>
-              <div class="sh-desc">Airdrops, turf captures, Empire Games</div>
+              <div class="sh-title">Block Fights</div>
+              <div class="sh-desc">Rules for pushing a faction's home block</div>
             </div>
-            <div class="sh-right"><span class="sh-count">4 RULES</span><span class="sh-toggle">▾</span></div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag default">Events</span><span class="rule-text"><b>Airdrops, turf captures, and Empire Games follow event-specific rules posted by staff.</b> General faction rules remain in effect unless staff explicitly overrides them for that event.</span></div>
-            <div class="rule"><span class="tag danger">Fair Play</span><span class="rule-text">Exploiting event mechanics, coordinating with staff for early info, or staging results is cheating. All event outcomes are final pending staff review.</span></div>
-            <div class="rule"><span class="tag default">Prizes</span><span class="rule-text">Event rewards are distributed after staff confirmation. Attempting to claim prizes before the official announcement or disputing results OOC may result in forfeiture.</span></div>
-            <div class="rule"><span class="tag green">Host</span><span class="rule-text">Factions may propose hosted events by submitting a request to Faction Support <b>at least 48 hours in advance</b>. A staff member must be present for all faction-hosted events involving other gangs.</span></div>
+            <div class="notice gold" style="margin:10px 0 4px;">📋 <b>MANDATORY RULES WHEN PUSHING A FACTION BLOCK.</b> Minimum 30-second good roleplay interaction before a shootout can occur. Weapons CANNOT be drawn during the interaction period — even if you are on your own block.</div>
+            <div class="rule"><span class="tag blue">T-Count</span><span class="rule-text">If pushed on your block, you are allowed <b>unlimited T-Count within a 2-street radius</b> of your home block. Once outside that 2-street radius, T-Count is reduced from unlimited to 8.</span></div>
           </div>
         </div>
 
-        <!-- DISCIPLINE -->
-        <div id="discipline" class="rule-section">
+        <!-- ON-FOOT & AVOIDING -->
+        <div id="onfoot" class="rule-section">
           <div class="section-header">
-            <span class="sh-icon">⚠️</span>
+            <span class="sh-icon">👟</span>
             <div>
-              <div class="sh-title">Discipline & Consequences</div>
-              <div class="sh-desc">The 3-strike system and how violations are handled</div>
+              <div class="sh-title">On-Foot &amp; Avoiding</div>
+              <div class="sh-desc">Interaction timer, pursuit rules, and avoiding classification</div>
             </div>
-            <div class="sh-right"><span class="sh-count">5 RULES</span><span class="sh-toggle">▾</span></div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag default">Strikes</span><span class="rule-text"><b>Factions operate on a 3-strike system.</b> Strike decay occurs after 30 days of clean conduct. See the chart below.</span></div>
-            <div class="rule"><span class="tag danger">Instant</span><span class="rule-text">Certain offenses result in <b>immediate dissolution</b> without warnings: coordinated mass RDM, group harassment, staff impersonation, or exploiting server vulnerabilities as a faction.</span></div>
-            <div class="rule"><span class="tag default">Members</span><span class="rule-text">Individual member bans do not automatically dissolve a faction. However, if <b>3+ members</b> are banned for related conduct within 7 days, a full faction review is triggered.</span></div>
-            <div class="rule"><span class="tag blue">Appeal</span><span class="rule-text">Faction strikes may be appealed within <b>48 hours</b> through Faction Support. Appeals must include evidence and a clear argument — vague complaints will not be considered.</span></div>
-            <div class="rule"><span class="tag green">Rebuild</span><span class="rule-text">Dissolved factions may reapply after <b>14 days</b> with a new name, new lore, and demonstrated commitment to rules. Previous strikes do not transfer to a reformed faction.</span></div>
+            <div class="rule"><span class="tag default">Timer</span><span class="rule-text">Interaction must last a <b>minimum of 45 seconds</b>, conducted clearly and verbally giving the opposing faction sufficient time to acknowledge and respond.</span></div>
+            <div class="rule"><span class="tag blue">Pursuit</span><span class="rule-text">If the opposing faction flees, you may pursue for up to <b>10 seconds</b> before drawing weapons. After 10 seconds of continued evasion, you are permitted to shoot.</span></div>
+            <div class="rule"><span class="tag danger">Safe Zones</span><span class="rule-text">Players are strictly prohibited from fleeing into or initiating within businesses, greenzones, or clothing stores. This is considered powergaming and may result in disciplinary action.</span></div>
+            <div class="rule"><span class="tag danger">Avoiding</span><span class="rule-text">Running in circles or not replying until the interaction timer expires is classified as <b>FAIL RP</b> and will be handled accordingly.</span></div>
           </div>
-          <div class="strike-visual">
-            <div class="strike-step s1"><div class="s-num">1st</div><div class="s-label">Formal Warning</div></div>
-            <div class="strike-step s2"><div class="s-num">2nd</div><div class="s-label">War / Event Ban</div></div>
-            <div class="strike-step s3"><div class="s-num">3rd</div><div class="s-label">Dissolution</div></div>
+        </div>
+
+        <!-- STREET FIGHTS -->
+        <div id="streetfights" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🛣️</span>
+            <div>
+              <div class="sh-title">Street Fights</div>
+              <div class="sh-desc">Rules for fights away from your home block</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">No Retreat</span><span class="rule-text">If you have an interaction in the streets, <b>you CANNOT run back to block.</b></span></div>
+            <div class="rule"><span class="tag default">No Setup</span><span class="rule-text">NO setting up while an interaction is happening. All members must be present during the interaction unless coming from a different area. Baiting your own faction members to intentionally cause a scene just to shoot without interaction is Fail RP.</span></div>
+            <div class="notice info" style="margin:6px 0 4px;">📌 <b>EXAMPLE:</b> If you get pressed at Legion Square and it turns into a shootout, you CANNOT retreat back to your block. It is now a street fight. If you catch your opps lacking, you must have a 45-second interaction.</div>
+            <div class="rule"><span class="tag blue">Vehicles</span><span class="rule-text">Interactions cannot start inside a vehicle — you must get out. If a faction orders you out of your vehicle to start an interaction, you must comply. Driving off when someone approaches to start an interaction is Fail RP. If an interaction turns into a vehicle pursuit, the chase must last <b>30 seconds</b> before you may shoot — and only to disable the vehicle, NOT to kill or injure. Chases cannot be brought back to block. You cannot stash items in a vehicle or anywhere else after an interaction has begun.</span></div>
+          </div>
+        </div>
+
+        <!-- DRUG CLAIMING -->
+        <div id="drugclaiming" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">💊</span>
+            <div>
+              <div class="sh-title">Drug Claiming</div>
+              <div class="sh-desc">How to claim and fight for drug spots</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">How to Claim</span><span class="rule-text">Show proof of all ingredients being collected and the drug being crafted, including locations needed for each ingredient. Once claimed, the claim stays open for <b>24 hours</b>. If another gang claims within that window, it becomes a turf-style war. If no other claim is submitted in 24 hours, the drug is yours.</span></div>
+            <div class="notice gold" style="margin:6px 0 4px;">⚔️ <b>MANDATORY WAR RULES:</b> 8 T-Count · No roofs or interiors · Only consumables may be robbed (guns only if agreed upon) · No vehicles after the war starts — no shooting from cars · The losing gang cannot run the drug or bench for 1 week · All members MUST have clipping software running. POV can be requested at any time — failure to provide may result in war forfeit or a rerun.</div>
+            <div class="rule"><span class="tag blue">Taking to War</span><span class="rule-text">Have <b>3 interactions</b> with the other gang at the drug location (bench or ingredient locations). If they don't show up to defend, provide proof of your gang going to the drug and making it known — either posting on Birdy or calling the opposing gang. You may take hostages at the drug location, but ONLY members already at the location. You cannot transport a hostage there. If the opposing gang still doesn't show even with a hostage, document it with clips.</span></div>
+          </div>
+        </div>
+
+        <!-- DRUG TAXING -->
+        <div id="drugtaxing" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">💊</span>
+            <div>
+              <div class="sh-title">Drug Taxing</div>
+              <div class="sh-desc">Tax limits, protection, and what you cannot tax</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="notice info" style="margin:10px 0 4px;">ℹ️ <b>WHAT IS TAXING?</b> Taxing is when a gang controls a drug location and demands a percentage of materials or crafted product from players using that location. Taxing is NOT a free pass to rob everything a player owns.</div>
+            <div class="rule"><span class="tag danger">Weed</span><span class="rule-text">Weed is a civilian drug: <b>gangs CANNOT tax weed.</b> Taxing/robbery is limited to ONLY the drugs produced or ingredients at that location.</span></div>
+            <div class="rule"><span class="tag blue">Limits</span><span class="rule-text"><b>Faction Members:</b> up to 50% max. <b>Civilians:</b> up to 25% max. If they refuse, you may rob or kill them (no flatbacking — proper interactions required).</span></div>
+            <div class="rule"><span class="tag default">Examples</span><span class="rule-text">Hard Candy spot → only Hard Candy may be taxed · Cough Syrup spot → only Cough Syrup may be taxed · Lean Bench → Lean ingredients or crafted Lean Cups · Coke Bench → Coke ingredients or crafted Cocaine.</span></div>
+            <div class="notice warn" style="margin:6px 0 4px;">🚫 <b>YOU MAY NOT TAX:</b> Weapons, radios, or phones · Unrelated items or bank/cash (unless a separate valid robbery occurs) · "Double Dip" — taxing and then immediately fully robbing the same person.</div>
+            <div class="rule"><span class="tag green">Tax Protection</span><span class="rule-text">Once taxed, a player receives <b>1-hour Tax Protection</b> at that specific location. They cannot be taxed again by multiple gangs or chain-taxed across locations during this window. Example: Taxed at Lean Bench at 6:00 PM → cannot be taxed for Lean again until 7:00 PM.</span></div>
+            <div class="rule"><span class="tag default">Proof</span><span class="rule-text">Every tax interaction requires proof: screenshot or clip showing player name/ID, time, location, and items taxed. Failure to provide proof may result in items returned, scene voided, or staff punishment.</span></div>
+            <div class="notice gold" style="margin:6px 0 4px;">✅ <b>A VALID TAX SCENE REQUIRES:</b> Proper initiation and clear demands · Opportunity for the player to comply · High-quality RP interaction — no instantly running up yelling 'tax'.</div>
+            <div class="rule"><span class="tag danger">Tax Abuse</span><span class="rule-text">The following are considered abuse: repeatedly taxing the same player, taxing more than the allowed %, taxing unrelated items, fake taxes to bypass robbery rules, holding locations hostage with no RP. Staff reserve the right to void any tax scene deemed unfair, excessive, or low quality.</span></div>
+          </div>
+        </div>
+
+        <!-- FACTION VS CIV -->
+        <div id="factionvciv" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🧍</span>
+            <div>
+              <div class="sh-title">Faction vs Civilian</div>
+              <div class="sh-desc">When you can and cannot press civilians</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Valid Reasons</span><span class="rule-text">Valid reasons to press a civilian: Wearing faction-affiliated attire (chains, flags, custom clothing) · Provoking or talking smack to faction members · Being caught actively crafting or selling illegal drugs or weapons.</span></div>
+            <div class="notice warn" style="margin:6px 0 4px;">⚠️ <b>RANDOMLY ROBBING OR KILLING CIVILIANS WITHOUT VALID RP = IMMEDIATE FACTION STRIKE.</b></div>
+            <div class="rule"><span class="tag danger">Civ Restrictions</span><span class="rule-text">Civilians may NOT press factions under any circumstances. Civilians are expected to value their lives and avoid provoking faction members.</span></div>
+          </div>
+        </div>
+
+        <!-- FACTION VS PD -->
+        <div id="pd" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🚨</span>
+            <div>
+              <div class="sh-title">Faction vs Police</div>
+              <div class="sh-desc">PD response rules, raids, and interaction guidelines</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag blue">PD Response</span><span class="rule-text">Police will respond to faction-related shootouts with lights and sirens — and must make themselves known. Factions may NOT order police to leave the scene.</span></div>
+            <div class="rule"><span class="tag default">Your Options</span><span class="rule-text">When police respond, choose one: <b>Stay and Fight</b> — must include verbal communication · <b>Flee the Scene</b> — escape to avoid arrest · <b>Roleplay the Scene</b> — comply and RP the interaction.</span></div>
+            <div class="rule"><span class="tag danger">No Leading PD</span><span class="rule-text">Factions may NOT lead or bring PD back to their block after an interaction or while being actively chased.</span></div>
+            <div class="rule"><span class="tag blue">Raids</span><span class="rule-text">PD will provide a <b>24-hour warning</b> before a raid begins. Boss stashes and shared faction stashes may be raided. Personal properties may ONLY be raided with a valid warrant. All illegal items found will be seized. You may sell drugs and weapons during this time but may NOT store, move, or hide them. Factions may be given the option to forfeit 50% of illegal possessions to avoid further escalation.</span></div>
+            <div class="rule"><span class="tag danger">No KOS</span><span class="rule-text">You may NOT KOS (kill on sight) police officers — this is RDM. Cop baiting is strictly prohibited: intentionally luring police into an interaction solely to kill them. Police officers may be taken hostage — refer to PD SOPs for full rules.</span></div>
+            <div class="rule"><span class="tag default">Getaways</span><span class="rule-text">Using a motorcycle as a getaway vehicle while selling drugs is strictly prohibited. You CANNOT jump or dive into water to hide or evade capture. Crossing water using a boat or proper water vehicle is allowed. Entering water to avoid capture = Fail RP.</span></div>
+            <div class="notice info" style="margin:6px 0 10px;">🎭 <b>MASKING YOUR IDENTITY — WHAT IS AND ISN'T ALLOWED:</b><br>
+              <b>NOT Allowed:</b> Using a plastic surgeon to drastically alter your appearance to avoid arrest, evade police, or hide while under active warrant · Changing facial structure or adding age/wrinkles.<br>
+              <b>Allowed:</b> Changing outfits · Changing or recoloring hair · Wearing a mask.
+            </div>
           </div>
         </div>
 
