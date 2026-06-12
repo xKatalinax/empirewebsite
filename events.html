@@ -492,5 +492,162 @@
         <div class="info-row"><div class="info-row-icon">📢</div><div class="info-row-text"><strong>All Announcements in Discord</strong>Times, locations, and themes are posted before every event.</div></div>
       </div>
 
+<script>
+// ── CALENDAR ──
+const STATIC_EVENTS = {
+  '2026-5': {
+    2:  [{ label: 'Killer Clown Maze',    color: '#f6b13a' }],
+    4:  [{ label: 'Murder Mystery',       color: '#f6b13a' }],
+    7:  [{ label: 'Spirit Week Start',    color: '#ff7200' }],
+    8:  [{ label: 'Spirit Week',          color: '#ff7200' }],
+    9:  [{ label: 'Spirit Week',          color: '#ff7200' }],
+    10: [{ label: 'Watermelon Wednesday', color: '#39ff82' }],
+    11: [{ label: 'Spirit Week',          color: '#ff7200' }],
+    12: [{ label: 'Spirit Week',          color: '#ff7200' }],
+    13: [{ label: 'Spirit Week End',      color: '#ff7200' }],
+    15: [{ label: 'Evidence Transport',   color: '#f6b13a' }],
+    17: [{ label: 'Among Us',             color: '#f6b13a' }],
+    22: [{ label: 'Protect the VIP',      color: '#f6b13a' }],
+    25: [{ label: 'Red Light Green Light',color: '#f6b13a' }],
+    28: [{ label: 'Cayo Bloobath',        color: '#a78bfa' }],
+  }
+};
+
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+let calDate = new Date(2026, 5, 1);
+let selectedDay = null;
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function getEventsForDay(year, month, day) {
+  const key = `${year}-${month}`;
+  const results = [];
+  const dayMap = STATIC_EVENTS[key];
+  if (dayMap && dayMap[day]) results.push(...dayMap[day]);
+  return results;
+}
+
+function buildCalendar(d) {
+  const year  = d.getFullYear();
+  const month = d.getMonth();
+  const today = new Date();
+
+  document.getElementById('calMonthName').textContent = MONTH_NAMES[month];
+  document.getElementById('calYear').textContent = year;
+
+  const firstDow    = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const daysInPrev  = new Date(year, month, 0).getDate();
+
+  const weeksEl = document.getElementById('calWeeks');
+  weeksEl.innerHTML = '';
+
+  let dayNum = 1, nextNum = 1;
+  let prevNum = daysInPrev - firstDow + 1;
+  const totalCells = Math.ceil((firstDow + daysInMonth) / 7) * 7;
+
+  for (let cell = 0; cell < totalCells; cell++) {
+    if (cell % 7 === 0) {
+      const week = document.createElement('div');
+      week.className = 'cal-week';
+      weeksEl.appendChild(week);
+    }
+    const week = weeksEl.lastChild;
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+
+    let cellDay, inMonth;
+    if (cell < firstDow) {
+      cellDay = prevNum++; inMonth = false; el.className += ' other-month';
+    } else if (dayNum > daysInMonth) {
+      cellDay = nextNum++; inMonth = false; el.className += ' other-month';
+    } else {
+      cellDay = dayNum++; inMonth = true;
+    }
+
+    const numSpan = document.createElement('span');
+    numSpan.textContent = cellDay;
+    el.appendChild(numSpan);
+
+    if (inMonth) {
+      const evs = getEventsForDay(year, month, cellDay);
+      const isToday = year===today.getFullYear() && month===today.getMonth() && cellDay===today.getDate();
+      const isSel = selectedDay && selectedDay.y===year && selectedDay.m===month && selectedDay.day===cellDay;
+      if (isToday) el.classList.add('today');
+      if (isSel && !isToday) el.classList.add('selected');
+      if (evs.length > 0) {
+        el.classList.add('has-event');
+        const dotsRow = document.createElement('div');
+        dotsRow.className = 'cal-dots';
+        evs.slice(0,3).forEach(ev => {
+          const dot = document.createElement('div');
+          dot.className = 'cal-dot';
+          dot.style.background = ev.color;
+          dotsRow.appendChild(dot);
+        });
+        el.appendChild(dotsRow);
+      }
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => {
+        selectedDay = { y: year, m: month, day: cellDay };
+        buildCalendar(calDate);
+        showDayInfo(year, month, cellDay, getEventsForDay(year, month, cellDay));
+      });
+    }
+
+    week.appendChild(el);
+  }
+}
+
+function showDayInfo(year, month, day, evs) {
+  const infoEl   = document.getElementById('calSelectedInfo');
+  const dateEl   = document.getElementById('calSelectedDate');
+  const listEl   = document.getElementById('calSelectedEvents');
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dow      = new Date(year, month, day).getDay();
+  dateEl.textContent = `${dayNames[dow]}, ${MONTH_NAMES[month]} ${day}`;
+  listEl.innerHTML = '';
+  if (evs.length === 0) {
+    listEl.innerHTML = '<div style="font-size:12px;color:var(--muted);">No events scheduled.</div>';
+  } else {
+    evs.forEach(ev => {
+      const item = document.createElement('div');
+      item.className = 'cal-event-item';
+      item.innerHTML = `<div class="cdot" style="background:${ev.color}"></div><span>${esc(ev.label)}</span>`;
+      listEl.appendChild(item);
+    });
+  }
+  infoEl.classList.add('visible');
+}
+
+document.getElementById('calPrev').addEventListener('click', () => {
+  calDate.setMonth(calDate.getMonth()-1); selectedDay=null;
+  document.getElementById('calSelectedInfo').classList.remove('visible');
+  buildCalendar(calDate);
+});
+document.getElementById('calNext').addEventListener('click', () => {
+  calDate.setMonth(calDate.getMonth()+1); selectedDay=null;
+  document.getElementById('calSelectedInfo').classList.remove('visible');
+  buildCalendar(calDate);
+});
+document.getElementById('calTodayBtn').addEventListener('click', () => {
+  const t = new Date();
+  calDate = new Date(t.getFullYear(), t.getMonth(), 1);
+  selectedDay = null;
+  document.getElementById('calSelectedInfo').classList.remove('visible');
+  buildCalendar(calDate);
+});
+
+// ── MOBILE NAV ──
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+
+// ── INIT ──
+buildCalendar(calDate);
+</script>
+
 </body>
 </html>
