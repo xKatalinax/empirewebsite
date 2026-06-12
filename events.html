@@ -3,57 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Empire Roleplay — Events</title>
+  <title>Empire Roleplay, Events</title>
   <link rel="icon" type="image/png" href="empire-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,900;1,900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
   <style>
-    :root {
-      --bg: #060504;
-      --panel: #0f0d0b;
-      --gold: #f6b13a;
-      --gold2: #ff7200;
-      --text: #f2ede4;
-      --muted: #a89880;
-      --line: rgba(246,177,58,.18);
-      --danger: #ff3c3c;
-      --green: #39ff82;
-      --discord: #5865F2;
-      --discord2: #4752c4;
-      --r: 20px;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); overflow-x: hidden; }
-    a { color: inherit; text-decoration: none; }
-
-    /* ── NAV ── */
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 6%; height: 70px;
-      background: rgba(6,5,4,.88); backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--line);
-    }
-    .brand { display: flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; }
-    .brand img { height: 40px; filter: drop-shadow(0 0 12px rgba(246,177,58,.5)); animation: float 3.2s ease-in-out infinite; }
-    .nav-links { display: flex; gap: 26px; align-items: center; font-weight: 800; font-size: 13px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; }
-    .nav-links a { transition: color .2s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-    .btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(246,177,58,.5); background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #160b00; font-weight: 900; font-size: 14px; border-radius: 999px; padding: 10px 22px; transition: .2s; cursor: pointer; }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,114,0,.4); }
-    .btn.ghost { background: rgba(255,255,255,.05); color: var(--text); border-color: rgba(255,255,255,.15); box-shadow: none; }
-    .btn.ghost:hover { border-color: var(--gold); color: var(--gold); }
-    .btn.discord-btn { background: linear-gradient(135deg, var(--discord), var(--discord2)); border-color: rgba(88,101,242,.5); color: #fff; font-family: 'Inter', sans-serif; }
-    .btn.discord-btn:hover { box-shadow: 0 0 30px rgba(88,101,242,.5); }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--gold); border-radius: 2px; }
-    .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99; background: rgba(6,5,4,.97); border-bottom: 1px solid var(--line); padding: 20px 6%; flex-direction: column; gap: 14px; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-weight: 800; font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding: 10px 0; border-bottom: 1px solid var(--line); }
-    .mobile-menu a:last-child { border-bottom: none; }
-    .banner-text { font-size: 13px; color: var(--muted); }
-    .banner-text strong { color: #a5b4fc; }
+    :root { --r: 20px; }
 
     /* ── HERO ── */
     .hero {
@@ -80,6 +36,7 @@
     .ticker { display: flex; animation: ticker 30s linear infinite; white-space: nowrap; }
     .ticker-item { display: inline-flex; align-items: center; gap: 12px; padding: 0 26px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
     .ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
     /* ── PAGE LAYOUT ── */
     .page-shell { max-width: 1300px; margin: 0 auto; padding: 60px 4% 100px; display: grid; grid-template-columns: 1fr 400px; gap: 28px; align-items: start; }
@@ -143,17 +100,13 @@
     .status-dot.monthly  { background: #a78bfa; box-shadow: 0 0 8px rgba(167,139,250,.6); }
     .status-dot.live     { background: #5865F2; box-shadow: 0 0 8px rgba(88,101,242,.6); animation: blink 2s ease-in-out infinite; }
     .status-text { font-size: 10px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
 
     /* ── SIDEBAR ── */
     .sidebar { display: flex; flex-direction: column; gap: 18px; position: sticky; top: 90px; }
 
     /* ── MONTHLY CALENDAR ── */
-    .cal-card {
-      background: rgba(255,255,255,.032); border: 1px solid var(--line);
-      border-radius: var(--r); overflow: hidden;
-    }
+    .cal-card { background: rgba(255,255,255,.032); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
     .cal-header {
       background: linear-gradient(90deg, rgba(246,177,58,.14), transparent);
       padding: 16px 20px; border-bottom: 1px solid var(--line);
@@ -166,11 +119,9 @@
     .cal-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--line); background: rgba(255,255,255,.04); color: var(--muted); font-size: 16px; cursor: pointer; transition: .2s; display: flex; align-items: center; justify-content: center; font-family: inherit; }
     .cal-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(246,177,58,.08); }
     .cal-today-btn { font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; padding: 0 10px; width: auto; }
-
     .cal-grid-wrap { padding: 14px 14px 10px; }
     .cal-dow-row { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-bottom: 6px; }
     .cal-dow { text-align: center; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding: 4px 0; }
-
     .cal-weeks { display: flex; flex-direction: column; gap: 2px; }
     .cal-week { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
     .cal-day {
@@ -184,20 +135,12 @@
     .cal-day.has-event { color: var(--text); font-weight: 800; }
     .cal-day.selected:not(.today) { background: rgba(255,255,255,.1); outline: 1px solid rgba(255,255,255,.3); }
     .cal-day:hover:not(.other-month) { background: rgba(255,255,255,.07); }
-
     .cal-dots { display: flex; gap: 2px; align-items: center; justify-content: center; position: absolute; bottom: 3px; left: 0; right: 0; }
     .cal-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
-
     .cal-legend { padding: 8px 14px 14px; display: flex; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--line); margin-top: 4px; }
     .leg-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted); font-weight: 700; }
     .leg-dot { width: 7px; height: 7px; border-radius: 50%; }
-
-    .cal-selected-info {
-      margin: 0 14px 14px;
-      background: rgba(246,177,58,.07); border: 1px solid rgba(246,177,58,.18);
-      border-radius: 12px; padding: 10px 14px;
-      display: none;
-    }
+    .cal-selected-info { margin: 0 14px 14px; background: rgba(246,177,58,.07); border: 1px solid rgba(246,177,58,.18); border-radius: 12px; padding: 10px 14px; display: none; }
     .cal-selected-info.visible { display: block; }
     .cal-selected-date { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
     .cal-event-list { display: flex; flex-direction: column; gap: 4px; }
@@ -213,7 +156,7 @@
     .info-row-text { color: var(--muted); line-height: 1.5; }
     .info-row-text strong { color: var(--text); font-weight: 800; display: block; margin-bottom: 2px; }
 
-    /* Discord CTA */
+    /* Discord CTA card */
     .discord-card { background: linear-gradient(135deg, rgba(246,177,58,.12), rgba(255,114,0,.06)); border: 1px solid rgba(246,177,58,.25); border-radius: var(--r); padding: 24px 20px; text-align: center; }
     .discord-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
     .discord-card p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
@@ -227,24 +170,11 @@
     .rec-when { font-size: 12px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
     .rec-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
 
-    /* ── FOOTER ── */
-    footer { padding: 46px 6%; display: flex; justify-content: space-between; gap: 28px; flex-wrap: wrap; color: var(--muted); border-top: 1px solid var(--line); background: #030302; font-size: 14px; }
-    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
-    .footer-brand img { height: 46px; filter: drop-shadow(0 0 14px rgba(246,177,58,.3)); }
-    .footer-brand p { max-width: 260px; line-height: 1.6; }
-    .footer-copy { color: rgba(168,152,128,.5); font-size: 12px; }
-    .footer-links { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; padding-top: 4px; }
-    .footer-links a:hover { color: var(--gold); }
-
     /* Toast */
     .toast { position: fixed; bottom: 28px; right: 28px; z-index: 9999; background: rgba(15,13,11,.95); border: 1px solid rgba(57,255,130,.3); border-radius: 14px; padding: 14px 20px; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; color: #39ff82; backdrop-filter: blur(20px); transform: translateY(100px); opacity: 0; transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s; max-width: 320px; }
     .toast.show { transform: translateY(0); opacity: 1; }
 
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-
     @media (max-width: 1000px) {
-      .nav-links { display: none; } .hamburger { display: flex; }
       .page-shell { grid-template-columns: 1fr; }
       .sidebar { order: -1; position: static; }
       .recurring-grid { grid-template-columns: 1fr 1fr; }
@@ -253,11 +183,17 @@
       .event-card { grid-template-columns: 70px 1fr; }
       .event-status { display: none; }
       .recurring-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Discord logo (reused via <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="discord-logo" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286ZM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189Zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+    </symbol>
+  </svg>
 
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
@@ -276,8 +212,8 @@
       <a href="events.html" class="active">Events</a>
       <a href="index.html#features">Why Empire</a>
       <a href="index.html#faq">FAQ</a>
-      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
-      <a href="#" class="btn-nav">&#9658; Play Now</a>
+      <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Discord</a>
+      <a href="fivem://connect/zjva9ey" class="btn-nav">&#9658; Play Now</a>
     </div>
     <div class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -291,8 +227,8 @@
     <a href="events.html">Events</a>
     <a href="index.html#features">Why Empire</a>
     <a href="index.html#faq">FAQ</a>
-    <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
-    <a href="#" class="btn" style="text-align:center">&#9658; Play Now</a>
+    <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener" style="justify-content:center;border-bottom:none"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
+    <a href="fivem://connect/zjva9ey" class="btn" style="text-align:center">&#9658; Play Now</a>
   </div>
 
   <!-- HERO -->
@@ -301,29 +237,29 @@
     <div class="hero-content">
       <div class="eyebrow">Empire Roleplay</div>
       <h1>City <em>Events</em></h1>
-      <p class="hero-sub">From weekly street events to massive city takeovers — something is always happening in Empire. Check the calendar and never miss a scene.</p>
+      <p class="hero-sub">From weekly street events to massive city takeovers, something is always happening in Empire. Check the calendar and never miss a scene.</p>
     </div>
   </section>
 
   <!-- TICKER -->
   <div class="ticker-wrap">
     <div class="ticker" id="tickerInner">
-      <span class="ticker-item"><span class="ticker-dot"></span> Killer Clown Maze — June 2 · 10PM EST</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Murder Mystery — June 4 · 9PM EST</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Spirit Week — June 7–13</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Watermelon Wednesday — Every Week</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Among Us — June 17 · 9PM EST</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Evidence Transport — June 15 · 9PM EST</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Red Light Green Light — June 25 · 9PM EST</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Cayo Bloobath — June 28</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Killer Clown Maze — June 2 · 10PM EST</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Murder Mystery — June 4 · 9PM EST</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Spirit Week — June 7–13</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Watermelon Wednesday — Every Week</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Among Us — June 17 · 9PM EST</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Evidence Transport — June 15 · 9PM EST</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Red Light Green Light — June 25 · 9PM EST</span>
-      <span class="ticker-item"><span class="ticker-dot"></span> Cayo Bloobath — June 28</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Killer Clown Maze, June 2 · 10PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Murder Mystery, June 4 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Spirit Week, June 7-13</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Watermelon Wednesday, Every Week</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Among Us, June 17 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Evidence Transport, June 15 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Red Light Green Light, June 25 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Cayo Bloobath, June 28</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Killer Clown Maze, June 2 · 10PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Murder Mystery, June 4 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Spirit Week, June 7-13</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Watermelon Wednesday, Every Week</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Among Us, June 17 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Evidence Transport, June 15 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Red Light Green Light, June 25 · 9PM EST</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Cayo Bloobath, June 28</span>
     </div>
   </div>
 
@@ -351,7 +287,7 @@
           <div class="event-body">
             <div class="event-name">🔍 Murder Mystery</div>
             <div class="event-meta"><span class="epill special">⭐ Special Event</span><span class="epill community">🌆 City Event</span><span class="event-time">⏰ 9 PM EST</span></div>
-            <div class="event-desc">Someone's been murdered in the city — and it could be anyone. Work with or against the city to uncover the killer before it's too late. Full roleplay event, staff-hosted.</div>
+            <div class="event-desc">Someone's been murdered in the city, and it could be anyone. Work with or against the city to uncover the killer before it's too late. Full roleplay event, staff-hosted.</div>
           </div>
           <div class="event-status"><div class="status-badge"><div class="status-dot upcoming"></div><div class="status-text">Special</div></div></div>
         </div>
@@ -360,7 +296,7 @@
           <div class="event-date"><div class="month">JUN</div><div class="day">7</div><div class="dow">Sun</div></div>
           <div class="event-body">
             <div class="event-name">🎉 Spirit Week</div>
-            <div class="event-meta"><span class="epill new">🔥 Multi-Day</span><span class="epill community">🌆 City Event</span><span class="event-time">⏰ June 7–13</span></div>
+            <div class="event-meta"><span class="epill new">🔥 Multi-Day</span><span class="epill community">🌆 City Event</span><span class="event-time">⏰ June 7-13</span></div>
             <div class="event-desc">A full week of themed daily events celebrating Empire spirit. Beach Bum Day · Last Day of School · Pool Party Day · Watermelon Wednesday · Campfire & Cabin Day · Vacation Destination Day · Summer Festival Day.</div>
           </div>
           <div class="event-status"><div class="status-badge"><div class="status-dot upcoming"></div><div class="status-text">Week</div></div></div>
@@ -411,7 +347,7 @@
           <div class="event-body">
             <div class="event-name">🚦 Red Light Green Light</div>
             <div class="event-meta"><span class="epill special">⭐ Special Event</span><span class="epill community">🌆 City Event</span><span class="event-time">⏰ 9 PM EST</span></div>
-            <div class="event-desc">Inspired by Squid Game — move when green, freeze when red. Get caught moving and you're out. Last player standing wins. No weapons, pure nerve.</div>
+            <div class="event-desc">Inspired by Squid Game, move when green, freeze when red. Get caught moving and you're out. Last player standing wins. No weapons, pure nerve.</div>
           </div>
           <div class="event-status"><div class="status-badge"><div class="status-dot upcoming"></div><div class="status-text">Special</div></div></div>
         </div>
@@ -437,7 +373,7 @@
         <div class="sec-title">Recurring <em>Events</em></div>
         <div class="recurring-grid">
           <div class="rec-card"><div class="rec-icon">🍉</div><div class="rec-name">Watermelon Wednesday</div><div class="rec-when">Every Wednesday · 9 PM EST</div><div class="rec-desc">Empire's signature weekly event. Themed fits, good vibes, open to the whole city.</div></div>
-          <div class="rec-card"><div class="rec-icon">📦</div><div class="rec-name">Airdrops</div><div class="rec-when">Random · Staff Announced</div><div class="rec-desc">Drops anywhere in the city without warning. KOS inside the zone — no robbing.</div></div>
+          <div class="rec-card"><div class="rec-icon">📦</div><div class="rec-name">Airdrops</div><div class="rec-when">Random · Staff Announced</div><div class="rec-desc">Drops anywhere in the city without warning. KOS inside the zone, no robbing.</div></div>
           <div class="rec-card"><div class="rec-icon">🚗</div><div class="rec-name">Car Meets</div><div class="rec-when">Bi-Weekly · Saturdays</div><div class="rec-desc">Flex your build, meet the city, and keep it peaceful. Location dropped day-of.</div></div>
           <div class="rec-card"><div class="rec-icon">🔍</div><div class="rec-name">Murder Mystery</div><div class="rec-when">Monthly · Staff Hosted</div><div class="rec-desc">City-wide whodunit RP experience. Every round has a different killer and setting.</div></div>
           <div class="rec-card"><div class="rec-icon">🚔</div><div class="rec-name">Evidence Transport</div><div class="rec-when">Monthly · PvP Event</div><div class="rec-desc">LSPD moves evidence, criminals intercept. High intensity PvP with real stakes.</div></div>
@@ -492,6 +428,36 @@
         <div class="info-row"><div class="info-row-icon">📢</div><div class="info-row-text"><strong>All Announcements in Discord</strong>Times, locations, and themes are posted before every event.</div></div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand reveal">
+        <img src="empire-logo.png" alt="Empire RP">
+        <p>A premium GTA V roleplay community. Built by players, for players.</p>
+        <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join our Discord</a>
+      </div>
+      <div class="footer-links reveal">
+        <a href="index.html#home">Home</a>
+        <a href="rules.html">Rules</a>
+        <a href="faction-rules.html">Faction Rules</a>
+        <a href="showcase.html">Showcase</a>
+        <a href="events.html">Events</a>
+        <a href="index.html#features">Why Empire</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+        <a href="https://empireroleplay.tebex.io" target="_blank" rel="noopener">Store</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+      <p class="footer-copy">Built for the city by the Empire team.</p>
+    </div>
+  </footer>
+
+<script src="site.js"></script>
 <script>
 // ── CALENDAR ──
 const STATIC_EVENTS = {
@@ -640,14 +606,9 @@ document.getElementById('calTodayBtn').addEventListener('click', () => {
   buildCalendar(calDate);
 });
 
-// ── MOBILE NAV ──
-document.getElementById('hamburger').addEventListener('click', () => {
-  document.getElementById('mobileMenu').classList.toggle('open');
-});
-
 // ── INIT ──
 buildCalendar(calDate);
-</script>
+  </script>
 
 </body>
 </html>
