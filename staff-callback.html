@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff Dashboard — Empire Roleplay</title>
+  <link rel="icon" type="image/png" href="empire-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060504;
+      --panel: #0f0d0b;
+      --gold: #f6b13a;
+      --gold2: #ff7200;
+      --gold-dim: rgba(246,177,58,.18);
+      --text: #f2ede4;
+      --muted: #a89880;
+      --line: rgba(246,177,58,.18);
+      --discord: #5865F2;
+      --r: 22px;
+      --rank-color: #f6b13a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 70px;
+      background: rgba(6,5,4,.97);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 22px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .brand img { height: 40px; filter: drop-shadow(0 0 12px rgba(246,177,58,.5)); }
+    .nav-right {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .nav-user-pill {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px 6px 6px;
+    }
+    .nav-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 2px solid var(--rank-color);
+      object-fit: cover;
+    }
+    .nav-username {
+      font-weight: 800; font-size: 14px;
+    }
+    .logout-btn {
+      font-weight: 800; font-size: 12px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .05em;
+      cursor: pointer; transition: color .2s;
+      background: none; border: none; padding: 0;
+    }
+    .logout-btn:hover { color: #ff3c3c; }
+
+    /* LOADING STATE */
+    #loadingState {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 20px;
+      padding-top: 70px;
+    }
+    .spinner {
+      width: 48px; height: 48px;
+      border: 3px solid rgba(88,101,242,.2);
+      border-top-color: var(--discord);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text {
+      color: var(--muted); font-size: 15px; font-weight: 600;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    /* ERROR STATE */
+    #errorState {
+      display: none; min-height: 100vh;
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 16px;
+      text-align: center; padding: 100px 6% 60px;
+    }
+    .error-icon { font-size: 64px; }
+    .error-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 42px; font-weight: 900; text-transform: uppercase;
+      color: #ff3c3c;
+    }
+    .error-msg { color: var(--muted); font-size: 16px; max-width: 480px; line-height: 1.6; }
+    .btn-retry {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--discord), #4752c4);
+      color: #fff; font-weight: 900; font-size: 15px;
+      border: none; border-radius: 999px; padding: 14px 28px;
+      cursor: pointer; transition: .2s;
+      box-shadow: 0 4px 24px rgba(88,101,242,.3);
+      margin-top: 8px;
+    }
+    .btn-retry:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(88,101,242,.5); }
+
+    /* ACCESS DENIED */
+    #deniedState {
+      display: none; min-height: 100vh;
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 16px;
+      text-align: center; padding: 100px 6% 60px;
+    }
+    .denied-icon { font-size: 72px; }
+    .denied-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 48px; font-weight: 900; text-transform: uppercase;
+      color: #ff3c3c;
+    }
+    .denied-sub { color: var(--muted); font-size: 16px; max-width: 460px; line-height: 1.6; }
+
+    /* USER CARD — shown at top of dashboard */
+    #dashboardState { display: none; }
+    .profile-header {
+      padding: 110px 6% 0;
+      position: relative; overflow: hidden;
+    }
+    .profile-bg-glow {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 400px;
+      background: radial-gradient(ellipse, var(--rank-glow, rgba(246,177,58,.12)) 0%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+    .profile-card {
+      position: relative; z-index: 1;
+      max-width: 860px; margin: 0 auto;
+      background: linear-gradient(155deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,.02) 100%);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 36px 40px;
+      display: flex; gap: 32px; align-items: center; flex-wrap: wrap;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+
+    .avatar-wrap {
+      position: relative; flex-shrink: 0;
+    }
+    .avatar-img {
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      border: 4px solid var(--rank-color);
+      object-fit: cover;
+      box-shadow: 0 0 30px color-mix(in srgb, var(--rank-color) 40%, transparent);
+    }
+    .avatar-status {
+      position: absolute; bottom: 4px; right: 4px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #39ff82;
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 10px rgba(57,255,130,.5);
+    }
+
+    .profile-info { flex: 1; min-width: 220px; }
+    .profile-greeting {
+      color: var(--muted); font-size: 13px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .12em;
+      margin-bottom: 6px;
+    }
+    .profile-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 44px; font-weight: 900; line-height: .95;
+      text-transform: uppercase; letter-spacing: -.02em;
+      margin-bottom: 14px;
+    }
+    .rank-badge-primary {
+      display: inline-flex; align-items: center; gap: 9px;
+      border-radius: 999px; padding: 9px 18px;
+      font-weight: 900; font-size: 14px; letter-spacing: .06em;
+      text-transform: uppercase; border: 1.5px solid;
+      margin-bottom: 14px;
+    }
+    .rank-dot-lg { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .all-ranks {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .rank-chip-sm {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 999px; padding: 4px 12px;
+      font-size: 11px; font-weight: 900;
+      letter-spacing: .05em; text-transform: uppercase; border: 1px solid;
+    }
+
+    /* PROFILE META */
+    .profile-meta {
+      display: flex; flex-direction: column; gap: 8px; align-self: flex-start;
+    }
+    .meta-item {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      border-radius: 12px; padding: 12px 16px;
+      min-width: 170px;
+    }
+    .meta-label {
+      color: var(--muted); font-size: 10px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .12em; margin-bottom: 4px;
+    }
+    .meta-val { font-weight: 900; font-size: 15px; }
+    .meta-val.online { color: #39ff82; }
+
+    /* DASHBOARD SECTIONS */
+    .dash-sections {
+      max-width: 860px; margin: 0 auto;
+      padding: 32px 6% 80px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .dash-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 28px 30px;
+    }
+    .dash-card-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+    .dash-card-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(246,177,58,.1); border: 1px solid rgba(246,177,58,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .dash-card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 900; text-transform: uppercase;
+      letter-spacing: -.01em;
+    }
+    .dash-card-sub { color: var(--muted); font-size: 13px; }
+
+    /* Quick links grid */
+    .quick-links {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .quick-link {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      border-radius: 14px; padding: 14px 16px;
+      font-weight: 800; font-size: 14px;
+      cursor: pointer; transition: .2s;
+    }
+    .quick-link:hover {
+      border-color: rgba(246,177,58,.4);
+      background: rgba(246,177,58,.06);
+      transform: translateY(-2px);
+    }
+    .quick-link .ql-icon { font-size: 22px; }
+
+    /* Info row */
+    .info-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .info-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--line);
+      border-radius: 12px; padding: 10px 16px;
+      font-size: 13px;
+    }
+    .info-pill b { color: var(--text); }
+    .info-pill span { color: var(--muted); }
+
+    @media (max-width: 700px) {
+      .profile-card { flex-direction: column; align-items: flex-start; padding: 24px 20px; }
+      .profile-meta { flex-direction: row; flex-wrap: wrap; align-self: stretch; }
+      .meta-item { flex: 1; min-width: 130px; }
+      .dash-sections { padding: 24px 5% 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="mainNav">
+    <a class="brand" href="index.html">
+      <img src="empire-logo.png" alt="Empire RP Logo">
+      <span>Empire RP</span>
+    </a>
+    <div class="nav-right" id="navRight">
+      <!-- filled by JS after login -->
+    </div>
+  </nav>
+
+  <!-- LOADING -->
+  <div id="loadingState">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loadingText">Authenticating with Discord…</div>
+  </div>
+
+  <!-- ERROR -->
+  <div id="errorState">
+    <div class="error-icon">⚠️</div>
+    <div class="error-title">Authentication Failed</div>
+    <p class="error-msg" id="errorMsg">Something went wrong connecting to Discord. Please try again.</p>
+    <button class="btn-retry" onclick="window.location.href='staff-login.html'">← Back to Login</button>
+  </div>
+
+  <!-- ACCESS DENIED -->
+  <div id="deniedState">
+    <div class="denied-icon">🚫</div>
+    <div class="denied-title">Access Denied</div>
+    <p class="denied-sub">Your Discord account doesn't have a recognized staff role in the Empire RP server. If you believe this is an error, contact a Head Admin.</p>
+    <br>
+    <button class="btn-retry" onclick="window.location.href='https://discord.gg/empirerp'" style="background:linear-gradient(135deg,#5865F2,#4752c4);">Open Empire Discord</button>
+    &nbsp;
+    <button class="btn-retry" onclick="logout()" style="background:rgba(255,255,255,.08);box-shadow:none;border:1px solid rgba(255,255,255,.12);">Log Out</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboardState">
+    <div class="profile-header">
+      <div class="profile-bg-glow" id="profileBgGlow"></div>
+      <div class="profile-card" id="profileCard">
+        <!-- filled by JS -->
+      </div>
+    </div>
+    <div class="dash-sections" id="dashSections">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <script>
+    // ────────────────────────────────────────────────────────────────────────
+    // Restore config from login page
+    // ────────────────────────────────────────────────────────────────────────
+    let CONFIG = {};
+    let STAFF_RANKS = [];
+
+    try {
+      CONFIG = JSON.parse(sessionStorage.getItem('empire_config') || '{}');
+      STAFF_RANKS = JSON.parse(sessionStorage.getItem('empire_ranks') || '[]');
+    } catch(e) {}
+
+    // Fallback defaults (will still work if config is missing from session)
+    if (!CONFIG.CLIENT_ID) CONFIG = {
+      CLIENT_ID: 'YOUR_CLIENT_ID_HERE',
+      REDIRECT_URI: window.location.origin + '/staff-callback.html',
+      GUILD_ID: 'YOUR_GUILD_ID_HERE',
+    };
+
+    // ────────────────────────────────────────────────────────────────────────
+    // State helpers
+    // ────────────────────────────────────────────────────────────────────────
+    function show(id) {
+      ['loadingState','errorState','deniedState','dashboardState'].forEach(s => {
+        document.getElementById(s).style.display = s === id ? (id === 'loadingState' ? 'flex' : s === 'errorState' || s === 'deniedState' ? 'flex' : 'block') : 'none';
+      });
+    }
+
+    function setLoading(text) {
+      show('loadingState');
+      document.getElementById('loadingText').textContent = text;
+    }
+
+    function showError(msg) {
+      document.getElementById('errorMsg').textContent = msg;
+      show('errorState');
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+    // Parse OAuth fragment from URL
+    // ────────────────────────────────────────────────────────────────────────
+    function parseFragment() {
+      const hash = window.location.hash.slice(1);
+      const params = new URLSearchParams(hash);
+      return {
+        accessToken: params.get('access_token'),
+        tokenType: params.get('token_type'),
+        state: params.get('state'),
+        error: params.get('error'),
+        errorDescription: params.get('error_description'),
+      };
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+    // Discord API helpers
+    // ────────────────────────────────────────────────────────────────────────
+    async function discordFetch(endpoint, token) {
+      const res = await fetch(`https://discord.com/api/v10${endpoint}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error(`Discord API error: ${res.status} ${res.statusText}`);
+      return res.json();
+    }
+
+    function avatarUrl(user) {
+      if (user.avatar) {
+        const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
+        return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=256`;
+      }
+      // Default discord avatar
+      return `https://cdn.discordapp.com/embed/avatars/${(BigInt(user.id) >> 22n) % 6n}.png`;
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+    // Match Discord roles against STAFF_RANKS
+    // ────────────────────────────────────────────────────────────────────────
+    function matchRanks(memberRoleIds) {
+      return STAFF_RANKS.filter(r => memberRoleIds.includes(r.id))
+        .sort((a, b) => b.level - a.level);
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+    // Render dashboard
+    // ────────────────────────────────────────────────────────────────────────
+    function renderDashboard(user, member, matchedRanks) {
+      const primaryRank = matchedRanks[0];
+      const pfp = member.avatar
+        ? `https://cdn.discordapp.com/guilds/${CONFIG.GUILD_ID}/users/${user.id}/avatars/${member.avatar}.${member.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256`
+        : avatarUrl(user);
+      const displayName = member.nick || user.global_name || user.username;
+
+      // Update CSS rank color var
+      document.documentElement.style.setProperty('--rank-color', primaryRank.color);
+
+      // Nav pill
+      document.getElementById('navRight').innerHTML = `
+        <div class="nav-user-pill">
+          <img class="nav-avatar" src="${pfp}" alt="${displayName}" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+          <span class="nav-username">${displayName}</span>
+        </div>
+        <button class="logout-btn" onclick="logout()">Log Out</button>
+      `;
+
+      // Glow color
+      const glowEl = document.getElementById('profileBgGlow');
+      glowEl.style.background = `radial-gradient(ellipse, ${primaryRank.color}22 0%, transparent 65%)`;
+
+      // All rank chips HTML
+      const rankChipsHtml = matchedRanks.map(r => `
+        <div class="rank-chip-sm" style="color:${r.color};background:${r.bg};border-color:${r.border}">
+          <span style="width:7px;height:7px;border-radius:50%;background:${r.color};display:inline-block;flex-shrink:0"></span>
+          ${r.emoji} ${r.label}
+        </div>
+      `).join('');
+
+      // Profile card
+      document.getElementById('profileCard').innerHTML = `
+        <div class="avatar-wrap">
+          <img class="avatar-img" src="${pfp}" alt="${displayName}"
+            style="border-color:${primaryRank.color};box-shadow:0 0 30px ${primaryRank.color}44"
+            onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+          <div class="avatar-status"></div>
+        </div>
+        <div class="profile-info">
+          <div class="profile-greeting">Welcome back, staff</div>
+          <div class="profile-name">${displayName}</div>
+          <div class="rank-badge-primary" style="color:${primaryRank.color};background:${primaryRank.bg};border-color:${primaryRank.border}">
+            <span class="rank-dot-lg" style="background:${primaryRank.color}"></span>
+            ${primaryRank.emoji} ${primaryRank.label}
+          </div>
+          ${matchedRanks.length > 1 ? `<div class="all-ranks">${rankChipsHtml}</div>` : ''}
+        </div>
+        <div class="profile-meta">
+          <div class="meta-item">
+            <div class="meta-label">Status</div>
+            <div class="meta-val online">● Online</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Discord Tag</div>
+            <div class="meta-val" style="font-size:13px">${user.username}${user.discriminator && user.discriminator !== '0' ? '#' + user.discriminator : ''}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Staff Level</div>
+            <div class="meta-val" style="color:${primaryRank.color}">Level ${primaryRank.level}</div>
+          </div>
+        </div>
+      `;
+
+      // Dashboard sections
+      const hasHighAccess = primaryRank.level >= 8;
+      const hasMidAccess  = primaryRank.level >= 5;
+
+      document.getElementById('dashSections').innerHTML = `
+
+        <!-- Rank description -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <div class="dash-card-icon">${primaryRank.emoji}</div>
+            <div>
+              <div class="dash-card-title">${primaryRank.label}</div>
+              <div class="dash-card-sub">${primaryRank.description}</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-pill"><span>All Staff Roles:</span> <b>${matchedRanks.map(r=>r.label).join(', ')}</b></div>
+            <div class="info-pill"><span>Discord ID:</span> <b>${user.id}</b></div>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <div class="dash-card-icon">⚡</div>
+            <div>
+              <div class="dash-card-title">Quick Links</div>
+              <div class="dash-card-sub">Staff tools and resources</div>
+            </div>
+          </div>
+          <div class="quick-links">
+            <a class="quick-link" href="https://discord.gg/empirerp" target="_blank">
+              <span class="ql-icon">💬</span> Discord Server
+            </a>
+            <a class="quick-link" href="rules.html" target="_blank">
+              <span class="ql-icon">📜</span> Server Rules
+            </a>
+            <a class="quick-link" href="faction-rules.html" target="_blank">
+              <span class="ql-icon">⚔️</span> Faction Rules
+            </a>
+            <a class="quick-link" href="events.html" target="_blank">
+              <span class="ql-icon">🎪</span> Events
+            </a>
+            ${hasMidAccess ? `
+            <a class="quick-link" href="https://discord.gg/empirerp" target="_blank">
+              <span class="ql-icon">📋</span> Ticket Queue
+            </a>
+            <a class="quick-link" href="https://discord.gg/empirerp" target="_blank">
+              <span class="ql-icon">📊</span> Ban Records
+            </a>
+            ` : ''}
+            ${hasHighAccess ? `
+            <a class="quick-link" href="https://discord.gg/empirerp" target="_blank">
+              <span class="ql-icon">🔧</span> Admin Panel
+            </a>
+            <a class="quick-link" href="https://discord.gg/empirerp" target="_blank">
+              <span class="ql-icon">📣</span> Announcements
+            </a>
+            ` : ''}
+          </div>
+        </div>
+
+        ${hasHighAccess ? `
+        <!-- Admin notice -->
+        <div class="dash-card" style="border-color:rgba(255,60,60,.3);background:rgba(255,60,60,.05)">
+          <div class="dash-card-header">
+            <div class="dash-card-icon" style="background:rgba(255,60,60,.1);border-color:rgba(255,60,60,.3)">🔐</div>
+            <div>
+              <div class="dash-card-title" style="color:#ff6b6b">Admin Access Active</div>
+              <div class="dash-card-sub">You have elevated permissions. Use them responsibly.</div>
+            </div>
+          </div>
+        </div>
+        ` : ''}
+
+      `;
+
+      show('dashboardState');
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+    // Logout
+    // ────────────────────────────────────────────────────────────────────────
+    function logout() {
+      sessionStorage.removeItem('empire_discord_token');
+      window.location.href = 'staff-login.html';
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+    // Main init
+    // ────────────────────────────────────────────────────────────────────────
+    async function init() {
+      setLoading('Authenticating with Discord…');
+
+      // Check for stored token first
+      let accessToken = sessionStorage.getItem('empire_discord_token');
+
+      // Otherwise parse from fragment
+      if (!accessToken) {
+        const frag = parseFragment();
+
+        if (frag.error) {
+          showError(`Discord returned an error: ${frag.error}. ${frag.errorDescription || ''}`);
+          return;
+        }
+
+        if (!frag.accessToken) {
+          // No token at all — redirect to login
+          window.location.href = 'staff-login.html';
+          return;
+        }
+
+        // Verify state to prevent CSRF
+        const savedState = sessionStorage.getItem('discord_oauth_state');
+        if (savedState && frag.state && savedState !== frag.state) {
+          showError('Security check failed (state mismatch). Please try logging in again.');
+          return;
+        }
+
+        accessToken = frag.accessToken;
+        sessionStorage.setItem('empire_discord_token', accessToken);
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      try {
+        setLoading('Fetching your Discord profile…');
+        const user = await discordFetch('/users/@me', accessToken);
+
+        setLoading('Checking Empire RP server roles…');
+        let member;
+        try {
+          member = await discordFetch(`/users/@me/guilds/${CONFIG.GUILD_ID}/member`, accessToken);
+        } catch(e) {
+          // If guild ID is placeholder or user isn't in server
+          if (CONFIG.GUILD_ID === 'YOUR_GUILD_ID_HERE') {
+            // Demo mode — show a demo staff profile
+            member = { roles: [], nick: null, avatar: null };
+            console.warn('Guild ID not configured — running in demo mode');
+          } else {
+            showError('You don\'t appear to be a member of the Empire RP Discord server. Join at discord.gg/empirerp and try again.');
+            return;
+          }
+        }
+
+        const memberRoleIds = member.roles || [];
+        const matchedRanks = matchRanks(memberRoleIds);
+
+        // Demo mode fallback — if no role IDs configured, show placeholder
+        const inDemoMode = CONFIG.CLIENT_ID === 'YOUR_CLIENT_ID_HERE' || STAFF_RANKS.every(r => r.id.includes('ROLE_ID'));
+        if (inDemoMode) {
+          // Show all ranks as demo
+          const demoRanks = STAFF_RANKS.length > 0 ? [STAFF_RANKS[0]] : [{
+            id: 'demo', label: 'Head Admin', color: '#ff3c3c',
+            bg: 'rgba(255,60,60,.12)', border: 'rgba(255,60,60,.35)',
+            emoji: '👑', level: 10, description: 'Demo mode — configure your role IDs to restrict access.',
+          }];
+          renderDashboard(user, member, demoRanks);
+          return;
+        }
+
+        if (matchedRanks.length === 0) {
+          show('deniedState');
+          return;
+        }
+
+        renderDashboard(user, member, matchedRanks);
+
+      } catch(err) {
+        console.error(err);
+        if (err.message.includes('401')) {
+          sessionStorage.removeItem('empire_discord_token');
+          showError('Your Discord session expired. Please log in again.');
+        } else {
+          showError(`Failed to load staff data: ${err.message}`);
+        }
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

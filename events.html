@@ -18,6 +18,8 @@
       --line: rgba(246,177,58,.18);
       --danger: #ff3c3c;
       --green: #39ff82;
+      --discord: #5865F2;
+      --discord2: #4752c4;
       --r: 20px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,7 +44,7 @@
     .btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,114,0,.4); }
     .btn.ghost { background: rgba(255,255,255,.05); color: var(--text); border-color: rgba(255,255,255,.15); box-shadow: none; }
     .btn.ghost:hover { border-color: var(--gold); color: var(--gold); }
-    .btn.discord-btn { background: linear-gradient(135deg, #5865F2, #4752c4); border-color: rgba(88,101,242,.5); color: #fff; }
+    .btn.discord-btn { background: linear-gradient(135deg, var(--discord), var(--discord2)); border-color: rgba(88,101,242,.5); color: #fff; font-family: 'Inter', sans-serif; }
     .btn.discord-btn:hover { box-shadow: 0 0 30px rgba(88,101,242,.5); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
     .hamburger span { display: block; width: 24px; height: 2px; background: var(--gold); border-radius: 2px; }
@@ -50,6 +52,19 @@
     .mobile-menu.open { display: flex; }
     .mobile-menu a { font-weight: 800; font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding: 10px 0; border-bottom: 1px solid var(--line); }
     .mobile-menu a:last-child { border-bottom: none; }
+
+    /* ── DISCORD AUTH BANNER (top of page, for non-staff) ── */
+    #staffLoginBanner {
+      display: none;
+      position: fixed; top: 70px; left: 0; right: 0; z-index: 90;
+      background: linear-gradient(90deg, rgba(88,101,242,.18), rgba(88,101,242,.08));
+      border-bottom: 1px solid rgba(88,101,242,.25);
+      padding: 10px 6%;
+      align-items: center; justify-content: space-between; gap: 12px;
+    }
+    #staffLoginBanner.visible { display: flex; }
+    .banner-text { font-size: 13px; color: var(--muted); }
+    .banner-text strong { color: #a5b4fc; }
 
     /* ── HERO ── */
     .hero {
@@ -78,7 +93,7 @@
     .ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
     /* ── PAGE LAYOUT ── */
-    .page-shell { max-width: 1300px; margin: 0 auto; padding: 60px 4% 100px; display: grid; grid-template-columns: 1fr 380px; gap: 28px; align-items: start; }
+    .page-shell { max-width: 1300px; margin: 0 auto; padding: 60px 4% 100px; display: grid; grid-template-columns: 1fr 400px; gap: 28px; align-items: start; }
 
     /* ── SECTION LABELS ── */
     .sec-label { color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .18em; font-size: 11px; margin-bottom: 6px; }
@@ -87,7 +102,6 @@
 
     /* ── EVENT CARDS ── */
     .events-list { display: flex; flex-direction: column; gap: 12px; }
-
     .event-card {
       background: rgba(255,255,255,.032);
       border: 1px solid var(--line);
@@ -95,22 +109,17 @@
       display: grid; grid-template-columns: 80px 1fr auto;
       gap: 0; overflow: hidden;
       transition: border-color .25s, box-shadow .25s, transform .25s;
-      cursor: default;
     }
     .event-card:hover {
       transform: translateY(-3px);
       border-color: rgba(255,255,255,.75);
       box-shadow: 0 0 6px rgba(255,255,255,.5), 0 0 20px rgba(246,177,58,.45), 0 0 50px rgba(255,114,0,.2);
     }
-    .event-card.live-posted {
-      border-color: rgba(88,101,242,.4);
-    }
+    .event-card.live-posted { border-color: rgba(88,101,242,.4); }
     .event-card.live-posted:hover {
       border-color: rgba(88,101,242,.8);
       box-shadow: 0 0 6px rgba(88,101,242,.5), 0 0 20px rgba(88,101,242,.45), 0 0 50px rgba(88,101,242,.2);
     }
-
-    /* Date block */
     .event-date {
       background: linear-gradient(160deg, rgba(246,177,58,.15), rgba(255,114,0,.08));
       border-right: 1px solid var(--line);
@@ -120,58 +129,39 @@
     .event-date .month { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .14em; color: var(--gold); }
     .event-date .day { font-family: 'Barlow Condensed', sans-serif; font-size: 38px; font-weight: 900; line-height: 1; color: var(--text); }
     .event-date .dow { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-top: 2px; }
-
-    /* Event body */
     .event-body { padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
     .event-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: .03em; line-height: 1; }
     .event-meta { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .event-time { font-size: 12px; color: var(--muted); font-weight: 800; display: flex; align-items: center; gap: 5px; }
     .event-desc { font-size: 13px; color: var(--muted); line-height: 1.55; margin-top: 4px; }
-
-    /* Posted-by attribution */
-    .event-posted-by {
-      display: flex; align-items: center; gap: 8px;
-      margin-top: 8px; padding-top: 8px;
-      border-top: 1px solid rgba(255,255,255,.06);
-    }
-    .posted-pfp { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(88,101,242,.4); }
+    .event-posted-by { display: flex; align-items: center; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.06); }
+    .posted-pfp { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
     .posted-pfp-placeholder { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg,#5865F2,#4752c4); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: #fff; flex-shrink: 0; }
     .posted-info { font-size: 11px; color: var(--muted); }
     .posted-info strong { color: #a5b4fc; font-weight: 800; }
-    .discord-tag { font-size: 10px; color: rgba(165,180,252,.6); margin-left: 4px; }
-
-    /* Type pills */
-    .epill {
-      display: inline-flex; align-items: center; gap: 4px;
-      border-radius: 999px; padding: 3px 10px;
-      font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase;
-    }
+    .epill { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 3px 10px; font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
     .epill.recurring  { background: rgba(57,255,130,.1); border: 1px solid rgba(57,255,130,.25); color: #39ff82; }
     .epill.special    { background: rgba(246,177,58,.12); border: 1px solid rgba(246,177,58,.3); color: var(--gold); }
     .epill.community  { background: rgba(120,80,255,.15); border: 1px solid rgba(120,80,255,.3); color: #a78bfa; }
     .epill.pvp        { background: rgba(255,60,60,.1); border: 1px solid rgba(255,60,60,.25); color: var(--danger); }
     .epill.new        { background: rgba(255,114,0,.15); border: 1px solid rgba(255,114,0,.35); color: var(--gold2); }
     .epill.oversight  { background: rgba(88,101,242,.15); border: 1px solid rgba(88,101,242,.35); color: #a5b4fc; }
-
-    /* Status badge */
+    .epill.management { background: rgba(246,177,58,.15); border: 1px solid rgba(246,177,58,.35); color: var(--gold); }
     .event-status { padding: 16px 18px; display: flex; align-items: center; justify-content: center; }
-    .status-badge {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      text-align: center; min-width: 72px;
-    }
+    .status-badge { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; min-width: 72px; }
     .status-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .status-dot.upcoming { background: var(--gold); box-shadow: 0 0 8px rgba(246,177,58,.6); animation: pulse 2s ease-in-out infinite; }
-    .status-dot.weekly   { background: #39ff82; box-shadow: 0 0 8px rgba(57,255,130,.6); animation: pulse 2s ease-in-out infinite; }
+    .status-dot.upcoming { background: var(--gold); box-shadow: 0 0 8px rgba(246,177,58,.6); animation: blink 2s ease-in-out infinite; }
+    .status-dot.weekly   { background: #39ff82; box-shadow: 0 0 8px rgba(57,255,130,.6); animation: blink 2s ease-in-out infinite; }
     .status-dot.monthly  { background: #a78bfa; box-shadow: 0 0 8px rgba(167,139,250,.6); }
-    .status-dot.live     { background: #5865F2; box-shadow: 0 0 8px rgba(88,101,242,.6); animation: pulse 2s ease-in-out infinite; }
+    .status-dot.live     { background: #5865F2; box-shadow: 0 0 8px rgba(88,101,242,.6); animation: blink 2s ease-in-out infinite; }
     .status-text { font-size: 10px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
 
     /* ── SIDEBAR ── */
-    .sidebar { display: flex; flex-direction: column; gap: 18px; }
+    .sidebar { display: flex; flex-direction: column; gap: 18px; position: sticky; top: 90px; }
 
-    /* Calendar */
+    /* ── MONTHLY CALENDAR ── */
     .cal-card {
       background: rgba(255,255,255,.032); border: 1px solid var(--line);
       border-radius: var(--r); overflow: hidden;
@@ -181,33 +171,52 @@
       padding: 16px 20px; border-bottom: 1px solid var(--line);
       display: flex; align-items: center; justify-content: space-between;
     }
-    .cal-header h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: var(--gold); }
-    .cal-nav { display: flex; gap: 8px; }
-    .cal-btn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line); background: rgba(255,255,255,.04); color: var(--muted); font-size: 14px; cursor: pointer; transition: .2s; display: flex; align-items: center; justify-content: center; }
-    .cal-btn:hover { border-color: var(--gold); color: var(--gold); }
-    .cal-grid { padding: 14px 16px 18px; }
+    .cal-header-left { display: flex; flex-direction: column; }
+    .cal-month-name { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: var(--gold); line-height: 1; }
+    .cal-year { font-size: 12px; color: var(--muted); font-weight: 800; letter-spacing: .1em; margin-top: 2px; }
+    .cal-nav { display: flex; gap: 6px; align-items: center; }
+    .cal-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--line); background: rgba(255,255,255,.04); color: var(--muted); font-size: 16px; cursor: pointer; transition: .2s; display: flex; align-items: center; justify-content: center; font-family: inherit; }
+    .cal-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(246,177,58,.08); }
+    .cal-today-btn { font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; padding: 0 10px; width: auto; }
+
+    .cal-grid-wrap { padding: 14px 14px 10px; }
     .cal-dow-row { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-bottom: 6px; }
     .cal-dow { text-align: center; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding: 4px 0; }
-    .cal-days { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+
+    .cal-weeks { display: flex; flex-direction: column; gap: 2px; }
+    .cal-week { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
     .cal-day {
-      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-      border-radius: 8px; font-size: 13px; font-weight: 600;
+      aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border-radius: 8px; font-size: 12px; font-weight: 600;
       cursor: default; transition: background .15s; position: relative;
-      color: var(--muted);
+      color: var(--muted); gap: 1px;
     }
-    .cal-day.other-month { opacity: .25; }
-    .cal-day.today { background: rgba(246,177,58,.15); color: var(--gold); font-weight: 900; border: 1px solid rgba(246,177,58,.35); }
+    .cal-day.other-month { opacity: .2; }
+    .cal-day.today { background: rgba(246,177,58,.18); color: var(--gold); font-weight: 900; border: 1px solid rgba(246,177,58,.4); }
     .cal-day.has-event { color: var(--text); font-weight: 800; }
-    .cal-day.has-event::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
-    .cal-day.event-main { background: linear-gradient(135deg, rgba(246,177,58,.2), rgba(255,114,0,.1)); color: var(--gold); font-weight: 900; border: 1px solid rgba(246,177,58,.3); }
-    .cal-day.event-main::after { background: var(--gold2); }
-    .cal-day:hover { background: rgba(255,255,255,.06); }
+    .cal-day.selected:not(.today) { background: rgba(255,255,255,.1); outline: 1px solid rgba(255,255,255,.3); }
+    .cal-day:hover:not(.other-month) { background: rgba(255,255,255,.07); }
 
-    .cal-legend { padding: 0 16px 16px; display: flex; gap: 14px; flex-wrap: wrap; }
-    .leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); font-weight: 700; }
-    .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .cal-dots { display: flex; gap: 2px; align-items: center; justify-content: center; position: absolute; bottom: 3px; left: 0; right: 0; }
+    .cal-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
 
-    /* Event info card */
+    .cal-legend { padding: 8px 14px 14px; display: flex; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--line); margin-top: 4px; }
+    .leg-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted); font-weight: 700; }
+    .leg-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    .cal-selected-info {
+      margin: 0 14px 14px;
+      background: rgba(246,177,58,.07); border: 1px solid rgba(246,177,58,.18);
+      border-radius: 12px; padding: 10px 14px;
+      display: none;
+    }
+    .cal-selected-info.visible { display: block; }
+    .cal-selected-date { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+    .cal-event-list { display: flex; flex-direction: column; gap: 4px; }
+    .cal-event-item { font-size: 12px; color: var(--text); display: flex; align-items: center; gap: 6px; }
+    .cal-event-item .cdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Info card */
     .info-card { background: rgba(255,255,255,.032); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; }
     .info-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase; color: var(--gold); letter-spacing: .06em; margin-bottom: 14px; }
     .info-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 14px; }
@@ -216,81 +225,57 @@
     .info-row-text { color: var(--muted); line-height: 1.5; }
     .info-row-text strong { color: var(--text); font-weight: 800; display: block; margin-bottom: 2px; }
 
-    /* Discord CTA card */
-    .discord-card {
-      background: linear-gradient(135deg, rgba(246,177,58,.12), rgba(255,114,0,.06));
-      border: 1px solid rgba(246,177,58,.25); border-radius: var(--r);
-      padding: 24px 20px; text-align: center;
-    }
+    /* Discord CTA */
+    .discord-card { background: linear-gradient(135deg, rgba(246,177,58,.12), rgba(255,114,0,.06)); border: 1px solid rgba(246,177,58,.25); border-radius: var(--r); padding: 24px 20px; text-align: center; }
     .discord-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
     .discord-card p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
 
-    /* ── OVERSIGHT PORTAL ── */
-    .oversight-portal {
-      background: rgba(88,101,242,.06);
-      border: 1px solid rgba(88,101,242,.25);
-      border-radius: var(--r); overflow: hidden;
-    }
-    .oversight-header {
-      background: linear-gradient(90deg, rgba(88,101,242,.2), transparent);
-      padding: 16px 20px; border-bottom: 1px solid rgba(88,101,242,.2);
-      display: flex; align-items: center; gap: 10px;
-    }
+    /* ── EVENT PORTAL ── */
+    .oversight-portal { background: rgba(88,101,242,.06); border: 1px solid rgba(88,101,242,.25); border-radius: var(--r); overflow: hidden; }
+    .oversight-header { background: linear-gradient(90deg, rgba(88,101,242,.2), transparent); padding: 16px 20px; border-bottom: 1px solid rgba(88,101,242,.2); display: flex; align-items: center; gap: 10px; }
     .oversight-header h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: #a5b4fc; }
     .oversight-badge { background: rgba(88,101,242,.3); border: 1px solid rgba(88,101,242,.5); border-radius: 6px; padding: 2px 8px; font-size: 10px; font-weight: 900; color: #a5b4fc; letter-spacing: .1em; text-transform: uppercase; }
     .oversight-body { padding: 20px; }
 
-    /* Login state */
-    .oversight-login { text-align: center; }
-    .oversight-login p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
-    .oversight-login .lock-icon { font-size: 32px; margin-bottom: 12px; }
+    /* Not signed in state */
+    .portal-signin { text-align: center; }
+    .portal-signin .lock-icon { font-size: 32px; margin-bottom: 12px; }
+    .portal-signin p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
 
-    /* Logged-in state */
-    .oversight-user { display: none; }
-    .user-info { display: flex; align-items: center; gap: 12px; padding: 14px; background: rgba(88,101,242,.1); border: 1px solid rgba(88,101,242,.2); border-radius: 12px; margin-bottom: 16px; }
-    .user-pfp { width: 42px; height: 42px; border-radius: 50%; border: 2px solid rgba(88,101,242,.5); }
+    /* Wrong role state */
+    .portal-locked { display: none; text-align: center; }
+    .portal-locked .lock-icon { font-size: 32px; margin-bottom: 12px; }
+    .portal-locked p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+    /* Authorized to post */
+    .portal-open { display: none; }
+    .user-info { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(88,101,242,.1); border: 1px solid rgba(88,101,242,.2); border-radius: 12px; margin-bottom: 16px; }
+    .user-pfp { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
     .user-pfp-placeholder { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg,#5865F2,#4752c4); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; color: #fff; flex-shrink: 0; }
-    .user-details { flex: 1; }
-    .user-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; color: var(--text); }
-    .user-role { font-size: 11px; color: #a5b4fc; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
-    .user-discord { font-size: 11px; color: var(--muted); margin-top: 2px; }
-    .logout-btn { background: none; border: 1px solid rgba(255,255,255,.1); color: var(--muted); border-radius: 8px; padding: 6px 10px; font-size: 11px; cursor: pointer; transition: .2s; font-family: 'Inter', sans-serif; }
+    .user-details { flex: 1; min-width: 0; }
+    .user-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-role-badge { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-top: 2px; }
+    .user-role-badge.oversight { color: #a5b4fc; }
+    .user-role-badge.management { color: var(--gold); }
+    .logout-btn { background: none; border: 1px solid rgba(255,255,255,.1); color: var(--muted); border-radius: 8px; padding: 6px 10px; font-size: 11px; cursor: pointer; transition: .2s; font-family: 'Inter', sans-serif; white-space: nowrap; }
     .logout-btn:hover { border-color: var(--danger); color: var(--danger); }
-
-    /* Post form */
     .post-form { display: flex; flex-direction: column; gap: 10px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
-    .form-group input, .form-group textarea, .form-group select {
-      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
-      border-radius: 10px; padding: 10px 14px; color: var(--text);
-      font-family: 'Inter', sans-serif; font-size: 13px;
-      transition: border-color .2s; outline: none;
-    }
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-      border-color: rgba(88,101,242,.6);
-    }
+    .form-group input, .form-group textarea, .form-group select { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 10px 14px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 13px; transition: border-color .2s; outline: none; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: rgba(88,101,242,.6); }
     .form-group textarea { resize: vertical; min-height: 80px; }
     .form-group select option { background: #1a1a2e; color: var(--text); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .post-btn { background: linear-gradient(135deg, #5865F2, #4752c4); color: #fff; border: none; border-radius: 999px; padding: 12px 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: .2s; width: 100%; }
+    .post-btn { background: linear-gradient(135deg, var(--discord), var(--discord2)); color: #fff; border: none; border-radius: 999px; padding: 12px 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: .2s; width: 100%; }
     .post-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(88,101,242,.5); }
     .post-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
     .post-success { display: none; background: rgba(57,255,130,.1); border: 1px solid rgba(57,255,130,.25); border-radius: 10px; padding: 12px 14px; color: #39ff82; font-size: 13px; font-weight: 800; text-align: center; }
 
-    /* ── RECURRING SECTION ── */
+    /* ── RECURRING ── */
     .recurring-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 32px; }
-    .rec-card {
-      background: rgba(255,255,255,.03); border: 1px solid var(--line);
-      border-radius: 16px; padding: 20px 18px;
-      text-align: center;
-      transition: border-color .25s, box-shadow .25s, transform .25s;
-    }
-    .rec-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(255,255,255,.6);
-      box-shadow: 0 0 6px rgba(255,255,255,.4), 0 0 18px rgba(246,177,58,.35), 0 0 40px rgba(255,114,0,.18);
-    }
+    .rec-card { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 16px; padding: 20px 18px; text-align: center; transition: border-color .25s, box-shadow .25s, transform .25s; }
+    .rec-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,.6); box-shadow: 0 0 6px rgba(255,255,255,.4), 0 0 18px rgba(246,177,58,.35), 0 0 40px rgba(255,114,0,.18); }
     .rec-icon { font-size: 28px; margin-bottom: 10px; }
     .rec-name { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 900; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
     .rec-when { font-size: 12px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
@@ -305,18 +290,8 @@
     .footer-links { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; padding-top: 4px; }
     .footer-links a:hover { color: var(--gold); }
 
-    /* Toast notification */
-    .toast {
-      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
-      background: rgba(15,13,11,.95); border: 1px solid rgba(57,255,130,.3);
-      border-radius: 14px; padding: 14px 20px;
-      display: flex; align-items: center; gap: 12px;
-      font-size: 14px; font-weight: 700; color: #39ff82;
-      backdrop-filter: blur(20px);
-      transform: translateY(100px); opacity: 0;
-      transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
-      max-width: 320px;
-    }
+    /* Toast */
+    .toast { position: fixed; bottom: 28px; right: 28px; z-index: 9999; background: rgba(15,13,11,.95); border: 1px solid rgba(57,255,130,.3); border-radius: 14px; padding: 14px 20px; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; color: #39ff82; backdrop-filter: blur(20px); transform: translateY(100px); opacity: 0; transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s; max-width: 320px; }
     .toast.show { transform: translateY(0); opacity: 1; }
 
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
@@ -325,7 +300,7 @@
     @media (max-width: 1000px) {
       .nav-links { display: none; } .hamburger { display: flex; }
       .page-shell { grid-template-columns: 1fr; }
-      .sidebar { order: -1; }
+      .sidebar { order: -1; position: static; }
       .recurring-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 600px) {
@@ -339,7 +314,7 @@
 <body>
 
   <!-- TOAST -->
-  <div class="toast" id="toast">✅ Event posted live!</div>
+  <div class="toast" id="toast"></div>
 
   <!-- NAV -->
   <nav class="nav">
@@ -352,10 +327,21 @@
       <a href="events.html" class="active">Events</a>
       <a href="index.html#features">Why Empire</a>
       <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+      <span id="navAuthArea"></span>
       <a href="#" class="btn" style="padding:9px 20px;font-size:13px;">▸ Play Now</a>
     </div>
     <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
   </nav>
+
+  <!-- Staff login banner (visible to non-staff) -->
+  <div id="staffLoginBanner">
+    <span class="banner-text"><strong>Staff?</strong> Sign in with Discord to access the Event Portal.</span>
+    <button class="btn discord-btn" style="padding:8px 18px;font-size:12px;" onclick="discordLogin()">
+      <svg width="16" height="12" viewBox="0 0 127.14 96.36" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+      Staff Sign In
+    </button>
+  </div>
+
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
     <a href="rules.html">Rules</a>
@@ -404,271 +390,114 @@
     <div>
       <div class="sec-label">Schedule</div>
       <div class="sec-title">June <em>Events</em></div>
-
       <div class="events-list" id="eventsList">
 
-        <!-- June 2 - Killer Clown Maze -->
         <div class="event-card">
-          <div class="event-date">
-            <div class="month">JUN</div>
-            <div class="day">2</div>
-            <div class="dow">Mon</div>
-          </div>
+          <div class="event-date"><div class="month">JUN</div><div class="day">2</div><div class="dow">Mon</div></div>
           <div class="event-body">
             <div class="event-name">🤡 Killer Clown Maze</div>
-            <div class="event-meta">
-              <span class="epill special">⭐ Special Event</span>
-              <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ 10 PM EST</span>
-            </div>
+            <div class="event-meta"><span class="epill special">⭐ Special Event</span><span class="epill community">🌆 City Event</span><span class="event-time">⏰ 10 PM EST</span></div>
             <div class="event-desc">Navigate a terrifying clown maze designed to test your nerves. Can you make it out alive? This is a one-night-only staff-hosted experience. Watch Discord for the entry point.</div>
           </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot upcoming"></div>
-              <div class="status-text">Special</div>
-            </div>
-          </div>
+          <div class="event-status"><div class="status-badge"><div class="status-dot upcoming"></div><div class="status-text">Special</div></div></div>
         </div>
 
-        <!-- June 4 - Murder Mystery -->
         <div class="event-card">
-          <div class="event-date">
-            <div class="month">JUN</div>
-            <div class="day">4</div>
-            <div class="dow">Wed</div>
-          </div>
+          <div class="event-date"><div class="month">JUN</div><div class="day">4</div><div class="dow">Wed</div></div>
           <div class="event-body">
             <div class="event-name">🔍 Murder Mystery</div>
-            <div class="event-meta">
-              <span class="epill special">⭐ Special Event</span>
-              <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ 9 PM EST</span>
-            </div>
+            <div class="event-meta"><span class="epill special">⭐ Special Event</span><span class="epill community">🌆 City Event</span><span class="event-time">⏰ 9 PM EST</span></div>
             <div class="event-desc">Someone's been murdered in the city — and it could be anyone. Work with or against the city to uncover the killer before it's too late. Full roleplay event, staff-hosted.</div>
           </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot upcoming"></div>
-              <div class="status-text">Special</div>
-            </div>
-          </div>
+          <div class="event-status"><div class="status-badge"><div class="status-dot upcoming"></div><div class="status-text">Special</div></div></div>
         </div>
 
-        <!-- June 7-13 - Spirit Week -->
         <div class="event-card">
-          <div class="event-date">
-            <div class="month">JUN</div>
-            <div class="day">7</div>
-            <div class="dow">Sun</div>
-          </div>
+          <div class="event-date"><div class="month">JUN</div><div class="day">7</div><div class="dow">Sun</div></div>
           <div class="event-body">
             <div class="event-name">🎉 Spirit Week</div>
-            <div class="event-meta">
-              <span class="epill new">🔥 Multi-Day</span>
-              <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ June 7–13</span>
-            </div>
-            <div class="event-desc">A full week of themed daily events celebrating Empire spirit. Each day has its own theme and activity. Sub-events include: Beach Bum Day (Sun), Last Day of School (Mon), Pool Party Day (Tue), Watermelon Wednesday (Wed), Campfire & Cabin Day (Thu), Vacation Destination Day (Fri), and Summer Festival Day (Sat).</div>
+            <div class="event-meta"><span class="epill new">🔥 Multi-Day</span><span class="epill community">🌆 City Event</span><span class="event-time">⏰ June 7–13</span></div>
+            <div class="event-desc">A full week of themed daily events celebrating Empire spirit. Beach Bum Day · Last Day of School · Pool Party Day · Watermelon Wednesday · Campfire & Cabin Day · Vacation Destination Day · Summer Festival Day.</div>
           </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot upcoming"></div>
-              <div class="status-text">Week</div>
-            </div>
-          </div>
+          <div class="event-status"><div class="status-badge"><div class="status-dot upcoming"></div><div class="status-text">Week</div></div></div>
         </div>
 
-        <!-- June 10 - Watermelon Wednesday -->
         <div class="event-card">
-          <div class="event-date">
-            <div class="month">JUN</div>
-            <div class="day">10</div>
-            <div class="dow">Wed</div>
-          </div>
+          <div class="event-date"><div class="month">JUN</div><div class="day">10</div><div class="dow">Wed</div></div>
           <div class="event-body">
             <div class="event-name">🍉 Watermelon Wednesday</div>
-            <div class="event-meta">
-              <span class="epill recurring">🔁 Weekly</span>
-              <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ 9 PM EST</span>
-            </div>
-            <div class="event-desc">Empire's signature weekly event. Come dressed to match the theme, link up with the city, and enjoy the vibes. Staff-hosted, open to all players. Look for the announcement in Discord.</div>
+            <div class="event-meta"><span class="epill recurring">🔁 Weekly</span><span class="epill community">🌆 City Event</span><span class="event-time">⏰ 9 PM EST</span></div>
+            <div class="event-desc">Empire's signature weekly event. Come dressed to match the theme, link up with the city, and enjoy the vibes. Staff-hosted, open to all players.</div>
           </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot weekly"></div>
-              <div class="status-text">Weekly</div>
-            </div>
-          </div>
+          <div class="event-status"><div class="status-badge"><div class="status-dot weekly"></div><div class="status-text">Weekly</div></div></div>
         </div>
 
-        <!-- June 15 - Evidence Transport -->
         <div class="event-card">
-          <div class="event-date">
-            <div class="month">JUN</div>
-            <div class="day">15</div>
-            <div class="dow">Sun</div>
-          </div>
+          <div class="event-date"><div class="month">JUN</div><div class="day">15</div><div class="dow">Sun</div></div>
           <div class="event-body">
             <div class="event-name">🚔 Evidence Transport</div>
-            <div class="event-meta">
-              <span class="epill pvp">💀 PvP Event</span>
-              <span class="epill special">⭐ Staff Event</span>
-              <span class="event-time">⏰ 9 PM EST</span>
-            </div>
-            <div class="event-desc">LSPD is moving critical evidence across the city. Criminals have one shot to intercept the convoy before it reaches lockup. High stakes, high action. PD and criminals welcome.</div>
+            <div class="event-meta"><span class="epill pvp">💀 PvP Event</span><span class="epill special">⭐ Staff Event</span><span class="event-time">⏰ 9 PM EST</span></div>
+            <div class="event-desc">LSPD is moving critical evidence across the city. Criminals have one shot to intercept the convoy before it reaches lockup. High stakes, high action.</div>
           </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot upcoming"></div>
-              <div class="status-text">PvP</div>
-            </div>
-          </div>
+          <div class="event-status"><div class="status-badge"><div class="status-dot upcoming"></div><div class="status-text">PvP</div></div></div>
         </div>
 
-        <!-- June 17 - Among Us -->
         <div class="event-card">
-          <div class="event-date">
-            <div class="month">JUN</div>
-            <div class="day">17</div>
-            <div class="dow">Tue</div>
-          </div>
+          <div class="event-date"><div class="month">JUN</div><div class="day">17</div><div class="dow">Tue</div></div>
           <div class="event-body">
             <div class="event-name">🔴 Among Us</div>
-            <div class="event-meta">
-              <span class="epill special">⭐ Special Event</span>
-              <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ 9 PM EST</span>
-            </div>
-            <div class="event-desc">Empire's take on the classic Among Us experience, brought into FiveM. Crewmates vs. impostors in a custom-designed lobby. Staff-run, open sign-ups in Discord.</div>
+            <div class="event-meta"><span class="epill special">⭐ Special Event</span><span class="epill community">🌆 City Event</span><span class="event-time">⏰ 9 PM EST</span></div>
+            <div class="event-desc">Empire's take on Among Us brought into FiveM. Crewmates vs. impostors in a custom-designed lobby. Staff-run, open sign-ups in Discord.</div>
           </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot upcoming"></div>
-              <div class="status-text">Special</div>
-            </div>
-          </div>
+          <div class="event-status"><div class="status-badge"><div class="status-dot upcoming"></div><div class="status-text">Special</div></div></div>
         </div>
 
-        <!-- June 22 - Protect the VIP -->
         <div class="event-card">
-          <div class="event-date">
-            <div class="month">JUN</div>
-            <div class="day">22</div>
-            <div class="dow">Sun</div>
-          </div>
+          <div class="event-date"><div class="month">JUN</div><div class="day">22</div><div class="dow">Sun</div></div>
           <div class="event-body">
             <div class="event-name">💰 Protect the VIP</div>
-            <div class="event-meta">
-              <span class="epill pvp">💀 PvP Event</span>
-              <span class="epill special">⭐ Staff Event</span>
-              <span class="event-time">⏰ 9 PM EST</span>
-            </div>
+            <div class="event-meta"><span class="epill pvp">💀 PvP Event</span><span class="epill special">⭐ Staff Event</span><span class="event-time">⏰ 9 PM EST</span></div>
             <div class="event-desc">A high-value target needs to be escorted safely across the city. One team protects, the other hunts. Cash prizes involved. Pick your side and show up locked in.</div>
           </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot upcoming"></div>
-              <div class="status-text">PvP</div>
-            </div>
-          </div>
+          <div class="event-status"><div class="status-badge"><div class="status-dot upcoming"></div><div class="status-text">PvP</div></div></div>
         </div>
 
-        <!-- June 25 - Red Light Green Light -->
         <div class="event-card">
-          <div class="event-date">
-            <div class="month">JUN</div>
-            <div class="day">25</div>
-            <div class="dow">Wed</div>
-          </div>
+          <div class="event-date"><div class="month">JUN</div><div class="day">25</div><div class="dow">Wed</div></div>
           <div class="event-body">
             <div class="event-name">🚦 Red Light Green Light</div>
-            <div class="event-meta">
-              <span class="epill special">⭐ Special Event</span>
-              <span class="epill community">🌆 City Event</span>
-              <span class="event-time">⏰ 9 PM EST</span>
-            </div>
-            <div class="event-desc">Inspired by Squid Game — move when the light is green, freeze when it's red. Get caught moving and you're out. Last player standing wins. No weapons, pure nerve.</div>
+            <div class="event-meta"><span class="epill special">⭐ Special Event</span><span class="epill community">🌆 City Event</span><span class="event-time">⏰ 9 PM EST</span></div>
+            <div class="event-desc">Inspired by Squid Game — move when green, freeze when red. Get caught moving and you're out. Last player standing wins. No weapons, pure nerve.</div>
           </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot upcoming"></div>
-              <div class="status-text">Special</div>
-            </div>
-          </div>
+          <div class="event-status"><div class="status-badge"><div class="status-dot upcoming"></div><div class="status-text">Special</div></div></div>
         </div>
 
-        <!-- June 28 - Cayo Bloobath -->
         <div class="event-card">
-          <div class="event-date">
-            <div class="month">JUN</div>
-            <div class="day">28</div>
-            <div class="dow">Sat</div>
-          </div>
+          <div class="event-date"><div class="month">JUN</div><div class="day">28</div><div class="dow">Sat</div></div>
           <div class="event-body">
             <div class="event-name">💥 Cayo Bloobath</div>
-            <div class="event-meta">
-              <span class="epill pvp">💀 KOS Zone</span>
-              <span class="epill new">🔥 Monthly</span>
-              <span class="event-time">⏰ TBA</span>
-            </div>
-            <div class="event-desc">Full chaos on Cayo. Everyone drops in, last crew standing walks away with the loot. KOS from the moment you land. No rules, no safe zones. Check Discord for drop time.</div>
+            <div class="event-meta"><span class="epill pvp">💀 KOS Zone</span><span class="epill new">🔥 Monthly</span><span class="event-time">⏰ TBA</span></div>
+            <div class="event-desc">Full chaos on Cayo. Everyone drops in, last crew standing walks away with the loot. KOS from the moment you land. No rules, no safe zones.</div>
           </div>
-          <div class="event-status">
-            <div class="status-badge">
-              <div class="status-dot monthly"></div>
-              <div class="status-text">Monthly</div>
-            </div>
-          </div>
+          <div class="event-status"><div class="status-badge"><div class="status-dot monthly"></div><div class="status-text">Monthly</div></div></div>
         </div>
 
       </div>
 
-      <!-- Live-posted events will appear here -->
+      <!-- Live-posted events appear here -->
       <div id="liveEventsList" style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px;"></div>
 
-      <!-- RECURRING EVENTS -->
+      <!-- RECURRING -->
       <div style="margin-top: 48px;">
         <div class="sec-label">Always in the City</div>
         <div class="sec-title">Recurring <em>Events</em></div>
         <div class="recurring-grid">
-          <div class="rec-card">
-            <div class="rec-icon">🍉</div>
-            <div class="rec-name">Watermelon Wednesday</div>
-            <div class="rec-when">Every Wednesday · 9 PM EST</div>
-            <div class="rec-desc">Empire's signature weekly event. Themed fits, good vibes, open to the whole city. The most consistent W on the calendar.</div>
-          </div>
-          <div class="rec-card">
-            <div class="rec-icon">📦</div>
-            <div class="rec-name">Airdrops</div>
-            <div class="rec-when">Random · Staff Announced</div>
-            <div class="rec-desc">Drops anywhere in the city without warning. KOS inside the zone — no robbing. Watch Discord or you'll miss it.</div>
-          </div>
-          <div class="rec-card">
-            <div class="rec-icon">🚗</div>
-            <div class="rec-name">Car Meets</div>
-            <div class="rec-when">Bi-Weekly · Saturdays</div>
-            <div class="rec-desc">Flex your build, meet the city, and keep it peaceful. Location dropped day-of in the announcements channel.</div>
-          </div>
-          <div class="rec-card">
-            <div class="rec-icon">🔍</div>
-            <div class="rec-name">Murder Mystery</div>
-            <div class="rec-when">Monthly · Staff Hosted</div>
-            <div class="rec-desc">City-wide whodunit RP experience. Work with the city or go rogue. Every round has a different killer and setting.</div>
-          </div>
-          <div class="rec-card">
-            <div class="rec-icon">🚔</div>
-            <div class="rec-name">Evidence Transport</div>
-            <div class="rec-when">Monthly · PvP Event</div>
-            <div class="rec-desc">LSPD moves evidence, criminals intercept. High intensity PvP with clear faction objectives and real stakes.</div>
-          </div>
-          <div class="rec-card">
-            <div class="rec-icon">💥</div>
-            <div class="rec-name">Cayo Bloobath</div>
-            <div class="rec-when">Monthly · KOS</div>
-            <div class="rec-desc">Full island drop-in chaos event. KOS the moment you land. Last crew standing takes everything. No rules, no mercy.</div>
-          </div>
+          <div class="rec-card"><div class="rec-icon">🍉</div><div class="rec-name">Watermelon Wednesday</div><div class="rec-when">Every Wednesday · 9 PM EST</div><div class="rec-desc">Empire's signature weekly event. Themed fits, good vibes, open to the whole city.</div></div>
+          <div class="rec-card"><div class="rec-icon">📦</div><div class="rec-name">Airdrops</div><div class="rec-when">Random · Staff Announced</div><div class="rec-desc">Drops anywhere in the city without warning. KOS inside the zone — no robbing.</div></div>
+          <div class="rec-card"><div class="rec-icon">🚗</div><div class="rec-name">Car Meets</div><div class="rec-when">Bi-Weekly · Saturdays</div><div class="rec-desc">Flex your build, meet the city, and keep it peaceful. Location dropped day-of.</div></div>
+          <div class="rec-card"><div class="rec-icon">🔍</div><div class="rec-name">Murder Mystery</div><div class="rec-when">Monthly · Staff Hosted</div><div class="rec-desc">City-wide whodunit RP experience. Every round has a different killer and setting.</div></div>
+          <div class="rec-card"><div class="rec-icon">🚔</div><div class="rec-name">Evidence Transport</div><div class="rec-when">Monthly · PvP Event</div><div class="rec-desc">LSPD moves evidence, criminals intercept. High intensity PvP with real stakes.</div></div>
+          <div class="rec-card"><div class="rec-icon">💥</div><div class="rec-name">Cayo Bloobath</div><div class="rec-when">Monthly · KOS</div><div class="rec-desc">Full island drop-in chaos event. Last crew standing takes everything. No mercy.</div></div>
         </div>
       </div>
     </div>
@@ -676,125 +505,94 @@
     <!-- RIGHT: Sidebar -->
     <div class="sidebar">
 
-      <!-- Calendar -->
+      <!-- ── MONTHLY CALENDAR ── -->
       <div class="cal-card">
         <div class="cal-header">
-          <h3 id="calMonthTitle">June 2026</h3>
+          <div class="cal-header-left">
+            <div class="cal-month-name" id="calMonthName">June</div>
+            <div class="cal-year" id="calYear">2026</div>
+          </div>
           <div class="cal-nav">
-            <button class="cal-btn" id="calPrev">‹</button>
-            <button class="cal-btn" id="calNext">›</button>
+            <button class="cal-btn" id="calPrev" title="Previous month">‹</button>
+            <button class="cal-btn cal-today-btn" id="calTodayBtn" title="Go to today">Today</button>
+            <button class="cal-btn" id="calNext" title="Next month">›</button>
           </div>
         </div>
-        <div class="cal-grid">
+        <div class="cal-grid-wrap">
           <div class="cal-dow-row">
-            <div class="cal-dow">Su</div>
-            <div class="cal-dow">Mo</div>
-            <div class="cal-dow">Tu</div>
-            <div class="cal-dow">We</div>
-            <div class="cal-dow">Th</div>
-            <div class="cal-dow">Fr</div>
-            <div class="cal-dow">Sa</div>
+            <div class="cal-dow">Su</div><div class="cal-dow">Mo</div><div class="cal-dow">Tu</div>
+            <div class="cal-dow">We</div><div class="cal-dow">Th</div><div class="cal-dow">Fr</div><div class="cal-dow">Sa</div>
           </div>
-          <div class="cal-days" id="calDays"></div>
+          <div class="cal-weeks" id="calWeeks"></div>
+        </div>
+        <div class="cal-selected-info" id="calSelectedInfo">
+          <div class="cal-selected-date" id="calSelectedDate"></div>
+          <div class="cal-event-list" id="calSelectedEvents"></div>
         </div>
         <div class="cal-legend">
           <div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div> Today</div>
-          <div class="leg-item"><div class="leg-dot" style="background:var(--gold2)"></div> Major Event</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--gold2)"></div> Major</div>
           <div class="leg-item"><div class="leg-dot" style="background:#39ff82"></div> Weekly</div>
-          <div class="leg-item"><div class="leg-dot" style="background:#5865F2"></div> Live Posted</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#a78bfa"></div> Monthly</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#5865F2"></div> Posted</div>
         </div>
       </div>
 
-      <!-- Event Info -->
+      <!-- Event Rules -->
       <div class="info-card">
         <h4>📋 Event Rules</h4>
-        <div class="info-row">
-          <div class="info-row-icon">⏱</div>
-          <div class="info-row-text">
-            <strong>15-Min Peace Time</strong>
-            After every event, no robbing or hostile RP for 15 minutes.
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-row-icon">🎬</div>
-          <div class="info-row-text">
-            <strong>Always Be Clipping</strong>
-            Clip software must be running at all events. No clips = no returns.
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-row-icon">🟢</div>
-          <div class="info-row-text">
-            <strong>GZ Events</strong>
-            Event locations are green zones for the duration + buffer time.
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-row-icon">💀</div>
-          <div class="info-row-text">
-            <strong>KOS Events</strong>
-            Cayo Bloobath and Airdrops are KOS inside the zone only. No robbing inside.
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-row-icon">📢</div>
-          <div class="info-row-text">
-            <strong>All Announcements in Discord</strong>
-            Times, locations, and themes are posted in the announcements channel before every event.
-          </div>
-        </div>
+        <div class="info-row"><div class="info-row-icon">⏱</div><div class="info-row-text"><strong>15-Min Peace Time</strong>After every event, no robbing or hostile RP for 15 minutes.</div></div>
+        <div class="info-row"><div class="info-row-icon">🎬</div><div class="info-row-text"><strong>Always Be Clipping</strong>Clip software must be running at all events. No clips = no returns.</div></div>
+        <div class="info-row"><div class="info-row-icon">🟢</div><div class="info-row-text"><strong>GZ Events</strong>Event locations are green zones for the duration + buffer time.</div></div>
+        <div class="info-row"><div class="info-row-icon">💀</div><div class="info-row-text"><strong>KOS Events</strong>Cayo Bloobath and Airdrops are KOS inside the zone only. No robbing inside.</div></div>
+        <div class="info-row"><div class="info-row-icon">📢</div><div class="info-row-text"><strong>All Announcements in Discord</strong>Times, locations, and themes are posted before every event.</div></div>
       </div>
 
-      <!-- ── EVENT OVERSIGHT PORTAL ── -->
-      <div class="oversight-portal">
+      <!-- ── EVENT PORTAL (Discord role-gated) ── -->
+      <div class="oversight-portal" id="oversightPortal">
         <div class="oversight-header">
           <span style="font-size:18px;">🛡️</span>
-          <h3>Event Oversight</h3>
-          <div class="oversight-badge">Staff Only</div>
+          <h3>Event Portal</h3>
+          <div class="oversight-badge" id="portalBadge">Staff Only</div>
         </div>
         <div class="oversight-body">
 
-          <!-- Login State -->
-          <div class="oversight-login" id="oversightLogin">
+          <!-- Not signed in -->
+          <div class="portal-signin" id="portalSignin">
             <div class="lock-icon">🔐</div>
-            <p>Event Oversight members can post events live to this page. You must have the <strong style="color:#a5b4fc;">Event Oversight</strong> role in the Empire Discord to post.</p>
-            <button class="btn discord-btn" style="width:100%;justify-content:center;" onclick="loginWithDiscord()">
-              <svg width="20" height="20" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.5.4a40.7 40.7 0 0 0-1.8 3.7 54.1 54.1 0 0 0-16.4 0A40.7 40.7 0 0 0 25.5.4 58.4 58.4 0 0 0 10.9 5C1.6 19.2-1 33 .3 46.6A59 59 0 0 0 18.3 55a44.8 44.8 0 0 0 3.8-6.3 38.3 38.3 0 0 1-6-2.9l1.4-1.1a42 42 0 0 0 36.1 0l1.5 1.1a38.3 38.3 0 0 1-6 2.9A44.8 44.8 0 0 0 52.7 55a58.8 58.8 0 0 0 18-8.4C72.4 30.8 68 17.2 60.1 4.9ZM23.7 38.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Z" fill="#fff"/></svg>
-              Login with Discord
+            <p>Sign in with Discord to access the Event Portal. Only <strong style="color:#a5b4fc;">Event Oversight</strong> and <strong style="color:var(--gold);">Management</strong> roles can post events.</p>
+            <button class="btn discord-btn" style="width:100%;justify-content:center;margin-top:4px;" onclick="discordLogin()">
+              <svg width="18" height="14" viewBox="0 0 127.14 96.36" fill="currentColor"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+              Sign In with Discord
             </button>
           </div>
 
-          <!-- Logged-in State -->
-          <div class="oversight-user" id="oversightUser">
-            <div class="user-info">
-              <div class="user-pfp-placeholder" id="userPfpPlaceholder" style="display:none;"></div>
-              <img class="user-pfp" id="userPfp" src="" alt="" style="display:none;" onerror="this.style.display='none'; document.getElementById('userPfpPlaceholder').style.display='flex'">
-              <div class="user-details">
-                <div class="user-name" id="userName">—</div>
-                <div class="user-role">🛡️ Event Oversight</div>
-                <div class="user-discord" id="userDiscord">—</div>
-              </div>
-              <button class="logout-btn" onclick="logout()">Logout</button>
-            </div>
+          <!-- Signed in but wrong role -->
+          <div class="portal-locked" id="portalLocked">
+            <div class="lock-icon">🔒</div>
+            <p>Your Discord role doesn't have permission to post events. This portal requires the <strong style="color:#a5b4fc;">Event Oversight</strong> or <strong style="color:var(--gold);">Management</strong> role.</p>
+            <button class="logout-btn" style="margin-top:14px;" onclick="staffLogout()">Sign Out</button>
+          </div>
 
+          <!-- Authorized to post -->
+          <div class="portal-open" id="portalOpen">
+            <div class="user-info">
+              <img class="user-pfp" id="portalUserPfp" src="" alt="" onerror="this.style.display='none';document.getElementById('portalUserInitialEl').style.display='flex'">
+              <div class="user-pfp-placeholder" id="portalUserInitialEl" style="display:none;">?</div>
+              <div class="user-details">
+                <div class="user-name" id="portalUserName">—</div>
+                <div class="user-role-badge" id="portalUserRole">—</div>
+              </div>
+              <button class="logout-btn" onclick="staffLogout()">Sign Out</button>
+            </div>
             <div class="post-form">
               <div class="form-row">
-                <div class="form-group">
-                  <label>Event Name</label>
-                  <input type="text" id="postName" placeholder="e.g. Street Race Night" maxlength="60">
-                </div>
-                <div class="form-group">
-                  <label>Date</label>
-                  <input type="date" id="postDate">
-                </div>
+                <div class="form-group"><label>Event Name</label><input type="text" id="postName" placeholder="e.g. Street Race Night" maxlength="60"></div>
+                <div class="form-group"><label>Date</label><input type="date" id="postDate"></div>
               </div>
               <div class="form-row">
-                <div class="form-group">
-                  <label>Time (EST)</label>
-                  <input type="text" id="postTime" placeholder="e.g. 9 PM EST">
-                </div>
-                <div class="form-group">
-                  <label>Type</label>
+                <div class="form-group"><label>Time (EST)</label><input type="text" id="postTime" placeholder="e.g. 9 PM EST"></div>
+                <div class="form-group"><label>Type</label>
                   <select id="postType">
                     <option value="special">⭐ Special Event</option>
                     <option value="recurring">🔁 Weekly</option>
@@ -804,10 +602,7 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <label>Description</label>
-                <textarea id="postDesc" placeholder="Describe what's happening, rules, and how to join..." maxlength="300"></textarea>
-              </div>
+              <div class="form-group"><label>Description</label><textarea id="postDesc" placeholder="Describe what's happening, rules, and how to join..." maxlength="300"></textarea></div>
               <div id="postSuccess" class="post-success">✅ Event posted live to the page!</div>
               <button class="post-btn" id="postBtn" onclick="postEvent()">📢 Post Event Live</button>
             </div>
@@ -819,7 +614,7 @@
       <!-- Discord CTA -->
       <div class="discord-card">
         <h4>Never Miss an Event</h4>
-        <p>All event announcements, theme drops, location pins, and last-minute changes go live in Discord first. Turn on notifications so you don't miss the drop.</p>
+        <p>All event announcements, theme drops, location pins, and last-minute changes go live in Discord first.</p>
         <a href="https://discord.gg/empirerp" target="_blank" rel="noopener" class="btn" style="width:100%;justify-content:center;">Join the Discord</a>
       </div>
 
@@ -833,394 +628,557 @@
       <p>A premium GTA V roleplay community. Built by players, for players.</p>
     </div>
     <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="rules.html">Rules</a>
-      <a href="faction-rules.html">Faction Rules</a>
-      <a href="showcase.html">Showcase</a>
+      <a href="index.html">Home</a><a href="rules.html">Rules</a>
+      <a href="faction-rules.html">Faction Rules</a><a href="showcase.html">Showcase</a>
       <a href="events.html">Events</a>
       <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
-      <a href="#">Store</a>
     </div>
     <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
   </footer>
 
-  <script>
-    // ── MOBILE MENU ──
-    document.getElementById('hamburger').addEventListener('click', () => {
-      document.getElementById('mobileMenu').classList.toggle('open');
+<script>
+// ═══════════════════════════════════════════════════════
+// DISCORD OAUTH CONFIGURATION
+// ═══════════════════════════════════════════════════════
+// Replace these values with your actual Discord app credentials.
+// Create your Discord app at: https://discord.com/developers/applications
+//
+// SETUP STEPS:
+// 1. Go to discord.com/developers/applications → New Application
+// 2. Go to OAuth2 → Add redirect URL: https://yourdomain.com/events.html
+// 3. Copy Client ID below. (Client Secret stays server-side in production)
+// 4. Set DISCORD_SERVER_ID to your Empire RP Discord server ID
+// 5. Set STAFF_ROLE_IDS for your staff roles, POSTER_ROLE_IDS for oversight/management
+//
+// ⚠️  IMPORTANT: In production, role verification MUST happen server-side.
+//     This demo uses Discord's OAuth token to fetch the user's guild member
+//     roles directly from the Discord API (only works if bot is in server).
+//     For a real deployment, use a backend (Node/PHP/etc.) to verify roles.
+// ═══════════════════════════════════════════════════════
+
+const DISCORD_CONFIG = {
+  CLIENT_ID: 'YOUR_DISCORD_CLIENT_ID',        // ← Replace with your Discord app Client ID
+  REDIRECT_URI: window.location.origin + window.location.pathname,
+  SCOPES: 'identify guilds.members.read',
+  SERVER_ID: 'YOUR_DISCORD_SERVER_ID',        // ← Replace with your Empire RP server ID
+
+  // Discord Role IDs that count as "staff" (can VIEW the portal)
+  STAFF_ROLE_IDS: [
+    'YOUR_STAFF_ROLE_ID',                     // ← Staff role ID
+    'YOUR_OVERSIGHT_ROLE_ID',                 // ← Event Oversight role ID
+    'YOUR_MANAGEMENT_ROLE_ID',                // ← Management role ID
+  ],
+
+  // Role IDs that can POST events (subset of staff)
+  POSTER_ROLE_IDS: [
+    'YOUR_OVERSIGHT_ROLE_ID',                 // ← Event Oversight role ID
+    'YOUR_MANAGEMENT_ROLE_ID',                // ← Management role ID
+  ],
+
+  // Human-readable names for display (maps role ID → label)
+  ROLE_LABELS: {
+    'YOUR_OVERSIGHT_ROLE_ID': { label: '🛡️ Event Oversight', cls: 'oversight' },
+    'YOUR_MANAGEMENT_ROLE_ID': { label: '👑 Management', cls: 'management' },
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+// DEMO MODE — remove this block once you set up real OAuth
+// ═══════════════════════════════════════════════════════
+// While DISCORD_CONFIG.CLIENT_ID is still the placeholder,
+// the page operates in Demo Mode using simulated staff accounts
+// so you can see how the portal works before wiring up Discord.
+const DEMO_MODE = DISCORD_CONFIG.CLIENT_ID === 'YOUR_DISCORD_CLIENT_ID';
+
+const DEMO_ACCOUNTS = [
+  { id: 'demo-mgmt',     username: 'EmpireAdmin#0001',     avatar: null, role: 'management', display: 'Empire Admin',    canPost: true  },
+  { id: 'demo-oversight',username: 'EventOversight#0042',  avatar: null, role: 'oversight',  display: 'Event Oversight', canPost: true  },
+  { id: 'demo-staff',    username: 'StaffMember#0099',     avatar: null, role: 'staff',      display: 'Staff Member',    canPost: false },
+];
+let demoAccountIndex = 0;
+
+// ═══════════════════════════════════════════════════════
+// SESSION
+// ═══════════════════════════════════════════════════════
+let currentUser = null; // { id, username, avatar, display, role, canPost }
+
+function discordLogin() {
+  if (DEMO_MODE) {
+    // Cycle through demo accounts so you can test different roles
+    const acc = DEMO_ACCOUNTS[demoAccountIndex % DEMO_ACCOUNTS.length];
+    demoAccountIndex++;
+    sessionStorage.setItem('empire_user', JSON.stringify(acc));
+    currentUser = acc;
+    onLoginSuccess(acc);
+    showToast(`✅ Demo login as ${acc.display}`);
+    return;
+  }
+
+  // Real Discord OAuth2 flow
+  const params = new URLSearchParams({
+    client_id: DISCORD_CONFIG.CLIENT_ID,
+    redirect_uri: DISCORD_CONFIG.REDIRECT_URI,
+    response_type: 'token',
+    scope: DISCORD_CONFIG.SCOPES,
+  });
+  window.location.href = `https://discord.com/api/oauth2/authorize?${params}`;
+}
+
+async function handleDiscordCallback() {
+  // Parse the access token from the URL fragment after OAuth redirect
+  const hash = window.location.hash.substring(1);
+  const params = new URLSearchParams(hash);
+  const accessToken = params.get('access_token');
+  if (!accessToken) return;
+
+  // Clean up URL
+  history.replaceState(null, '', window.location.pathname);
+
+  try {
+    // Fetch Discord user info
+    const userRes = await fetch('https://discord.com/api/users/@me', {
+      headers: { Authorization: `Bearer ${accessToken}` }
     });
+    const user = await userRes.json();
 
-    // ── CALENDAR ──
-    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    // Fetch their roles in your server
+    const memberRes = await fetch(`https://discord.com/api/users/@me/guilds/${DISCORD_CONFIG.SERVER_ID}/member`, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    const member = await memberRes.json();
 
-    // June 2026 events (day → type)
-    const juneEvents = {
-      2:  'major',   // Killer Clown Maze
-      4:  'major',   // Murder Mystery
-      7:  'major',   // Spirit Week start
-      8:  'major',
-      9:  'major',
-      10: 'weekly',  // Watermelon Wednesday
-      11: 'major',
-      12: 'major',
-      13: 'major',   // Spirit Week end
-      15: 'major',   // Evidence Transport
-      17: 'major',   // Among Us
-      22: 'major',   // Protect VIP
-      25: 'major',   // Red Light Green Light
-      28: 'monthly', // Cayo Bloobath
+    if (!member.roles) {
+      showToast('⚠️ Could not verify your server membership.', '#ff3c3c');
+      return;
+    }
+
+    const memberRoles = member.roles;
+    const isStaff    = DISCORD_CONFIG.STAFF_ROLE_IDS.some(r => memberRoles.includes(r));
+    const canPost    = DISCORD_CONFIG.POSTER_ROLE_IDS.some(r => memberRoles.includes(r));
+
+    if (!isStaff) {
+      showToast('❌ You don\'t have a staff role on this server.', '#ff3c3c');
+      return;
+    }
+
+    // Determine primary display role
+    let role = 'staff', roleLabel = '🎖️ Staff', roleCls = 'staff';
+    for (const [id, info] of Object.entries(DISCORD_CONFIG.ROLE_LABELS)) {
+      if (memberRoles.includes(id)) {
+        roleLabel = info.label; roleCls = info.cls;
+        role = roleCls;
+        break;
+      }
+    }
+
+    const avatarUrl = user.avatar
+      ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=64`
+      : null;
+
+    const acc = {
+      id: user.id,
+      username: user.username,
+      display: member.nick || user.global_name || user.username,
+      avatar: avatarUrl,
+      role,
+      roleLabel,
+      canPost,
     };
 
-    let calDate = new Date(2026, 5, 1); // June 2026
+    sessionStorage.setItem('empire_user', JSON.stringify(acc));
+    currentUser = acc;
+    onLoginSuccess(acc);
+  } catch (e) {
+    console.error('Discord auth error:', e);
+    showToast('⚠️ Login failed. Try again.', '#ff3c3c');
+  }
+}
 
-    function buildCalendar(d) {
-      const year  = d.getFullYear();
-      const month = d.getMonth();
-      const today = new Date();
+function onLoginSuccess(acc) {
+  // Hide staff login banner
+  document.getElementById('staffLoginBanner').classList.remove('visible');
 
-      document.getElementById('calMonthTitle').textContent = `${MONTHS[month]} ${year}`;
+  // Update nav
+  updateNavAuth(acc);
 
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const daysInPrev  = new Date(year, month, 0).getDate();
+  // Init portal
+  initPortal(acc);
+}
 
-      const grid = document.getElementById('calDays');
-      grid.innerHTML = '';
+function updateNavAuth(acc) {
+  const area = document.getElementById('navAuthArea');
+  if (!acc) {
+    area.innerHTML = `<button class="btn discord-btn" style="padding:8px 16px;font-size:12px;" onclick="discordLogin()">Staff Login</button>`;
+    return;
+  }
+  const initial = (acc.display || acc.username || '?').charAt(0).toUpperCase();
+  const pfpHtml = acc.avatar
+    ? `<img src="${acc.avatar}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">`
+    : `<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#5865F2,#4752c4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;">${esc(initial)}</div>`;
+  area.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;">
+      ${pfpHtml}
+      <span style="font-size:12px;color:var(--muted);">${esc(acc.display)}</span>
+      <button class="btn ghost" style="padding:6px 14px;font-size:11px;" onclick="staffLogout()">Sign Out</button>
+    </div>`;
+}
 
-      for (let i = firstDay - 1; i >= 0; i--) {
-        const el = document.createElement('div');
-        el.className = 'cal-day other-month';
-        el.textContent = daysInPrev - i;
-        grid.appendChild(el);
-      }
+function staffLogout() {
+  currentUser = null;
+  sessionStorage.removeItem('empire_user');
+  updateNavAuth(null);
+  document.getElementById('staffLoginBanner').classList.add('visible');
+  // Reset portal
+  document.getElementById('portalSignin').style.display = 'block';
+  document.getElementById('portalLocked').style.display = 'none';
+  document.getElementById('portalOpen').style.display   = 'none';
+  document.getElementById('portalBadge').textContent    = 'Staff Only';
+  showToast('👋 Signed out.');
+}
 
-      for (let day = 1; day <= daysInMonth; day++) {
-        const el = document.createElement('div');
-        el.textContent = day;
-        let cls = 'cal-day';
-        let colorOverride = '';
+function initPortal(acc) {
+  const signin  = document.getElementById('portalSignin');
+  const locked  = document.getElementById('portalLocked');
+  const open    = document.getElementById('portalOpen');
+  const badge   = document.getElementById('portalBadge');
 
-        const isToday = year === today.getFullYear() && month === today.getMonth() && day === today.getDate();
-        if (isToday) cls += ' today';
+  signin.style.display = 'none';
 
-        const evType = (year === 2026 && month === 5) ? juneEvents[day] : null;
-        if (evType === 'major')   { cls += ' event-main has-event'; el.title = 'Event Day'; }
-        else if (evType === 'weekly')  { cls += ' has-event'; colorOverride = '#39ff82'; el.title = 'Weekly Event'; }
-        else if (evType === 'monthly') { cls += ' has-event'; colorOverride = '#a78bfa'; el.title = 'Monthly Event'; }
+  if (acc.canPost) {
+    locked.style.display = 'none';
+    open.style.display   = 'block';
 
-        // Check live-posted events for this day
-        const liveEventsForDay = getLiveEventsForDay(year, month, day);
-        if (liveEventsForDay.length > 0) {
-          cls += ' has-event';
-          colorOverride = '#5865F2';
-          el.title = (el.title ? el.title + ' + ' : '') + 'Live Event';
-        }
-
-        el.className = cls;
-        if (colorOverride) el.style.color = colorOverride;
-        grid.appendChild(el);
-      }
-
-      const total = firstDay + daysInMonth;
-      const remainder = total % 7 === 0 ? 0 : 7 - (total % 7);
-      for (let i = 1; i <= remainder; i++) {
-        const el = document.createElement('div');
-        el.className = 'cal-day other-month';
-        el.textContent = i;
-        grid.appendChild(el);
-      }
+    // Avatar
+    const pfpImg = document.getElementById('portalUserPfp');
+    const pfpInit = document.getElementById('portalUserInitialEl');
+    if (acc.avatar) {
+      pfpImg.src = acc.avatar;
+      pfpImg.style.display = 'block';
+      pfpInit.style.display = 'none';
+    } else {
+      pfpImg.style.display = 'none';
+      pfpInit.style.display = 'flex';
+      pfpInit.textContent = (acc.display || '?').charAt(0).toUpperCase();
     }
 
-    document.getElementById('calPrev').addEventListener('click', () => {
-      calDate.setMonth(calDate.getMonth() - 1);
-      buildCalendar(calDate);
-    });
-    document.getElementById('calNext').addEventListener('click', () => {
-      calDate.setMonth(calDate.getMonth() + 1);
-      buildCalendar(calDate);
-    });
+    document.getElementById('portalUserName').textContent = acc.display;
 
-    buildCalendar(calDate);
-
-    // ── LIVE EVENTS STORAGE ──
-    // Using localStorage to persist live events in the browser.
-    // In production, replace this with a real backend API.
-
-    function getLiveEvents() {
-      try {
-        return JSON.parse(localStorage.getItem('empire_live_events') || '[]');
-      } catch { return []; }
+    const roleEl = document.getElementById('portalUserRole');
+    if (acc.role === 'management') {
+      roleEl.textContent = acc.roleLabel || '👑 Management';
+      roleEl.className   = 'user-role-badge management';
+      badge.textContent  = 'Management';
+    } else {
+      roleEl.textContent = acc.roleLabel || '🛡️ Event Oversight';
+      roleEl.className   = 'user-role-badge oversight';
+      badge.textContent  = 'Event Oversight';
     }
+  } else {
+    locked.style.display = 'block';
+    open.style.display   = 'none';
+    badge.textContent = 'Staff (View Only)';
+  }
+}
 
-    function saveLiveEvents(events) {
-      try {
-        localStorage.setItem('empire_live_events', JSON.stringify(events));
-      } catch {}
-    }
+// ═══════════════════════════════════════════════════════
+// LIVE EVENTS  (sessionStorage — swap for a real DB in prod)
+// ═══════════════════════════════════════════════════════
+function getLiveEvents() {
+  try { return JSON.parse(sessionStorage.getItem('empire_live_events') || '[]'); } catch { return []; }
+}
+function saveLiveEvents(evs) {
+  try { sessionStorage.setItem('empire_live_events', JSON.stringify(evs)); } catch {}
+}
 
-    function getLiveEventsForDay(year, month, day) {
-      return getLiveEvents().filter(ev => {
-        if (!ev.date) return false;
-        const d = new Date(ev.date + 'T00:00:00');
-        return d.getFullYear() === year && d.getMonth() === month && d.getDate() === day;
-      });
-    }
+function renderLiveEvents() {
+  const container = document.getElementById('liveEventsList');
+  container.innerHTML = '';
+  getLiveEvents().forEach(ev => container.appendChild(buildLiveCard(ev)));
+}
 
-    function renderLiveEvents() {
-      const events = getLiveEvents();
-      const container = document.getElementById('liveEventsList');
-      container.innerHTML = '';
-      events.forEach(ev => {
-        const card = buildLiveEventCard(ev);
-        container.appendChild(card);
-      });
-    }
+function buildLiveCard(ev) {
+  const d = ev.date ? new Date(ev.date + 'T00:00:00') : new Date();
+  const days   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const pillMap = {
+    special:'<span class="epill special">⭐ Special Event</span>',
+    recurring:'<span class="epill recurring">🔁 Weekly</span>',
+    pvp:'<span class="epill pvp">💀 PvP Event</span>',
+    community:'<span class="epill community">🌆 City Event</span>',
+    new:'<span class="epill new">🔥 Major Event</span>',
+  };
+  const rolePill = ev.posterRole === 'management'
+    ? '<span class="epill management">👑 Management</span>'
+    : '<span class="epill oversight">🛡️ Oversight</span>';
+  const pfpHtml = ev.posterAvatar
+    ? `<img class="posted-pfp" src="${esc(ev.posterAvatar)}" alt="">`
+    : `<div class="posted-pfp-placeholder">${esc((ev.posterDisplay||'?').charAt(0).toUpperCase())}</div>`;
+  const card = document.createElement('div');
+  card.className = 'event-card live-posted';
+  card.innerHTML = `
+    <div class="event-date">
+      <div class="month">${months[d.getMonth()]}</div>
+      <div class="day">${d.getDate()}</div>
+      <div class="dow">${days[d.getDay()]}</div>
+    </div>
+    <div class="event-body">
+      <div class="event-name">${esc(ev.name)}</div>
+      <div class="event-meta">${pillMap[ev.type]||pillMap.special}${rolePill}<span class="event-time">⏰ ${esc(ev.time||'TBA')}</span></div>
+      <div class="event-desc">${esc(ev.desc)}</div>
+      <div class="event-posted-by">
+        ${pfpHtml}
+        <div class="posted-info">Posted by <strong>${esc(ev.posterDisplay)}</strong></div>
+      </div>
+    </div>
+    <div class="event-status"><div class="status-badge"><div class="status-dot live"></div><div class="status-text">Live</div></div></div>
+  `;
+  return card;
+}
 
-    function buildLiveEventCard(ev) {
-      const d = ev.date ? new Date(ev.date + 'T00:00:00') : new Date();
-      const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
-      const pillMap = {
-        special:   '<span class="epill special">⭐ Special Event</span>',
-        recurring: '<span class="epill recurring">🔁 Weekly</span>',
-        pvp:       '<span class="epill pvp">💀 PvP Event</span>',
-        community: '<span class="epill community">🌆 City Event</span>',
-        new:       '<span class="epill new">🔥 Major Event</span>',
-      };
+function postEvent() {
+  if (!currentUser || !currentUser.canPost) return;
+  const name = document.getElementById('postName').value.trim();
+  const date = document.getElementById('postDate').value;
+  const time = document.getElementById('postTime').value.trim();
+  const type = document.getElementById('postType').value;
+  const desc = document.getElementById('postDesc').value.trim();
+  if (!name || !date || !desc) { showToast('⚠️ Fill in name, date, and description.', '#ff3c3c'); return; }
 
-      const initials = (ev.posterName || '?').charAt(0).toUpperCase();
-      const pfpHtml = ev.posterAvatar
-        ? `<img class="posted-pfp" src="${ev.posterAvatar}" alt="${ev.posterName}" onerror="this.style.display='none'">`
-        : `<div class="posted-pfp-placeholder">${initials}</div>`;
+  const btn = document.getElementById('postBtn');
+  btn.disabled = true; btn.textContent = 'Posting…';
 
-      const card = document.createElement('div');
-      card.className = 'event-card live-posted';
-      card.innerHTML = `
-        <div class="event-date">
-          <div class="month">${monthNames[d.getMonth()]}</div>
-          <div class="day">${d.getDate()}</div>
-          <div class="dow">${dayNames[d.getDay()]}</div>
-        </div>
-        <div class="event-body">
-          <div class="event-name">${escapeHtml(ev.name)}</div>
-          <div class="event-meta">
-            ${pillMap[ev.type] || pillMap.special}
-            <span class="epill oversight">🛡️ Oversight</span>
-            <span class="event-time">⏰ ${escapeHtml(ev.time || 'TBA')}</span>
-          </div>
-          <div class="event-desc">${escapeHtml(ev.desc)}</div>
-          <div class="event-posted-by">
-            ${pfpHtml}
-            <div class="posted-info">
-              Posted by <strong>${escapeHtml(ev.posterName)}</strong>
-              <span class="discord-tag">${escapeHtml(ev.posterDiscord || '')}</span>
-            </div>
-          </div>
-        </div>
-        <div class="event-status">
-          <div class="status-badge">
-            <div class="status-dot live"></div>
-            <div class="status-text">Live</div>
-          </div>
-        </div>
-      `;
-      return card;
-    }
+  const ev = {
+    id: Date.now(), name, date, time, type, desc,
+    posterDisplay: currentUser.display,
+    posterAvatar:  currentUser.avatar || null,
+    posterRole:    currentUser.role,
+    postedAt: new Date().toISOString()
+  };
+  const evs = getLiveEvents();
+  evs.unshift(ev);
+  saveLiveEvents(evs);
 
-    function escapeHtml(str) {
-      return String(str || '')
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
-        .replace(/'/g,'&#39;');
-    }
-
-    // ── DISCORD OAUTH / AUTH SIMULATION ──
-    // Production setup: replace CLIENT_ID and REDIRECT_URI with your real values.
-    // The Discord bot must verify the "Event Oversight" role server-side.
-    // This implementation uses a demo flow for display purposes.
-
-    const DISCORD_CLIENT_ID = 'YOUR_CLIENT_ID_HERE'; // Replace with real Discord App Client ID
-    const REDIRECT_URI = encodeURIComponent(window.location.origin + window.location.pathname);
-
-    function loginWithDiscord() {
-      // Check if we have a stored demo session first
-      const stored = sessionStorage.getItem('empire_oversight_user');
-      if (stored) {
-        try {
-          const user = JSON.parse(stored);
-          showLoggedIn(user);
-          return;
-        } catch {}
-      }
-
-      // In production, redirect to Discord OAuth:
-      // window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=identify%20guilds.members.read`;
-
-      // Demo mode: simulate login with Event Oversight role
-      // Replace this block with real OAuth in production
-      showDemoLoginModal();
-    }
-
-    function showDemoLoginModal() {
-      // Create a simple demo modal to simulate Discord login
-      const overlay = document.createElement('div');
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);';
-      overlay.innerHTML = `
-        <div style="background:#0f0d0b;border:1px solid rgba(88,101,242,.4);border-radius:20px;padding:32px;max-width:400px;width:90%;text-align:center;">
-          <div style="font-size:40px;margin-bottom:12px;">🛡️</div>
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;text-transform:uppercase;color:#a5b4fc;margin-bottom:8px;">Event Oversight Portal</h3>
-          <p style="color:#a89880;font-size:13px;line-height:1.6;margin-bottom:20px;">
-            Enter your Discord details to simulate login.<br>
-            <strong style="color:#a5b4fc;">In production:</strong> this redirects to Discord OAuth and verifies your <strong style="color:#a5b4fc;">Event Oversight</strong> role automatically.
-          </p>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;text-align:left;">
-            <div style="display:flex;flex-direction:column;gap:5px;">
-              <label style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#a89880;">Display Name</label>
-              <input id="demoName" type="text" placeholder="Your Discord name" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;color:#f2ede4;font-family:Inter,sans-serif;font-size:13px;outline:none;">
-            </div>
-            <div style="display:flex;flex-direction:column;gap:5px;">
-              <label style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#a89880;">Discord Tag (e.g. @username)</label>
-              <input id="demoTag" type="text" placeholder="@yourname" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;color:#f2ede4;font-family:Inter,sans-serif;font-size:13px;outline:none;">
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;">
-            <button onclick="this.closest('div[style]').remove()" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:11px;color:#a89880;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;">Cancel</button>
-            <button onclick="completeDemoLogin()" style="flex:2;background:linear-gradient(135deg,#5865F2,#4752c4);border:none;border-radius:999px;padding:11px;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;">Login as Oversight</button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(overlay);
-    }
-
-    function completeDemoLogin() {
-      const nameEl = document.getElementById('demoName');
-      const tagEl  = document.getElementById('demoTag');
-      const name   = (nameEl && nameEl.value.trim()) || 'EventOversight';
-      const tag    = (tagEl  && tagEl.value.trim())  || '@oversight';
-
-      const user = {
-        id: 'demo_' + Date.now(),
-        username: name,
-        discriminator: tag.replace('@',''),
-        avatar: null, // no real avatar in demo mode
-        hasOversightRole: true
-      };
-
-      sessionStorage.setItem('empire_oversight_user', JSON.stringify(user));
-      document.querySelectorAll('div[style*="position:fixed"]').forEach(el => {
-        if (el.style.zIndex === '9999' || el.style.zIndex == 9999) el.remove();
-      });
-      showLoggedIn(user);
-    }
-
-    function showLoggedIn(user) {
-      if (!user.hasOversightRole) {
-        alert('❌ You do not have the Event Oversight role in the Empire Discord. Contact a senior staff member to get access.');
-        return;
-      }
-
-      document.getElementById('oversightLogin').style.display = 'none';
-      document.getElementById('oversightUser').style.display = 'block';
-
-      const displayName = user.username || 'Oversight Member';
-      const discordTag = user.discriminator ? `@${user.discriminator}` : `@${user.username}`;
-
-      document.getElementById('userName').textContent = displayName;
-      document.getElementById('userDiscord').textContent = discordTag;
-
-      if (user.avatar) {
-        const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=64`;
-        document.getElementById('userPfp').src = avatarUrl;
-        document.getElementById('userPfp').style.display = 'block';
-        document.getElementById('userPfpPlaceholder').style.display = 'none';
-      } else {
-        document.getElementById('userPfp').style.display = 'none';
-        const placeholder = document.getElementById('userPfpPlaceholder');
-        placeholder.style.display = 'flex';
-        placeholder.textContent = displayName.charAt(0).toUpperCase();
-      }
-
-      // Store for form
-      window._oversightUser = user;
-    }
-
-    function logout() {
-      sessionStorage.removeItem('empire_oversight_user');
-      window._oversightUser = null;
-      document.getElementById('oversightLogin').style.display = 'block';
-      document.getElementById('oversightUser').style.display = 'none';
-    }
-
-    function postEvent() {
-      const user = window._oversightUser;
-      if (!user) return;
-
-      const name = document.getElementById('postName').value.trim();
-      const date = document.getElementById('postDate').value;
-      const time = document.getElementById('postTime').value.trim();
-      const type = document.getElementById('postType').value;
-      const desc = document.getElementById('postDesc').value.trim();
-
-      if (!name || !date || !desc) {
-        alert('Please fill in Event Name, Date, and Description.');
-        return;
-      }
-
-      const btn = document.getElementById('postBtn');
-      btn.disabled = true;
-      btn.textContent = 'Posting...';
-
-      const newEvent = {
-        id: Date.now(),
-        name, date, time, type, desc,
-        posterName:    user.username,
-        posterDiscord: user.discriminator ? `@${user.discriminator}` : `@${user.username}`,
-        posterAvatar:  user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=64` : null,
-        postedAt: new Date().toISOString()
-      };
-
-      const events = getLiveEvents();
-      events.unshift(newEvent);
-      saveLiveEvents(events);
-
-      setTimeout(() => {
-        renderLiveEvents();
-        buildCalendar(calDate); // refresh calendar to show new dot
-
-        document.getElementById('postName').value = '';
-        document.getElementById('postDate').value = '';
-        document.getElementById('postTime').value = '';
-        document.getElementById('postDesc').value = '';
-
-        const success = document.getElementById('postSuccess');
-        success.style.display = 'block';
-        setTimeout(() => success.style.display = 'none', 3000);
-
-        btn.disabled = false;
-        btn.textContent = '📢 Post Event Live';
-
-        showToast('✅ Event posted live!');
-      }, 600);
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3200);
-    }
-
-    // Auto-restore session on load
-    (function checkSession() {
-      const stored = sessionStorage.getItem('empire_oversight_user');
-      if (stored) {
-        try { showLoggedIn(JSON.parse(stored)); } catch {}
-      }
-    })();
-
-    // Render any existing live events on load
+  setTimeout(() => {
     renderLiveEvents();
-  </script>
+    buildCalendar(calDate);
+    document.getElementById('postName').value = '';
+    document.getElementById('postDate').value = '';
+    document.getElementById('postTime').value = '';
+    document.getElementById('postDesc').value = '';
+    const s = document.getElementById('postSuccess');
+    s.style.display = 'block';
+    setTimeout(() => s.style.display = 'none', 3000);
+    btn.disabled = false; btn.textContent = '📢 Post Event Live';
+    showToast('✅ Event posted live!');
+  }, 400);
+}
+
+// ═══════════════════════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════════════════════
+const STATIC_EVENTS = {
+  '2026-5': {
+    2:  [{ label: 'Killer Clown Maze',    color: '#f6b13a' }],
+    4:  [{ label: 'Murder Mystery',       color: '#f6b13a' }],
+    7:  [{ label: 'Spirit Week Start',    color: '#ff7200' }],
+    8:  [{ label: 'Spirit Week',          color: '#ff7200' }],
+    9:  [{ label: 'Spirit Week',          color: '#ff7200' }],
+    10: [{ label: 'Watermelon Wednesday', color: '#39ff82' }],
+    11: [{ label: 'Spirit Week',          color: '#ff7200' }],
+    12: [{ label: 'Spirit Week',          color: '#ff7200' }],
+    13: [{ label: 'Spirit Week End',      color: '#ff7200' }],
+    15: [{ label: 'Evidence Transport',   color: '#f6b13a' }],
+    17: [{ label: 'Among Us',             color: '#f6b13a' }],
+    22: [{ label: 'Protect the VIP',      color: '#f6b13a' }],
+    25: [{ label: 'Red Light Green Light',color: '#f6b13a' }],
+    28: [{ label: 'Cayo Bloobath',        color: '#a78bfa' }],
+  }
+};
+
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+let calDate = new Date(2026, 5, 1);
+let selectedDay = null;
+
+function getEventsForDay(year, month, day) {
+  const key = `${year}-${month}`;
+  const results = [];
+  const dayMap = STATIC_EVENTS[key];
+  if (dayMap && dayMap[day]) results.push(...dayMap[day]);
+  getLiveEvents().forEach(ev => {
+    if (!ev.date) return;
+    const d = new Date(ev.date + 'T00:00:00');
+    if (d.getFullYear()===year && d.getMonth()===month && d.getDate()===day)
+      results.push({ label: ev.name, color: '#5865F2' });
+  });
+  return results;
+}
+
+function buildCalendar(d) {
+  const year  = d.getFullYear();
+  const month = d.getMonth();
+  const today = new Date();
+
+  document.getElementById('calMonthName').textContent = MONTH_NAMES[month];
+  document.getElementById('calYear').textContent = year;
+
+  const firstDow    = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const daysInPrev  = new Date(year, month, 0).getDate();
+
+  const weeksEl = document.getElementById('calWeeks');
+  weeksEl.innerHTML = '';
+
+  let dayNum = 1, nextNum = 1;
+  let prevNum = daysInPrev - firstDow + 1;
+  const totalCells = Math.ceil((firstDow + daysInMonth) / 7) * 7;
+
+  for (let cell = 0; cell < totalCells; cell++) {
+    if (cell % 7 === 0) {
+      const week = document.createElement('div');
+      week.className = 'cal-week';
+      weeksEl.appendChild(week);
+    }
+    const week = weeksEl.lastChild;
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+
+    let cellDay, inMonth;
+    if (cell < firstDow) {
+      cellDay = prevNum++; inMonth = false; el.className += ' other-month';
+    } else if (dayNum > daysInMonth) {
+      cellDay = nextNum++; inMonth = false; el.className += ' other-month';
+    } else {
+      cellDay = dayNum++; inMonth = true;
+    }
+
+    const numSpan = document.createElement('span');
+    numSpan.textContent = cellDay;
+    el.appendChild(numSpan);
+
+    if (inMonth) {
+      const evs = getEventsForDay(year, month, cellDay);
+      const isToday = year===today.getFullYear() && month===today.getMonth() && cellDay===today.getDate();
+      const isSel = selectedDay && selectedDay.y===year && selectedDay.m===month && selectedDay.day===cellDay;
+      if (isToday) el.classList.add('today');
+      if (isSel && !isToday) el.classList.add('selected');
+      if (evs.length > 0) {
+        el.classList.add('has-event');
+        const dotsRow = document.createElement('div');
+        dotsRow.className = 'cal-dots';
+        evs.slice(0,3).forEach(ev => {
+          const dot = document.createElement('div');
+          dot.className = 'cal-dot';
+          dot.style.background = ev.color;
+          dotsRow.appendChild(dot);
+        });
+        el.appendChild(dotsRow);
+      }
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => {
+        selectedDay = { y: year, m: month, day: cellDay };
+        buildCalendar(calDate); // re-render to update selected style
+        showDayInfo(year, month, cellDay, getEventsForDay(year, month, cellDay));
+      });
+    }
+
+    week.appendChild(el);
+  }
+}
+
+function showDayInfo(year, month, day, evs) {
+  const infoEl   = document.getElementById('calSelectedInfo');
+  const dateEl   = document.getElementById('calSelectedDate');
+  const listEl   = document.getElementById('calSelectedEvents');
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dow      = new Date(year, month, day).getDay();
+  dateEl.textContent = `${dayNames[dow]}, ${MONTH_NAMES[month]} ${day}`;
+  listEl.innerHTML = '';
+  if (evs.length === 0) {
+    listEl.innerHTML = '<div style="font-size:12px;color:var(--muted);">No events scheduled.</div>';
+  } else {
+    evs.forEach(ev => {
+      const item = document.createElement('div');
+      item.className = 'cal-event-item';
+      item.innerHTML = `<div class="cdot" style="background:${ev.color}"></div><span>${esc(ev.label)}</span>`;
+      listEl.appendChild(item);
+    });
+  }
+  infoEl.classList.add('visible');
+}
+
+document.getElementById('calPrev').addEventListener('click', () => {
+  calDate.setMonth(calDate.getMonth()-1); selectedDay=null;
+  document.getElementById('calSelectedInfo').classList.remove('visible');
+  buildCalendar(calDate);
+});
+document.getElementById('calNext').addEventListener('click', () => {
+  calDate.setMonth(calDate.getMonth()+1); selectedDay=null;
+  document.getElementById('calSelectedInfo').classList.remove('visible');
+  buildCalendar(calDate);
+});
+document.getElementById('calTodayBtn').addEventListener('click', () => {
+  const t = new Date();
+  calDate = new Date(t.getFullYear(), t.getMonth(), 1);
+  selectedDay = null;
+  document.getElementById('calSelectedInfo').classList.remove('visible');
+  buildCalendar(calDate);
+});
+
+// ═══════════════════════════════════════════════════════
+// MOBILE NAV
+// ═══════════════════════════════════════════════════════
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+
+// ═══════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════
+function showToast(msg, color) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.color = color || '#39ff82';
+  t.style.borderColor = color ? 'rgba(255,60,60,.3)' : 'rgba(57,255,130,.3)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+(function init() {
+  buildCalendar(calDate);
+  renderLiveEvents();
+
+  // Handle Discord OAuth callback (token in URL fragment)
+  if (window.location.hash.includes('access_token')) {
+    handleDiscordCallback();
+    return;
+  }
+
+  // Restore session
+  const stored = sessionStorage.getItem('empire_user');
+  if (stored) {
+    try {
+      const acc = JSON.parse(stored);
+      currentUser = acc;
+      onLoginSuccess(acc);
+      return;
+    } catch {}
+  }
+
+  // No session: show staff banner + sign-in portal + nav button
+  document.getElementById('staffLoginBanner').classList.add('visible');
+  updateNavAuth(null);
+
+  if (DEMO_MODE) {
+    showToast('🛠️ Demo mode — Discord OAuth not configured yet', '#f6b13a');
+  }
+})();
+</script>
 </body>
 </html>
