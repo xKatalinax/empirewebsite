@@ -1,14 +1,12 @@
 /* ============================================================
-   Empire RP — shared site behavior
-   Loaded on every page. Each feature is guarded so it only runs
-   when its markup exists. Page-specific scripts stay inline.
+   Empire RP — Shared Site Behavior (Redesign)
    ============================================================ */
 (function () {
   'use strict';
   var SERVER_CODE = 'zjva9ey';
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---- Smooth fade between pages ---- */
+  /* ---- Page transitions ---- */
   document.addEventListener('click', function (e) {
     if (reduceMotion || e.defaultPrevented) return;
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
@@ -19,16 +17,15 @@
     if (/^(#|mailto:|tel:|fivem:|javascript:)/i.test(href)) return;
     var url;
     try { url = new URL(href, location.href); } catch (_) { return; }
-    if (url.origin !== location.origin) return;                 // external link
-    if (url.pathname === location.pathname) return;             // same page / anchor
+    if (url.origin !== location.origin) return;
+    if (url.pathname === location.pathname) return;
     e.preventDefault();
     document.body.classList.add('is-leaving');
-    setTimeout(function () { location.href = url.href; }, 250);
+    setTimeout(function () { location.href = url.href; }, 240);
   });
-  // Clear the leaving state when returning via back/forward cache
   window.addEventListener('pageshow', function () { document.body.classList.remove('is-leaving'); });
 
-  /* ---- Nav background on scroll ---- */
+  /* ---- Nav scroll state ---- */
   var nav = document.getElementById('mainNav');
   if (nav) {
     window.addEventListener('scroll', function () {
@@ -46,7 +43,7 @@
     });
   }
 
-  /* ---- Scroll reveal (staggered) ---- */
+  /* ---- Scroll reveal ---- */
   var reveals = document.querySelectorAll('.reveal');
   if (reveals.length) {
     if (reduceMotion || !('IntersectionObserver' in window)) {
@@ -57,33 +54,15 @@
           if (!entry.isIntersecting) return;
           var siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal'));
           var idx = siblings.indexOf(entry.target);
-          setTimeout(function () { entry.target.classList.add('visible'); }, Math.min(idx * 80, 400));
+          setTimeout(function () { entry.target.classList.add('visible'); }, Math.min(idx * 70, 350));
           io.unobserve(entry.target);
         });
-      }, { threshold: 0.1 });
+      }, { threshold: 0.08 });
       reveals.forEach(function (el) { io.observe(el); });
     }
   }
 
-  /* ---- Floating hero particles ---- */
-  var particles = document.getElementById('particles');
-  if (particles && !reduceMotion) {
-    for (var i = 0; i < 28; i++) {
-      var p = document.createElement('div');
-      p.className = 'particle';
-      var size = (i % 5) + 1;                 // deterministic-ish, varied sizes
-      var left = (i * 37 % 100);
-      var bottom = (i * 13 % 30);
-      var dur = 12 + (i * 7 % 16);
-      var del = (i * 11 % 12);
-      p.style.cssText =
-        'width:' + size + 'px;height:' + size + 'px;left:' + left + '%;bottom:' + bottom + '%;' +
-        '--dur:' + dur + 's;--del:' + del + 's;';
-      particles.appendChild(p);
-    }
-  }
-
-  /* ---- Live player count (Cfx.re) ---- */
+  /* ---- Live player count ---- */
   var badge = document.getElementById('liveBadgeText');
   var ctaPill = document.getElementById('ctaStatus');
   var ctaText = document.getElementById('ctaStatusText');
@@ -100,15 +79,41 @@
           if (ctaPill) ctaPill.classList.remove('offline');
           if (ctaText) ctaText.innerHTML = max
             ? '<b>' + players + '</b> players in the city right now'
-            : 'Server online';
+            : 'Server is live';
         })
         .catch(function () {
-          if (badge) badge.textContent = 'Empire Roleplay is Live';
+          if (badge) badge.textContent = 'Empire Roleplay — Live';
           if (ctaPill) ctaPill.classList.add('offline');
-          if (ctaText) ctaText.textContent = 'Live count unavailable, hit Play Now to connect';
+          if (ctaText) ctaText.textContent = 'Live count unavailable — hit Play Now to connect';
         });
     };
     refresh();
     setInterval(refresh, 60000);
+  }
+
+  /* ---- Counter animations ---- */
+  var counters = document.querySelectorAll('[data-count]');
+  if (counters.length && !reduceMotion) {
+    var countObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        var target = parseInt(el.getAttribute('data-count'));
+        var suffix = el.getAttribute('data-suffix') || '';
+        var start = 0;
+        var duration = 1600;
+        var startTime = null;
+        function step(timestamp) {
+          if (!startTime) startTime = timestamp;
+          var progress = Math.min((timestamp - startTime) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.floor(eased * target) + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        countObserver.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function (el) { countObserver.observe(el); });
   }
 })();
