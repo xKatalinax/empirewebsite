@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empire Roleplay — Staff Login</title>
+  <link rel="icon" type="image/png" href="empire-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <style>
+    :root {
+      --bg: #060504; --panel: #0f0d0b; --panel2: #161310;
+      --gold: #f6b13a; --gold2: #ff7200; --gold-dim: rgba(246,177,58,.18);
+      --text: #f2ede4; --muted: #a89880; --line: rgba(246,177,58,.18);
+      --danger: #ff3c3c; --green: #39ff82; --r: 22px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); font-family: 'Inter', Arial, sans-serif;
+      color: var(--text); min-height: 100vh; overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 70px;
+      background: rgba(6,5,4,.88); backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 22px; letter-spacing: .06em; text-transform: uppercase;
+    }
+    .brand img { height: 40px; filter: drop-shadow(0 0 12px rgba(246,177,58,.5)); animation: float 3.2s ease-in-out infinite; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid rgba(246,177,58,.5);
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #160b00; font-weight: 900; font-size: 14px;
+      border-radius: 999px; padding: 12px 22px;
+      box-shadow: 0 0 24px rgba(255,114,0,.2); transition: .2s; cursor: pointer; border: none;
+      width: 100%;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,114,0,.4); }
+    .btn:disabled { opacity: .55; cursor: default; transform: none; box-shadow: none; }
+    .btn.ghost {
+      background: rgba(255,255,255,.05); color: var(--text);
+      border-color: rgba(255,255,255,.15); box-shadow: none; width: auto; padding: 9px 18px; font-size: 13px;
+    }
+    .btn.ghost:hover { border-color: var(--gold); }
+
+    .wrap {
+      min-height: 100vh; display: grid; place-items: center;
+      padding: 110px 6% 60px; position: relative;
+    }
+    .wrap::before {
+      content: ''; position: absolute; inset: 0; z-index: 0;
+      background: linear-gradient(rgba(6,5,4,.6), rgba(6,5,4,.95)),
+        url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1800&q=80') center/cover;
+    }
+    .wrap::after {
+      content: ''; position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 460px;
+      background: radial-gradient(ellipse, rgba(255,114,0,.18) 0%, transparent 65%);
+      z-index: 1; pointer-events: none;
+    }
+
+    .card {
+      position: relative; z-index: 2;
+      width: 100%; max-width: 420px;
+      background: rgba(15,13,11,.92); border: 1px solid var(--line);
+      border-radius: var(--r); padding: 38px 34px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.55);
+      text-align: center;
+    }
+    .card img.logo { width: 76px; margin-bottom: 16px; filter: drop-shadow(0 10px 22px rgba(255,114,0,.3)); animation: float 3.2s ease-in-out infinite; }
+    .eyebrow { color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .2em; font-size: 11px; margin-bottom: 8px; }
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900;
+      letter-spacing: -.01em; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .sub { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 26px; }
+
+    form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+    label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; display: block; }
+    input {
+      width: 100%; background: rgba(255,255,255,.04); border: 1px solid var(--line);
+      border-radius: 12px; padding: 12px 14px; color: var(--text); font-size: 15px;
+      font-family: inherit; outline: none; transition: border-color .2s;
+    }
+    input:focus { border-color: var(--gold); }
+    input::placeholder { color: rgba(168,152,128,.6); }
+
+    .alert {
+      display: none; border-radius: 12px; padding: 12px 14px; font-size: 13px;
+      font-weight: 600; line-height: 1.5; text-align: left; margin-bottom: 4px;
+    }
+    .alert.show { display: block; }
+    .alert.error { background: rgba(255,60,60,.08); border: 1px solid rgba(255,60,60,.3); color: var(--danger); }
+    .alert.info { background: rgba(246,177,58,.08); border: 1px solid rgba(246,177,58,.3); color: var(--gold); }
+
+    .note { margin-top: 22px; font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+    .note a { color: var(--gold); font-weight: 700; }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @media (max-width: 480px) { .card { padding: 30px 22px; } h1 { font-size: 30px; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <img src="empire-logo.png" alt="Empire RP Logo">
+      <span>Empire RP</span>
+    </a>
+    <a class="btn ghost" href="index.html">← Back to Site</a>
+  </nav>
+
+  <div class="wrap">
+    <div class="card">
+      <img class="logo" src="empire-logo.png" alt="Empire Roleplay Logo">
+      <div class="eyebrow">Restricted Access</div>
+      <h1>Staff Login</h1>
+      <p class="sub">This portal is for Empire RP staff only. Accounts are created and assigned by an admin — there's no sign-up here.</p>
+
+      <div class="alert error" id="disabledAlert">Your account has been disabled. Contact an admin if you think this is a mistake.</div>
+      <div class="alert error" id="errorAlert"></div>
+
+      <form id="loginForm">
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@empireroleplay.net" autocomplete="username" required>
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn" id="loginBtn">Log In</button>
+      </form>
+
+      <p class="note">Don't have an account yet? Ask an Empire RP admin to set one up for you.</p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const errorAlert = document.getElementById('errorAlert');
+    const disabledAlert = document.getElementById('disabledAlert');
+
+    if (new URLSearchParams(location.search).get('disabled') === '1') {
+      disabledAlert.classList.add('show');
+    }
+
+    function showError(msg) {
+      errorAlert.textContent = msg;
+      errorAlert.classList.add('show');
+    }
+    function clearError() {
+      errorAlert.classList.remove('show');
+    }
+
+    function friendlyError(code) {
+      switch (code) {
+        case 'auth/invalid-email':
+        case 'auth/missing-password':
+          return 'Enter a valid email and password.';
+        case 'auth/user-not-found':
+        case 'auth/wrong-password':
+        case 'auth/invalid-credential':
+          return 'Incorrect email or password.';
+        case 'auth/too-many-requests':
+          return 'Too many attempts. Wait a bit and try again.';
+        default:
+          return 'Something went wrong. Try again.';
+      }
+    }
+
+    // After sign-in, look up the user's role and send them to the right page.
+    function routeUser(user) {
+      db.collection('users').doc(user.uid).get().then((doc) => {
+        if (!doc.exists) {
+          showError('No staff record found for this account. Contact an admin.');
+          auth.signOut();
+          return;
+        }
+        const data = doc.data();
+        if (data.status === 'disabled') {
+          auth.signOut();
+          disabledAlert.classList.add('show');
+          return;
+        }
+        if (data.role === 'admin') {
+          location.href = 'admin.html';
+        } else {
+          location.href = 'staff-guide.html';
+        }
+      }).catch(() => {
+        showError('Could not load your account. Try again.');
+      });
+    }
+
+    // If already logged in, skip straight to the right page.
+    auth.onAuthStateChanged((user) => {
+      if (user) routeUser(user);
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      clearError();
+      disabledAlert.classList.remove('show');
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in…';
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((cred) => routeUser(cred.user))
+        .catch((err) => {
+          showError(friendlyError(err.code));
+        })
+        .finally(() => {
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Log In';
+        });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empire Roleplay — Admin Portal</title>
+  <link rel="icon" type="image/png" href="empire-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <style>
+    :root {
+      --bg: #060504; --panel: #0f0d0b; --panel2: #161310;
+      --gold: #f6b13a; --gold2: #ff7200; --gold-dim: rgba(246,177,58,.18);
+      --text: #f2ede4; --muted: #a89880; --line: rgba(246,177,58,.18);
+      --danger: #ff3c3c; --green: #39ff82; --r: 22px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); font-family: 'Inter', Arial, sans-serif; color: var(--text); overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 70px;
+      background: rgba(6,5,4,.92); backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; }
+    .brand img { height: 40px; filter: drop-shadow(0 0 12px rgba(246,177,58,.5)); }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .whoami { font-size: 13px; color: var(--muted); font-weight: 700; }
+    .whoami b { color: var(--gold); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid rgba(246,177,58,.5);
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #160b00; font-weight: 900; font-size: 13px;
+      border-radius: 999px; padding: 10px 20px;
+      box-shadow: 0 0 18px rgba(255,114,0,.2); transition: .2s; cursor: pointer; border: none;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,114,0,.4); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn.ghost { background: rgba(255,255,255,.05); color: var(--text); border-color: rgba(255,255,255,.15); box-shadow: none; }
+    .btn.ghost:hover { border-color: var(--gold); }
+    .btn.small { padding: 7px 14px; font-size: 12px; border-radius: 8px; }
+    .btn.danger-outline { background: rgba(255,60,60,.08); color: var(--danger); border-color: rgba(255,60,60,.3); box-shadow: none; }
+    .btn.danger-outline:hover { background: rgba(255,60,60,.16); }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 110px 6% 90px; }
+
+    .eyebrow { color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .2em; font-size: 12px; margin-bottom: 10px; }
+    h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px, 5vw, 56px); font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; margin-bottom: 8px; }
+    .lede { color: var(--muted); font-size: 15px; line-height: 1.6; max-width: 640px; margin-bottom: 40px; }
+
+    .panel {
+      background: rgba(255,255,255,.032); border: 1px solid var(--line);
+      border-radius: var(--r); margin-bottom: 28px; overflow: hidden;
+    }
+    .panel-head {
+      padding: 20px 26px; background: linear-gradient(90deg, rgba(246,177,58,.12) 0%, transparent 60%);
+      border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .panel-head h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 21px; font-weight: 900; color: var(--gold); text-transform: uppercase; letter-spacing: .05em; }
+    .panel-body { padding: 26px; }
+
+    /* Create form */
+    .create-grid { display: grid; grid-template-columns: 1fr 1fr 160px auto; gap: 14px; align-items: end; }
+    .field label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; display: block; }
+    input, select {
+      width: 100%; background: rgba(255,255,255,.04); border: 1px solid var(--line);
+      border-radius: 10px; padding: 11px 13px; color: var(--text); font-size: 14px;
+      font-family: inherit; outline: none; transition: border-color .2s;
+    }
+    input:focus, select:focus { border-color: var(--gold); }
+    select { cursor: pointer; }
+
+    .alert { display: none; border-radius: 12px; padding: 12px 14px; font-size: 13px; font-weight: 600; line-height: 1.55; margin-top: 16px; }
+    .alert.show { display: block; }
+    .alert.error { background: rgba(255,60,60,.08); border: 1px solid rgba(255,60,60,.3); color: var(--danger); }
+    .alert.success { background: rgba(57,255,130,.08); border: 1px solid rgba(57,255,130,.3); color: var(--green); }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 0 12px 14px; }
+    td { padding: 14px 12px; border-top: 1px solid rgba(255,255,255,.06); font-size: 14px; vertical-align: middle; }
+    tr:hover td { background: rgba(246,177,58,.04); }
+    .name-cell { font-weight: 800; }
+    .name-cell .you { color: var(--muted); font-weight: 600; font-size: 12px; margin-left: 6px; }
+    .email-cell { color: var(--muted); font-size: 13px; }
+    .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 11px; font-size: 11px; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; }
+    .badge.admin { background: rgba(246,177,58,.14); border: 1px solid var(--line); color: var(--gold); }
+    .badge.staff { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text); }
+    .badge.active { background: rgba(57,255,130,.1); border: 1px solid rgba(57,255,130,.25); color: var(--green); }
+    .badge.disabled { background: rgba(255,60,60,.1); border: 1px solid rgba(255,60,60,.25); color: var(--danger); }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .empty-row td { text-align: center; color: var(--muted); padding: 36px 12px; }
+
+    .table-scroll { overflow-x: auto; }
+    .table-scroll table { min-width: 760px; }
+
+    .help { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin-top: 14px; }
+
+    @media (max-width: 760px) {
+      .create-grid { grid-template-columns: 1fr; }
+      .panel-head { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <img src="empire-logo.png" alt="Empire RP Logo">
+      <span>Empire RP</span>
+    </a>
+    <div class="nav-right">
+      <span class="whoami" id="whoami">Loading…</span>
+      <a class="btn ghost" href="staff-guide.html">Staff Guide</a>
+      <button class="btn ghost" id="logoutBtn">Log Out</button>
+    </div>
+  </nav>
+
+  <main id="appMain" style="display:none;">
+    <div class="eyebrow">Admin Portal</div>
+    <h1>Staff Accounts</h1>
+    <p class="lede">Create accounts for new staff and manage who has access to the Staff Guide. New staff get an email to set their own password — you never have to share one.</p>
+
+    <!-- CREATE ACCOUNT -->
+    <section class="panel">
+      <div class="panel-head"><h2>➕ Add Staff Member</h2></div>
+      <div class="panel-body">
+        <form id="createForm" class="create-grid">
+          <div class="field">
+            <label for="newName">Full / Staff Name</label>
+            <input type="text" id="newName" placeholder="e.g. John Doe" required>
+          </div>
+          <div class="field">
+            <label for="newEmail">Email</label>
+            <input type="email" id="newEmail" placeholder="staff@example.com" required>
+          </div>
+          <div class="field">
+            <label for="newRole">Role</label>
+            <select id="newRole">
+              <option value="staff">Staff</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <button type="submit" class="btn" id="createBtn">Create Account</button>
+        </form>
+        <div class="alert error" id="createError"></div>
+        <div class="alert success" id="createSuccess"></div>
+        <p class="help">They'll get a password-setup email at the address above. They can then log in at /login.html and will be sent straight to the Staff Guide (or here, if you make them an Admin).</p>
+      </div>
+    </section>
+
+    <!-- ACCOUNT LIST -->
+    <section class="panel">
+      <div class="panel-head"><h2>👥 All Accounts</h2></div>
+      <div class="panel-body">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userRows">
+              <tr class="empty-row"><td colspan="5">Loading staff accounts…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let currentUid = null;
+    let currentRole = null;
+
+    // ---- Auth guard ----
+    auth.onAuthStateChanged((user) => {
+      if (!user) { location.href = 'login.html'; return; }
+      currentUid = user.uid;
+      db.collection('users').doc(user.uid).get().then((doc) => {
+        if (!doc.exists || doc.data().status === 'disabled') {
+          auth.signOut(); location.href = 'login.html'; return;
+        }
+        const data = doc.data();
+        if (data.role !== 'admin') { location.href = 'staff-guide.html'; return; }
+        currentRole = 'admin';
+        document.getElementById('whoami').innerHTML = `Logged in as <b>${escapeHtml(data.name || data.email)}</b>`;
+        document.getElementById('appMain').style.display = 'block';
+        startUserListListener();
+      }).catch(() => { location.href = 'login.html'; });
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      auth.signOut().then(() => location.href = 'login.html');
+    });
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    // ---- Create account (uses a secondary Firebase app so we don't
+    // sign the admin out when the new account is created) ----
+    let secondaryApp = null;
+    function getSecondaryAuth() {
+      if (!secondaryApp) {
+        try {
+          secondaryApp = firebase.initializeApp(firebaseConfig, 'Secondary');
+        } catch (e) {
+          secondaryApp = firebase.app('Secondary');
+        }
+      }
+      return secondaryApp.auth();
+    }
+
+    function randomTempPassword() {
+      const bytes = new Uint8Array(18);
+      crypto.getRandomValues(bytes);
+      return Array.from(bytes, (b) => b.toString(36)).join('').slice(0, 24) + 'Aa1!';
+    }
+
+    const createForm = document.getElementById('createForm');
+    const createBtn = document.getElementById('createBtn');
+    const createError = document.getElementById('createError');
+    const createSuccess = document.getElementById('createSuccess');
+
+    createForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      createError.classList.remove('show');
+      createSuccess.classList.remove('show');
+
+      const name = document.getElementById('newName').value.trim();
+      const email = document.getElementById('newEmail').value.trim();
+      const role = document.getElementById('newRole').value;
+
+      createBtn.disabled = true;
+      createBtn.textContent = 'Creating…';
+
+      const secAuth = getSecondaryAuth();
+      const tempPassword = randomTempPassword();
+
+      secAuth.createUserWithEmailAndPassword(email, tempPassword)
+        .then((cred) => {
+          const newUid = cred.user.uid;
+          return secAuth.signOut().then(() => newUid);
+        })
+        .then((newUid) => {
+          return db.collection('users').doc(newUid).set({
+            name: name,
+            email: email,
+            role: role,
+            status: 'active',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        })
+        .then(() => auth.sendPasswordResetEmail(email))
+        .then(() => {
+          createSuccess.textContent = `Account created for ${name}. A password-setup email was sent to ${email}.`;
+          createSuccess.classList.add('show');
+          createForm.reset();
+        })
+        .catch((err) => {
+          let msg = 'Could not create the account. Try again.';
+          if (err.code === 'auth/email-already-in-use') msg = 'An account with that email already exists.';
+          if (err.code === 'auth/invalid-email') msg = 'That email address looks invalid.';
+          if (err.code === 'auth/weak-password') msg = 'Password generation failed — try again.';
+          createError.textContent = msg;
+          createError.classList.add('show');
+        })
+        .finally(() => {
+          createBtn.disabled = false;
+          createBtn.textContent = 'Create Account';
+        });
+    });
+
+    // ---- Live account list ----
+    function startUserListListener() {
+      db.collection('users').orderBy('name').onSnapshot((snap) => {
+        const rows = document.getElementById('userRows');
+        if (snap.empty) {
+          rows.innerHTML = '<tr class="empty-row"><td colspan="5">No staff accounts yet.</td></tr>';
+          return;
+        }
+        rows.innerHTML = '';
+        snap.forEach((doc) => {
+          const u = doc.data();
+          const uid = doc.id;
+          const isSelf = uid === currentUid;
+          const roleBadge = u.role === 'admin' ? 'admin' : 'staff';
+          const statusBadge = u.status === 'disabled' ? 'disabled' : 'active';
+          const nextRole = u.role === 'admin' ? 'staff' : 'admin';
+          const nextStatus = u.status === 'disabled' ? 'active' : 'disabled';
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="name-cell">${escapeHtml(u.name || '—')}${isSelf ? '<span class="you">(you)</span>' : ''}</td>
+            <td class="email-cell">${escapeHtml(u.email || '—')}</td>
+            <td><span class="badge ${roleBadge}">${roleBadge}</span></td>
+            <td><span class="badge ${statusBadge}">${statusBadge}</span></td>
+            <td>
+              <div class="actions">
+                <button class="btn small ghost" data-action="role" data-uid="${uid}" data-next="${nextRole}" ${isSelf ? 'disabled title="You can\'t change your own role"' : ''}>
+                  Make ${nextRole === 'admin' ? 'Admin' : 'Staff'}
+                </button>
+                <button class="btn small ${nextStatus === 'disabled' ? 'danger-outline' : 'ghost'}" data-action="status" data-uid="${uid}" data-next="${nextStatus}" ${isSelf ? 'disabled title="You can\'t disable your own account"' : ''}>
+                  ${nextStatus === 'disabled' ? 'Disable' : 'Enable'}
+                </button>
+                <button class="btn small ghost" data-action="resend" data-email="${escapeHtml(u.email || '')}">
+                  Resend Email
+                </button>
+              </div>
+            </td>
+          `;
+          rows.appendChild(tr);
+        });
+      }, () => {
+        document.getElementById('userRows').innerHTML = '<tr class="empty-row"><td colspan="5">Could not load accounts.</td></tr>';
+      });
+    }
+
+    document.getElementById('userRows').addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn || btn.disabled) return;
+      const action = btn.dataset.action;
+
+      if (action === 'role') {
+        const uid = btn.dataset.uid, next = btn.dataset.next;
+        if (!confirm(`Change this account's role to "${next}"?`)) return;
+        db.collection('users').doc(uid).update({ role: next });
+      }
+      if (action === 'status') {
+        const uid = btn.dataset.uid, next = btn.dataset.next;
+        const verb = next === 'disabled' ? 'disable' : 'enable';
+        if (!confirm(`Are you sure you want to ${verb} this account?`)) return;
+        db.collection('users').doc(uid).update({ status: next });
+      }
+      if (action === 'resend') {
+        const email = btn.dataset.email;
+        if (!email) return;
+        auth.sendPasswordResetEmail(email)
+          .then(() => alert(`Password-setup email resent to ${email}.`))
+          .catch(() => alert('Could not send the email. Try again.'));
+      }
+    });
+  </script>
+</body>
+</html>

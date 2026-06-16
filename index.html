@@ -7,15 +7,118 @@
   <link rel="icon" type="image/png" href="empire-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css">
   <style>
+    :root {
+      --bg: #060504;
+      --panel: #0f0d0b;
+      --panel2: #161310;
+      --gold: #f6b13a;
+      --gold2: #ff7200;
+      --gold-dim: rgba(246,177,58,.18);
+      --text: #f2ede4;
+      --muted: #a89880;
+      --line: rgba(246,177,58,.18);
+      --danger: #ff3c3c;
+      --green: #39ff82;
+      --r: 22px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%;
+      height: 70px;
+      background: rgba(6,5,4,.82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+      transition: background .3s;
+    }
+    .nav.scrolled { background: rgba(6,5,4,.97); }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 22px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .brand img {
+      height: 40px;
+      filter: drop-shadow(0 0 12px rgba(246,177,58,.5));
+      animation: float 3.2s ease-in-out infinite;
+    }
+    .nav-links {
+      display: flex; gap: 26px; align-items: center;
+      font-weight: 800; font-size: 13px; color: var(--muted);
+      letter-spacing: .05em; text-transform: uppercase;
+    }
+    .nav-links a { transition: color .2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links .btn-nav {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #160b00; border-radius: 999px; padding: 9px 20px;
+      font-weight: 900; font-size: 13px;
+      box-shadow: 0 0 20px rgba(255,114,0,.3);
+      transition: .2s; border: none;
+    }
+    .nav-links .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(255,114,0,.5); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--gold); border-radius: 2px; transition: .3s;
+    }
+    .mobile-menu {
+      display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99;
+      background: rgba(6,5,4,.97); border-bottom: 1px solid var(--line);
+      padding: 20px 6%; flex-direction: column; gap: 14px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-weight: 800; font-size: 15px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .05em; padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid rgba(246,177,58,.5);
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #160b00; font-weight: 900; font-size: 15px;
+      border-radius: 999px; padding: 14px 26px;
+      box-shadow: 0 0 24px rgba(255,114,0,.25);
+      transition: .2s; cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,114,0,.45); }
+    .btn.ghost {
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      border-color: rgba(255,255,255,.15);
+      box-shadow: none;
+    }
+    .btn.ghost:hover { background: rgba(255,255,255,.1); border-color: var(--gold); }
+
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
       display: grid; place-items: center;
       text-align: center;
       padding: 100px 6% 70px;
-      position: relative; overflow: hidden;
+      position: relative;
+      overflow: hidden;
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
@@ -24,7 +127,8 @@
         center/cover no-repeat;
     }
     .hero-bg::after {
-      content: ''; position: absolute; inset: 0;
+      content: '';
+      position: absolute; inset: 0;
       background: linear-gradient(180deg, rgba(6,5,4,.6) 0%, rgba(6,5,4,.92) 100%);
     }
     .hero-glow {
@@ -32,8 +136,8 @@
       width: 900px; height: 600px;
       background: radial-gradient(ellipse, rgba(255,114,0,.22) 0%, transparent 65%);
       z-index: 1; pointer-events: none;
-      animation: glowDrift 9s ease-in-out infinite;
     }
+    /* floating particles */
     .particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
     .particle {
       position: absolute; border-radius: 50%;
@@ -58,6 +162,8 @@
       letter-spacing: .1em; text-transform: uppercase;
       margin-bottom: 28px;
     }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.3)} }
     .hero h1 {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: clamp(56px, 9vw, 120px);
@@ -85,14 +191,9 @@
       background: rgba(255,255,255,.04);
       border: 1px solid var(--line);
       border-radius: 18px; padding: 22px 16px;
-      transition: border-color .3s, transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s, background .3s;
+      transition: border-color .3s;
     }
-    .hstat:hover {
-      border-color: rgba(246,177,58,.5);
-      transform: translateY(-5px);
-      box-shadow: 0 14px 34px rgba(0,0,0,.45);
-      background: rgba(255,255,255,.06);
-    }
+    .hstat:hover { border-color: rgba(246,177,58,.5); }
     .hstat b {
       display: block; font-family: 'Barlow Condensed', sans-serif;
       font-size: 36px; font-weight: 900; color: var(--gold);
@@ -113,7 +214,12 @@
     .section-head p { color: var(--muted); font-size: 18px; line-height: 1.65; }
 
     /* ── FEATURES GRID ── */
-    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 1200px; margin: 0 auto; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 1200px; margin: 0 auto;
+    }
     .feat-card {
       background: linear-gradient(155deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.018) 100%);
       border: 1px solid var(--line);
@@ -153,6 +259,7 @@
       text-transform: uppercase; margin-bottom: 12px;
     }
 
+    /* ── DIVIDER ── */
     .divider { border: none; border-top: 1px solid var(--line); max-width: 1200px; margin: 0 auto; }
 
     /* ── FAQ ── */
@@ -172,7 +279,7 @@
       display: flex; justify-content: space-between; align-items: center; gap: 16px;
       padding: 22px 26px; cursor: pointer;
       font-weight: 800; font-size: 16px;
-      transition: color .2s;
+      user-select: none; transition: color .2s;
     }
     .faq-item.open .faq-q { color: var(--gold); }
     .faq-q-left { display: flex; align-items: center; gap: 14px; }
@@ -185,7 +292,7 @@
       transition: max-height .4s cubic-bezier(.22,1,.36,1), padding .3s;
       padding: 0 26px 0 76px; color: var(--muted); line-height: 1.75; font-size: 15px;
     }
-    .faq-item.open .faq-a { max-height: 600px; padding: 0 26px 22px 76px; }
+    .faq-item.open .faq-a { max-height: 400px; padding: 0 26px 22px 76px; }
     .faq-a a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
     .faq-a a:hover { color: var(--gold2); }
 
@@ -205,15 +312,30 @@
     .cta-section .section-head { position: relative; z-index: 1; margin-bottom: 32px; }
     .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
 
-    /* ── HERO ENTRANCES ── */
-    .hero-content > .live-badge   { animation: heroRise .7s .15s both cubic-bezier(.22,1,.36,1); }
-    .hero-content > h1            { animation: heroRise .8s .28s both cubic-bezier(.22,1,.36,1); }
-    .hero-content > .hero-sub     { animation: heroRise .8s .42s both cubic-bezier(.22,1,.36,1); }
-    .hero-content > .hero-actions { animation: heroRise .8s .56s both cubic-bezier(.22,1,.36,1); }
-    .hero-content > .hero-stats   { animation: heroRise .8s .70s both cubic-bezier(.22,1,.36,1); }
+    /* ── FOOTER ── */
+    footer {
+      padding: 50px 6%;
+      display: flex; justify-content: space-between; gap: 28px; flex-wrap: wrap;
+      color: var(--muted); border-top: 1px solid var(--line);
+      background: #030302;
+      font-size: 14px;
+    }
+    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
+    .footer-brand img { height: 50px; filter: drop-shadow(0 0 16px rgba(246,177,58,.3)); }
+    .footer-brand p { max-width: 280px; line-height: 1.6; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; padding-top: 4px; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { color: rgba(168,152,128,.5); font-size: 12px; }
 
-    /* ── PAGE RESPONSIVE ── */
+    /* ── ANIMATIONS ── */
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s, transform .6s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
       .features-grid { grid-template-columns: 1fr 1fr; }
       .hero-stats { grid-template-columns: repeat(2,1fr); }
     }
@@ -221,49 +343,39 @@
       .features-grid, .hero-stats { grid-template-columns: 1fr; }
       section { padding: 70px 5%; }
       .hero { padding: 90px 5% 60px; }
+      .nav { padding: 0 5%; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Discord logo (reused via <use>) -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-    <symbol id="discord-logo" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286ZM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189Zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
-    </symbol>
-  </svg>
-
-    <!-- NAV -->
+  <!-- NAV -->
   <nav class="nav" id="mainNav">
-    <a class="brand" href="index.html">
+    <a class="brand" href="#home">
       <img src="empire-logo.png" alt="Empire RP Logo">
       <span>Empire RP</span>
     </a>
     <div class="nav-links">
-      <a href="index.html" class="active">Home</a>
+      <a href="#home">Home</a>
       <a href="rules.html">Rules</a>
       <a href="faction-rules.html">Faction Rules</a>
-      <a href="showcase.html">Showcase</a>
-      <a href="events.html">Events</a>
-      <a href="index.html#features">Why Empire</a>
-      <a href="index.html#faq">FAQ</a>
-      <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Discord</a>
-      <a href="fivem://connect/zjva9ey" class="btn-nav">&#9658; Play Now</a>
+      <a href="#features">Why Empire</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+      <a href="#" class="btn-nav">▸ Play Now</a>
     </div>
     <div class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </div>
   </nav>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="index.html">Home</a>
+    <a href="#home" onclick="closeMobile()">Home</a>
     <a href="rules.html">Rules</a>
     <a href="faction-rules.html">Faction Rules</a>
-    <a href="showcase.html">Showcase</a>
-    <a href="events.html">Events</a>
-    <a href="index.html#features">Why Empire</a>
-    <a href="index.html#faq">FAQ</a>
-    <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener" style="justify-content:center;border-bottom:none"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
-    <a href="fivem://connect/zjva9ey" class="btn" style="text-align:center">&#9658; Play Now</a>
+    <a href="#features" onclick="closeMobile()">Why Empire</a>
+    <a href="#faq" onclick="closeMobile()">FAQ</a>
+    <a href="https://discord.gg/empirerp" target="_blank" rel="noopener" onclick="closeMobile()">Discord</a>
+    <a href="#" class="btn" style="text-align:center">▸ Play Now</a>
   </div>
 
   <!-- HERO -->
@@ -272,12 +384,12 @@
     <div class="hero-glow"></div>
     <div class="particles" id="particles"></div>
     <div class="hero-content">
-      <div class="live-badge"><span class="dot"></span> <span id="liveBadgeText">Empire Roleplay is Live</span></div>
+      <div class="live-badge"><span class="dot"></span> Empire Roleplay is Live</div>
       <h1>Rule the Streets.<br><em>Build Your Empire.</em></h1>
-      <p class="hero-sub">A serious FiveM GTA V roleplay city built for gangs, businesses, PD, EMS, and players who want real stories, not boring scenes.</p>
+      <p class="hero-sub">A serious FiveM GTA V roleplay city built for gangs, businesses, PD, EMS, and players who want real stories — not boring scenes.</p>
       <div class="hero-actions">
-        <a class="btn" href="fivem://connect/zjva9ey">▸ Play Now</a>
-        <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
+        <a class="btn" href="#">▸ Play Now</a>
+        <a class="btn ghost" href="https://discord.gg/empirerp" target="_blank" rel="noopener">Join Discord</a>
         <a class="btn ghost" href="rules.html">Read Rules</a>
         <a class="btn ghost" href="faction-rules.html">Faction Rules</a>
       </div>
@@ -295,7 +407,7 @@
     <div class="section-head reveal">
       <div class="section-label">Why Empire Roleplay</div>
       <h2>Your lane. Your story.<br>Your <em style="font-style:italic;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">empire.</em></h2>
-      <p>Whether you're running blocks, building a business, or protecting the city, Empire gives every character a purpose and every story a place to live.</p>
+      <p>Whether you're running blocks, building a business, or protecting the city — Empire gives every character a purpose and every story a place to live.</p>
     </div>
     <div class="features-grid">
 
@@ -303,42 +415,42 @@
         <div class="feat-icon-wrap">👑</div>
         <div class="feat-tag">🔥 Street Life</div>
         <h3>Faction & <span>Gang RP</span></h3>
-        <p>Build your crew from the ground up. Empire's faction system supports drug spots, turf ownership, beef validation, alliances, and tax collections. The streets have structure, and there's real power to be earned.</p>
+        <p>Build your crew from the ground up. Empire's faction system supports drug spots, turf ownership, beef validation, alliances, and tax collections. The streets have structure — and there's real power to be earned.</p>
       </div>
 
       <div class="feat-card reveal">
         <div class="feat-icon-wrap">🚔</div>
         <div class="feat-tag">⚖️ Law & Order</div>
         <h3>PD & <span>EMS</span></h3>
-        <p>Whitelisted departments with depth. Chase suspects through the city, run investigations, work medical scenes, and develop characters who actually matter to the city's story, not just NPCs with a badge.</p>
+        <p>Whitelisted departments with depth. Chase suspects through the city, run investigations, work medical scenes, and develop characters who actually matter to the city's story — not just NPCs with a badge.</p>
       </div>
 
       <div class="feat-card reveal">
         <div class="feat-icon-wrap">🏪</div>
         <div class="feat-tag">💼 Civilian Life</div>
         <h3>Player-Owned <span>Businesses</span></h3>
-        <p>Open a shop, run a mechanic bay, operate a nightclub. Empire's economy is player-driven, with real employees, invoicing, Business Oversight, and consequences if you go inactive. Build something worth protecting.</p>
+        <p>Open a shop, run a mechanic bay, operate a nightclub. Empire's economy is player-driven — with real employees, invoicing, Business Oversight, and consequences if you go inactive. Build something worth protecting.</p>
       </div>
 
       <div class="feat-card reveal">
         <div class="feat-icon-wrap">🎭</div>
         <div class="feat-tag">✨ RP First</div>
         <h3>Story-Driven <span>Roleplay</span></h3>
-        <p>Empire is an RP server first. Every interaction has weight, beef has backstory, robberies need buildup, and scenes have consequences. We don't reward grind. We reward characters who make the city feel alive.</p>
+        <p>Empire is an RP server first. Every interaction has weight — beef has backstory, robberies need buildup, and scenes have consequences. We don't reward grind. We reward characters who make the city feel alive.</p>
       </div>
 
       <div class="feat-card reveal">
         <div class="feat-icon-wrap">🌟</div>
         <div class="feat-tag">🎪 Events</div>
         <h3>City <span>Events</span></h3>
-        <p>Airdrops, Watermelon Wednesdays, pool parties, turf nights, and more, Empire runs regular events that bring the whole city together. Some are chaos. Some are culture. All of them are content.</p>
+        <p>Airdrops, Watermelon Wednesdays, pool parties, turf nights, and more — Empire runs regular events that bring the whole city together. Some are chaos. Some are culture. All of them are content.</p>
       </div>
 
       <div class="feat-card reveal">
         <div class="feat-icon-wrap">🛡</div>
         <div class="feat-tag">💬 Community</div>
         <h3>Staff That <span>Actually Helps</span></h3>
-        <p>Empire's staff team is active, fair, and focused on protecting your RP experience, not micromanaging it. Clear rules, quick tickets, and a community that calls out bad behavior so good players can thrive.</p>
+        <p>Empire's staff team is active, fair, and focused on protecting your RP experience — not micromanaging it. Clear rules, quick tickets, and a community that calls out bad behavior so good players can thrive.</p>
       </div>
 
     </div>
@@ -360,7 +472,7 @@
           <div class="faq-q-left"><div class="faq-icon">🎮</div> How do I get into Empire RP?</div>
           <span class="arrow">+</span>
         </div>
-        <div class="faq-a">Download FiveM, <a href="https://discord.gg/empirerp" target="_blank">join our Discord</a>, read the rules, then hit the Play Now button to connect. The whole process takes about 10 minutes. Once you're in, fully customize your character before doing anything, default models aren't allowed.</div>
+        <div class="faq-a">Download FiveM, <a href="https://discord.gg/empirerp" target="_blank">join our Discord</a>, read the rules, then hit the Play Now button to connect. The whole process takes about 10 minutes. Once you're in, fully customize your character before doing anything — default models aren't allowed.</div>
       </div>
 
       <div class="faq-item reveal">
@@ -368,7 +480,7 @@
           <div class="faq-q-left"><div class="faq-icon">🎤</div> Do I need a mic to play?</div>
           <span class="arrow">+</span>
         </div>
-        <div class="faq-a">Yes, a working microphone is required. Empire RP is a serious voice-RP server. Text-only roleplay is not how we operate. If you don't have a mic, get one before joining. This is non-negotiable.</div>
+        <div class="faq-a">Yes — a working microphone is required. Empire RP is a serious voice-RP server. Text-only roleplay is not how we operate. If you don't have a mic, get one before joining. This is non-negotiable.</div>
       </div>
 
       <div class="faq-item reveal">
@@ -376,7 +488,7 @@
           <div class="faq-q-left"><div class="faq-icon">🎬</div> Do I need to record my gameplay?</div>
           <span class="arrow">+</span>
         </div>
-        <div class="faq-a">Yes. You must run clipping software at all times, Nvidia ShadowPlay, Medal.tv, or similar. Clips must be at least 2 minutes long with audio from both sides. No clip means no item returns and no valid reports. If you're not clipping, you're not protected.</div>
+        <div class="faq-a">Yes. You must run clipping software at all times — Nvidia ShadowPlay, Medal.tv, or similar. Clips must be at least 2 minutes long with audio from both sides. No clip means no item returns and no valid reports. If you're not clipping, you're not protected.</div>
       </div>
 
       <div class="faq-item reveal">
@@ -384,7 +496,7 @@
           <div class="faq-q-left"><div class="faq-icon">👑</div> Can I start my own gang or faction?</div>
           <span class="arrow">+</span>
         </div>
-        <div class="faq-a">Yes, Empire RP supports player-created factions. Open a Faction Support ticket in Discord to get started. You'll need to show an active roster, demonstrated RP history in the city, and meet the gang creation requirements. Quality RP and commitment are what get factions approved, not just numbers.</div>
+        <div class="faq-a">Yes — Empire RP supports player-created factions. Open a Faction Support ticket in Discord to get started. You'll need to show an active roster, demonstrated RP history in the city, and meet the gang creation requirements. Quality RP and commitment are what get factions approved, not just numbers.</div>
       </div>
 
       <div class="faq-item reveal">
@@ -392,7 +504,7 @@
           <div class="faq-q-left"><div class="faq-icon">⚔️</div> How does gang beef and conflict work?</div>
           <span class="arrow">+</span>
         </div>
-        <div class="faq-a">Conflicts between factions must be escalated through Faction Support before going official. This isn't red tape, it keeps wars story-driven and fair for both sides. Random shooting with no RP context will get you punished. Build the narrative, then bring the smoke.</div>
+        <div class="faq-a">Conflicts between factions must be escalated through Faction Support before going official. This isn't red tape — it keeps wars story-driven and fair for both sides. Random shooting with no RP context will get you punished. Build the narrative, then bring the smoke.</div>
       </div>
 
       <div class="faq-item reveal">
@@ -400,7 +512,7 @@
           <div class="faq-q-left"><div class="faq-icon">🚔</div> How do I join PD or EMS?</div>
           <span class="arrow">+</span>
         </div>
-        <div class="faq-a">PD and EMS require applications and/or interviews. Check the <a href="https://discord.gg/empirerp" target="_blank">Empire Discord</a> for current openings, requirements, and the application process. You'll need solid RP experience in the city before applying, show us you know how to play first.</div>
+        <div class="faq-a">PD and EMS require applications and/or interviews. Check the <a href="https://discord.gg/empirerp" target="_blank">Empire Discord</a> for current openings, requirements, and the application process. You'll need solid RP experience in the city before applying — show us you know how to play first.</div>
       </div>
 
       <div class="faq-item reveal">
@@ -408,15 +520,15 @@
           <div class="faq-q-left"><div class="faq-icon">🏪</div> Can I own a business in the city?</div>
           <span class="arrow">+</span>
         </div>
-        <div class="faq-a">Yes. Player-owned businesses are a major part of Empire RP's economy and roleplay. Businesses must be actively operated as real businesses, not used as stashes or faction supply chains. Ownership transfers require Business Oversight approval. If you go inactive, staff may revoke the business.</div>
+        <div class="faq-a">Yes. Player-owned businesses are a major part of Empire RP's economy and roleplay. Businesses must be actively operated as real businesses — not used as stashes or faction supply chains. Ownership transfers require Business Oversight approval. If you go inactive, staff may revoke the business.</div>
       </div>
 
       <div class="faq-item reveal">
         <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">🚨</div> Someone broke the rules, what do I do?</div>
+          <div class="faq-q-left"><div class="faq-icon">🚨</div> Someone broke the rules — what do I do?</div>
           <span class="arrow">+</span>
         </div>
-        <div class="faq-a">Stay in the scene and finish the roleplay first, don't break character to address it. After the scenario ends, open a support ticket in Discord with your clip. Reports require video and audio evidence from both sides, minimum 2 minutes. Reports must be submitted within 1 hour of the scene. Petty or revenge reports are penalized.</div>
+        <div class="faq-a">Stay in the scene and finish the roleplay first — don't break character to address it. After the scenario ends, open a support ticket in Discord with your clip. Reports require video and audio evidence from both sides, minimum 2 minutes. Reports must be submitted within 1 hour of the scene. Petty or revenge reports are penalized.</div>
       </div>
 
       <div class="faq-item reveal">
@@ -424,7 +536,7 @@
           <div class="faq-q-left"><div class="faq-icon">💀</div> What happens if I F8 or disconnect mid-scene?</div>
           <span class="arrow">+</span>
         </div>
-        <div class="faq-a">F8 quitting during active RP is one of the most serious offenses on Empire. First offense: Warning + community service + pocket wipe. Second: 2-day ban + bank wipe. Third: 1-week ban + character deletion. Fourth: Permanent ban. There is no valid reason to leave mid-scene, if your game crashes, you must return and continue.</div>
+        <div class="faq-a">F8 quitting during active RP is one of the most serious offenses on Empire. First offense: Warning + community service + pocket wipe. Second: 2-day ban + bank wipe. Third: 1-week ban + character deletion. Fourth: Permanent ban. There is no valid reason to leave mid-scene — if your game crashes, you must return and continue.</div>
       </div>
 
       <div class="faq-item reveal">
@@ -432,7 +544,7 @@
           <div class="faq-q-left"><div class="faq-icon">💬</div> Still have questions?</div>
           <span class="arrow">+</span>
         </div>
-        <div class="faq-a">Join the <a href="https://discord.gg/empirerp" target="_blank">Empire RP Discord</a> and open a support ticket. Our staff and community are active and happy to help new and existing members. The city is waiting, come get your questions answered and get in.</div>
+        <div class="faq-a">Join the <a href="https://discord.gg/empirerp" target="_blank">Empire RP Discord</a> and open a support ticket. Our staff and community are active and happy to help new and existing members. The city is waiting — come get your questions answered and get in.</div>
       </div>
 
     </div>
@@ -440,58 +552,95 @@
 
   <!-- CTA -->
   <section id="discord" class="cta-section">
-    <div class="section-head reveal">
+    <div class="section-head">
       <div class="section-label">The streets are waiting</div>
       <h2>Start Your Empire Story Now</h2>
       
     </div>
-    <div class="server-status-wrap reveal">
-      <span class="server-status" id="ctaStatus"><span class="dot"></span> <span id="ctaStatusText">Checking live server status</span></span>
-    </div>
-    <div class="cta-actions reveal">
-      <a class="btn" href="fivem://connect/zjva9ey">▸ Play Now</a>
-      <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
-      <a id="store" class="btn-store" href="https://empireroleplay.tebex.io" target="_blank" rel="noopener"><span class="gem">💎</span> Store</a>
+    <div class="cta-actions">
+      <a class="btn" href="#">▸ Play Now</a>
+      <a class="btn ghost" href="https://discord.gg/empirerp" target="_blank" rel="noopener">Join Discord</a>
+      <a id="store" class="btn ghost" href="#">Store</a>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-inner">
-      <div class="footer-brand reveal">
-        <img src="empire-logo.png" alt="Empire RP">
-        <p>A premium GTA V roleplay community. Built by players, for players.</p>
-        <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join our Discord</a>
-      </div>
-      <div class="footer-links reveal">
-        <a href="index.html#home">Home</a>
-        <a href="rules.html">Rules</a>
-        <a href="faction-rules.html">Faction Rules</a>
-        <a href="showcase.html">Showcase</a>
-        <a href="events.html">Events</a>
-        <a href="index.html#features">Why Empire</a>
-        <a href="index.html#faq">FAQ</a>
-        <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
-        <a href="https://empireroleplay.tebex.io" target="_blank" rel="noopener">Store</a>
-      </div>
+    <div class="footer-brand">
+      <img src="empire-logo.png" alt="Empire RP">
+      <p>A premium GTA V roleplay community. Built by players, for players.</p>
     </div>
-    <div class="footer-bottom">
-      <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
-      <p class="footer-copy">Built for the city by the Empire team.</p>
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="rules.html">Rules</a>
+      <a href="faction-rules.html">Faction Rules</a>
+      <a href="faction-rules.html">Faction Rules</a>
+      <a href="#features">Why Empire</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+      <a href="#">Store</a>
+      <a href="login.html">Staff Login</a>
     </div>
+    <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
   </footer>
 
-  <script src="site.js"></script>
   <script>
+    // Nav scroll effect
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Mobile menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobile() { mobileMenu.classList.remove('open'); }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // stagger cards in a grid
+          const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal'));
+          const idx = siblings.indexOf(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, Math.min(idx * 80, 400));
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
     // FAQ accordion
-    document.querySelectorAll('.faq-q').forEach(function (q) {
-      q.addEventListener('click', function () {
-        var item = q.closest('.faq-item');
-        var isOpen = item.classList.contains('open');
-        document.querySelectorAll('.faq-item.open').forEach(function (i) { i.classList.remove('open'); });
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
         if (!isOpen) item.classList.add('open');
       });
     });
+
+    // Floating particles
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 3 + 1;
+      p.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%;
+        bottom:${Math.random()*30}%;
+        --dur:${12+Math.random()*16}s;
+        --del:${Math.random()*12}s;
+      `;
+      container.appendChild(p);
+    }
   </script>
 </body>
 </html>
