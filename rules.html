@@ -3,73 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Empire Roleplay — Rules</title>
+  <title>Empire Roleplay, Rules</title>
   <link rel="icon" type="image/png" href="empire-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
   <style>
-    :root {
-      --bg: #060504;
-      --panel: #0f0d0b;
-      --panel2: #161310;
-      --gold: #f6b13a;
-      --gold2: #ff7200;
-      --gold-dim: rgba(246,177,58,.18);
-      --text: #f2ede4;
-      --muted: #a89880;
-      --line: rgba(246,177,58,.18);
-      --danger: #ff3c3c;
-      --green: #39ff82;
-      --r: 22px;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      font-family: 'Inter', Arial, sans-serif;
-      color: var(--text);
-      overflow-x: hidden;
-    }
-    a { color: inherit; text-decoration: none; }
-
-    /* NAV */
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 6%; height: 70px;
-      background: rgba(6,5,4,.88);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--line);
-    }
-    .brand {
-      display: flex; align-items: center; gap: 10px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900; font-size: 22px;
-      letter-spacing: .06em; text-transform: uppercase;
-    }
-    .brand img {
-      height: 40px;
-      filter: drop-shadow(0 0 12px rgba(246,177,58,.5));
-      animation: float 3.2s ease-in-out infinite;
-    }
-    .nav-links {
-      display: flex; gap: 26px; align-items: center;
-      font-weight: 800; font-size: 13px; color: var(--muted);
-      letter-spacing: .05em; text-transform: uppercase;
-    }
-    .nav-links a { transition: color .2s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--gold); border-radius: 2px; }
-    .mobile-menu {
-      display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99;
-      background: rgba(6,5,4,.97); border-bottom: 1px solid var(--line);
-      padding: 20px 6%; flex-direction: column; gap: 14px;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-weight: 800; font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding: 10px 0; border-bottom: 1px solid var(--line); }
-    .mobile-menu a:last-child { border-bottom: none; }
-
     /* HERO */
     .rules-hero {
       min-height: 46vh; display: grid; place-items: center;
@@ -103,17 +42,6 @@
       margin-bottom: 14px;
     }
     .hero-sub { color: var(--muted); font-size: 17px; line-height: 1.65; max-width: 640px; margin: 0 auto 26px; }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      border: 1px solid rgba(246,177,58,.5);
-      background: linear-gradient(135deg, var(--gold), var(--gold2));
-      color: #160b00; font-weight: 900; font-size: 14px;
-      border-radius: 999px; padding: 12px 24px;
-      box-shadow: 0 0 24px rgba(255,114,0,.2); transition: .2s; cursor: pointer;
-    }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,114,0,.4); }
-    .btn.ghost { background: rgba(255,255,255,.05); color: var(--text); border-color: rgba(255,255,255,.15); box-shadow: none; }
-    .btn.ghost:hover { border-color: var(--gold); }
 
     /* SEARCH */
     .search-shell {
@@ -165,9 +93,8 @@
     .rule-section {
       background: rgba(255,255,255,.032); border: 1px solid var(--line);
       border-radius: 22px; margin-bottom: 14px; overflow: hidden;
-      transition: border-color .2s;
+      transition: border-color .25s, box-shadow .25s;
     }
-    .rule-section { transition: border-color .25s, box-shadow .25s; }
     .rule-section:hover { border-color: rgba(255,255,255,.9); box-shadow: 0 0 6px rgba(255,255,255,.7), 0 0 18px rgba(246,177,58,.55), 0 0 40px rgba(255,114,0,.3), 0 0 80px rgba(246,177,58,.15), inset 0 0 40px rgba(246,177,58,.06); }
     .rule-header {
       padding: 20px 26px;
@@ -192,10 +119,9 @@
       display: flex; align-items: flex-start; gap: 14px;
       padding: 16px 26px; border-bottom: 1px solid rgba(255,255,255,.06);
       line-height: 1.65; color: #e2d9cc; font-size: 15px;
-      transition: background .15s;
+      transition: background .2s, box-shadow .2s;
     }
     .rule:last-child { border-bottom: none; }
-    .rule { transition: background .2s, box-shadow .2s; }
     .rule:hover { background: rgba(246,177,58,.09); box-shadow: inset 4px 0 0 rgba(246,177,58,.9), inset 0 0 30px rgba(246,177,58,.06); }
     .rule b { color: var(--text); }
     .tag {
@@ -242,24 +168,7 @@
     .rules-cta p { color: var(--muted); font-size: 17px; margin-bottom: 28px; }
     .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
-    /* FOOTER */
-    footer {
-      padding: 46px 6%; display: flex; justify-content: space-between;
-      gap: 28px; flex-wrap: wrap; color: var(--muted);
-      border-top: 1px solid var(--line); background: #030302; font-size: 14px;
-    }
-    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
-    .footer-brand img { height: 46px; filter: drop-shadow(0 0 14px rgba(246,177,58,.3)); }
-    .footer-brand p { max-width: 260px; line-height: 1.6; }
-    .footer-copy { color: rgba(168,152,128,.5); font-size: 12px; }
-    .footer-links { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; padding-top: 4px; }
-    .footer-links a:hover { color: var(--gold); }
-
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-
     @media (max-width: 900px) {
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
       .rules-wrap { grid-template-columns: 1fr; }
       .rule-menu { position: relative; top: 0; }
     }
@@ -270,7 +179,15 @@
 </head>
 <body>
 
-  <nav class="nav">
+  <!-- Discord logo (reused via <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="discord-logo" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286ZM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189Zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+    </symbol>
+  </svg>
+
+    <!-- NAV -->
+  <nav class="nav" id="mainNav">
     <a class="brand" href="index.html">
       <img src="empire-logo.png" alt="Empire RP Logo">
       <span>Empire RP</span>
@@ -283,10 +200,12 @@
       <a href="events.html">Events</a>
       <a href="index.html#features">Why Empire</a>
       <a href="index.html#faq">FAQ</a>
-      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
-      <a href="index.html" class="btn ghost" style="padding:9px 18px;font-size:13px;">← Back Home</a>
+      <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Discord</a>
+      <a href="fivem://connect/zjva9ey" class="btn-nav">&#9658; Play Now</a>
     </div>
-    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <div class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
   </nav>
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
@@ -295,8 +214,9 @@
     <a href="showcase.html">Showcase</a>
     <a href="events.html">Events</a>
     <a href="index.html#features">Why Empire</a>
-    <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
-    <a href="index.html">← Back Home</a>
+    <a href="index.html#faq">FAQ</a>
+    <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener" style="justify-content:center;border-bottom:none"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
+    <a href="fivem://connect/zjva9ey" class="btn" style="text-align:center">&#9658; Play Now</a>
   </div>
 
   <!-- HERO -->
@@ -313,7 +233,7 @@
   <div class="search-shell">
     <div class="search-box">
       <span class="search-icon">⌕</span>
-      <input id="ruleSearch" type="search" placeholder="Search rules… try: RDM, robbery, metagaming, hostage, F8" autocomplete="off">
+      <input id="ruleSearch" type="search" placeholder="Search rules" autocomplete="off">
       <span class="search-clear" id="searchClear">✕</span>
     </div>
     <div id="ruleCount" class="rule-count">Showing all rules</div>
@@ -359,12 +279,12 @@
             <div class="rule"><span class="tag">Microphone</span><span class="rule-text"><b>A working microphone is required</b> to play on Empire RP. You must use it while in city.</span></div>
             <div class="rule"><span class="tag">Clips</span><span class="rule-text"><b>You must run clipping software at all times</b> (Nvidia ShadowPlay, Medal.tv, etc.). Clips must be at least 2 minutes long with audio from both sides. Reports must be submitted within 1 hour of the scene. Failure to clip = automatic denial of item returns and in-game reports.</span></div>
             <div class="rule"><span class="tag danger">Racism</span><span class="rule-text"><b>Zero tolerance for racism, sexism, or hateful prejudice.</b> Derogatory slurs are an immediate permanent ban. Empire RP is a community where all players should feel safe.</span></div>
-            <div class="rule"><span class="tag danger">Harassment</span><span class="rule-text"><b>No harassment of any player,</b> sexual or otherwise. Repeated pressure, intimidation, or OOC aggression toward any player is bannable. Empire actively protects female players — any female disrespect or harassment will be escalated immediately.</span></div>
+            <div class="rule"><span class="tag danger">Harassment</span><span class="rule-text"><b>No harassment of any player,</b> sexual or otherwise. Repeated pressure, intimidation, or OOC aggression toward any player is bannable. Empire actively protects female players, any female disrespect or harassment will be escalated immediately.</span></div>
             <div class="rule"><span class="tag">TOS</span><span class="rule-text">All players must follow FiveM/CFX, Discord, and Rockstar platform guidelines at all times.</span></div>
             <div class="rule"><span class="tag danger">Exploits</span><span class="rule-text"><b>No cheating, bug abuse, mod menus, duplication, crosshairs, or PvP advantage packs</b> (no-props, bright-night, louder footsteps, tracers, etc.). Permanent ban, no appeal.</span></div>
             <div class="rule"><span class="tag">Clothing</span><span class="rule-text"><b>Dress realistically.</b> No 100k-or-die outfits, costume masks, animal ears, respirators, gas masks, helmets, parachutes, or neon accessories. Goggles, face paint, and sandals are allowed. Non-PD/EMS/DOJ players may not wear those faction uniforms.</span></div>
             <div class="rule"><span class="tag">Monetization</span><span class="rule-text">No selling in-game items, currency, or services for real money. No selling or buying in-city cash with real money. No Tebex ownership transfers of mansions or businesses.</span></div>
-            <div class="rule"><span class="tag">Conduct</span><span class="rule-text">Empire staff are not here to mediate personal drama. Revenge reporting and petty tickets waste everyone's time and will be penalized. Constructive criticism is welcome — toxicity toward staff is not.</span></div>
+            <div class="rule"><span class="tag">Conduct</span><span class="rule-text">Empire staff are not here to mediate personal drama. Revenge reporting and petty tickets waste everyone's time and will be penalized. Constructive criticism is welcome, toxicity toward staff is not.</span></div>
           </div>
         </div>
 
@@ -377,7 +297,7 @@
           </div>
           <div class="rule-list">
             <div class="rule"><span class="tag">Creation</span><span class="rule-text"><b>Fully customize your character before playing.</b> Default models are not allowed. Put real effort into your character's appearance or staff will require you to change it.</span></div>
-            <div class="rule"><span class="tag">Names</span><span class="rule-text">Use a realistic character name. Creative is fine — absurd or joke names that break immersion are not.</span></div>
+            <div class="rule"><span class="tag">Names</span><span class="rule-text">Use a realistic character name. Creative is fine, absurd or joke names that break immersion are not.</span></div>
             <div class="rule"><span class="tag">Gender</span><span class="rule-text">Female characters must use female models; male characters must use male models. Empire RP is LGBTQ-friendly and that RP is fully welcomed.</span></div>
             <div class="rule"><span class="tag">Multi-Char</span><span class="rule-text">Players with faction characters may not run secondary civilian characters to escape faction punishments or super-civ. PD and EMS characters are exempt from this restriction.</span></div>
             <div class="rule"><span class="tag">Injuries</span><span class="rule-text"><b>Roleplay your injuries.</b> If you get shot, act like it. Injury RP is mandatory for everyone. Reloading your skin after dying is not allowed.</span></div>
@@ -393,17 +313,17 @@
             <span class="rule-count-badge">12 RULES</span>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag green">RP First</span><span class="rule-text"><b>Empire RP is a roleplay server first, a game server second.</b> If you are offered RP, reciprocate it — even while grinding. Always be in character while in city.</span></div>
+            <div class="rule"><span class="tag green">RP First</span><span class="rule-text"><b>Empire RP is a roleplay server first, a game server second.</b> If you are offered RP, reciprocate it, even while grinding. Always be in character while in city.</span></div>
             <div class="rule"><span class="tag">Quality</span><span class="rule-text">Empire expects high-quality, realistic RP at all times. Staff reserves the right to remove players who consistently break immersion, grief other players' experiences, or refuse to take the server seriously.</span></div>
             <div class="rule"><span class="tag">OOC</span><span class="rule-text"><b>No OOC conversations in-city.</b> Do not break character to discuss server rules, threaten reports, or talk about game mechanics. Open a ticket. "Come out the Green Zone" is an OOC phrase and is not allowed.</span></div>
-            <div class="rule"><span class="tag">Rulesplain</span><span class="rule-text">Do not break character to explain server rules to other players. Handle rule concerns through tickets after the scene ends — not during it.</span></div>
+            <div class="rule"><span class="tag">Rulesplain</span><span class="rule-text">Do not break character to explain server rules to other players. Handle rule concerns through tickets after the scene ends, not during it.</span></div>
             <div class="rule"><span class="tag">Report After</span><span class="rule-text">If a rule is broken during a scene, report it AFTER the scenario completes. The only exceptions are major violations like racism, sexual abuse, or severe harassment.</span></div>
             <div class="rule"><span class="tag">/me Commands</span><span class="rule-text">You must respond to /me commands from other players. Ignoring /me takes off mask, /me steals shoes, or similar commands is FailRP.</span></div>
             <div class="rule"><span class="tag">Cop Bait</span><span class="rule-text">Intentionally provoking PD into scenes without valid RP purpose is cop baiting and is low-quality RP. Do not kidnap a cop unless they are isolated and the scene has proper setup.</span></div>
             <div class="rule"><span class="tag">Death Run</span><span class="rule-text">No death running or walking in circles during interactions. Have real conversations without twitching or constant movement designed to avoid RP.</span></div>
             <div class="rule"><span class="tag">Driveby</span><span class="rule-text">The driver of a vehicle cannot shoot during a driveby. The car must come to a complete stop before the driver may fire.</span></div>
             <div class="rule"><span class="tag">Body Cam</span><span class="rule-text">To use video as in-character evidence, your character must be wearing a body camera or GoPro, or have a vehicle positioned for dashcam footage. Videos without these cannot be valid IC evidence.</span></div>
-            <div class="rule"><span class="tag">New Life</span><span class="rule-text"><b>New Life Rule:</b> After dying, you cannot remember who killed you, why, or the events leading up to your death for 15 minutes after revival. Wait at least 15 minutes before returning to the scene. Another player who was there may remind you — but it must be clipped and properly roleplayed.</span></div>
+            <div class="rule"><span class="tag">New Life</span><span class="rule-text"><b>New Life Rule:</b> After dying, you cannot remember who killed you, why, or the events leading up to your death for 15 minutes after revival. Wait at least 15 minutes before returning to the scene. Another player who was there may remind you, but it must be clipped and properly roleplayed.</span></div>
             <div class="rule"><span class="tag">Powergaming</span><span class="rule-text"><b>No powergaming.</b> You must give other players real options for counterplay. Do not use emotes to exploit through walls, piggyback players, cancel animations to pull weapons, or perform any action that removes another player's ability to react.</span></div>
           </div>
         </div>
@@ -417,14 +337,14 @@
           </div>
           <div class="rule-list">
             <div class="notice" style="margin:14px 26px 6px;">⏱ All hostile interactions must follow minimum time requirements before any violent action.</div>
-            <div class="rule"><span class="tag">60 Sec</span><span class="rule-text"><b>Standard areas:</b> Hostile interactions must last at least 60 seconds before shooting or robbing. At least 45 of those seconds must be clearly hostile (threats, arguments, intimidation — not casual talking). There must be valid reasoning for the hostility in the first place.</span></div>
+            <div class="rule"><span class="tag">60 Sec</span><span class="rule-text"><b>Standard areas:</b> Hostile interactions must last at least 60 seconds before shooting or robbing. At least 45 of those seconds must be clearly hostile (threats, arguments, intimidation, not casual talking). There must be valid reasoning for the hostility in the first place.</span></div>
             <div class="rule"><span class="tag">30 Sec</span><span class="rule-text"><b>Illegal/high-risk areas</b> (drug spots, money wash, black market, harvesting zones): A minimum of 30 seconds of hostile interaction is required before violent action.</span></div>
             <div class="rule"><span class="tag">2 Min</span><span class="rule-text"><b>Player-owned businesses:</b> Hostile interactions must be a minimum of 2 minutes before violence occurs. You may not rob employees who are on shift or the business owner.</span></div>
             <div class="rule"><span class="tag">Face-to-Face</span><span class="rule-text">Hostile actions must begin on foot and face-to-face. The hostile party must start the interaction on foot. If a player drives off after the interaction becomes hostile, you may then pursue and engage from your car. Players may not use vehicles to skip the interaction timer or instantly escalate to shooting.</span></div>
             <div class="rule"><span class="tag danger">No PD Shots</span><span class="rule-text">You may never shoot at PD from inside a vehicle under any scenario.</span></div>
             <div class="rule"><span class="tag">Valid Reasons</span><span class="rule-text">Valid reasons to escalate to violence include: stealing someone's car, threatening someone's life, or aiming a weapon at someone. Boredom, nice items, or no RP context are never valid.</span></div>
             <div class="rule"><span class="tag">T-Count</span><span class="rule-text"><b>Maximum 8 players per side</b> in any criminal conflict. PD is excluded from this limit. All hostile scenes between two parties carry a minimum 1-hour cooldown after the scene ends.</span></div>
-            <div class="rule"><span class="tag">No Camp</span><span class="rule-text"><b>Anti-camping:</b> You may not camp spawn points, hospitals, police stations, job locations, or garages to hunt players. Any stakeout must have active, believable RP — an investigation, surveillance that progresses, or an evolving scene. Passive waiting with no RP engagement is not allowed.</span></div>
+            <div class="rule"><span class="tag">No Camp</span><span class="rule-text"><b>Anti-camping:</b> You may not camp spawn points, hospitals, police stations, job locations, or garages to hunt players. Any stakeout must have active, believable RP, an investigation, surveillance that progresses, or an evolving scene. Passive waiting with no RP engagement is not allowed.</span></div>
           </div>
         </div>
 
@@ -454,7 +374,7 @@
           </div>
           <div class="rule-list">
             <div class="notice danger" style="margin:14px 26px 6px;">🚫 F8 quitting during active RP is one of the most serious offenses on Empire RP. There is no valid reason to disconnect during a scene.</div>
-            <div class="rule"><span class="tag danger">No F8</span><span class="rule-text"><b>Do not disconnect during active roleplay</b> for any reason — not because you were robbed, not during a chase, not during a police scene, not during an admin sit. You cannot F8 because someone else broke the rules either.</span></div>
+            <div class="rule"><span class="tag danger">No F8</span><span class="rule-text"><b>Do not disconnect during active roleplay</b> for any reason, not because you were robbed, not during a chase, not during a police scene, not during an admin sit. You cannot F8 because someone else broke the rules either.</span></div>
             <div class="rule"><span class="tag">Crashes</span><span class="rule-text">If your game genuinely crashes, you must have your crash file or a timestamped crash message as proof. Return to your last location and continue the scene. Inform PD or involved parties of what happened.</span></div>
             <div class="rule"><span class="tag">Item Returns</span><span class="rule-text">If someone F8s on you and you lost items, submit a 2-minute clip with audio from both sides clearly showing what was lost. Your clip must not show you rule-breaking or the return will be denied. Being robbed while AFK outside a green zone is not valid for item return.</span></div>
             <div class="rule"><span class="tag danger">F8 Offenses</span><span class="rule-text">
@@ -494,7 +414,7 @@
             <div class="rule"><span class="tag">1v1</span><span class="rule-text">In a 1v1 situation: you may try to defend yourself only if your weapon is already out. If a gun is already pointed at you, you cannot reach for yours.</span></div>
             <div class="rule"><span class="tag">2v1</span><span class="rule-text">In a 2v1: if you are not being held at gunpoint and have no weapon out, you may attempt to escape. If weapons are out and aimed at you, you cannot reach for a weapon.</span></div>
             <div class="rule"><span class="tag">3v1+</span><span class="rule-text">In a 3v1 or greater: if weapons are out, you must fear for your life. You cannot attempt to escape or defend yourself unless your weapon was already drawn.</span></div>
-            <div class="rule"><span class="tag">Equal</span><span class="rule-text">In equal-numbers situations, you may attempt to defend or escape — but you accept the risk of dying.</span></div>
+            <div class="rule"><span class="tag">Equal</span><span class="rule-text">In equal-numbers situations, you may attempt to defend or escape, but you accept the risk of dying.</span></div>
             <div class="rule"><span class="tag">Conflicts</span><span class="rule-text">Ongoing conflicts have expiration dates. Continually engaging without giving the other party a realistic path to end the conflict is considered NVL and griefing. Character kills must be agreed upon by the player whose character is dying.</span></div>
           </div>
         </div>
@@ -509,7 +429,7 @@
           <div class="rule-list">
             <div class="rule"><span class="tag">Bored RP</span><span class="rule-text"><b>No driving around looking for people to rob with no RP context.</b> Someone having a nice item or vehicle is never a valid reason to rob them. Every robbery needs legitimate roleplay buildup.</span></div>
             <div class="rule"><span class="tag danger">Pocket Wipe</span><span class="rule-text"><b>No pocket wiping.</b> Do not take the majority of someone's items while they are downed. Taking a gun or valuable goods with quality RP is fine. Taking water, food, phones, radios, pets, shoulder toys, wings, cuffs, or plushies is not allowed.</span></div>
-            <div class="rule"><span class="tag">Scamming</span><span class="rule-text">Scam RP must be built on good roleplay — not lazy target selection. You may not scam for/with vehicles, houses, or donation vouchers. Guns, drugs, and other items are fair game (excluding pets, shoulder toys, wings, and plushies).</span></div>
+            <div class="rule"><span class="tag">Scamming</span><span class="rule-text">Scam RP must be built on good roleplay, not lazy target selection. You may not scam for/with vehicles, houses, or donation vouchers. Guns, drugs, and other items are fair game (excluding pets, shoulder toys, wings, and plushies).</span></div>
             <div class="rule"><span class="tag">Vehicles</span><span class="rule-text">Trunk and glovebox robbing is allowed. Players should not use vehicles as permanent storage. Vehicles in green zones are off-limits.</span></div>
             <div class="rule"><span class="tag danger">No Rob Zones</span><span class="rule-text">No selling drugs, running gun deals, or making any illegal transactions in green zones.</span></div>
             <div class="rule"><span class="tag">Ocean Dump</span><span class="rule-text">Ocean dumping a player's body is allowed for story purposes but cannot force memory loss or a character kill. If ocean dumped, the player may direct PD to where they were originally downed and build off that. You cannot ocean dump another player's vehicle without valid roleplay.</span></div>
@@ -528,11 +448,11 @@
           </div>
           <div class="rule-list">
             <div class="rule"><span class="tag">Who</span><span class="rule-text">Hostages must be random civilians with no affiliation to your group or faction. You cannot use friends, faction members, or allies as staged hostages.</span></div>
-            <div class="rule"><span class="tag">Condition A</span><span class="rule-text"><b>With interaction (20–30 sec):</b> Hostage takers must present themselves as serious and threatening. You must be 3:1 outnumbering the hostage. After the interaction, takers may draw weapons.</span></div>
+            <div class="rule"><span class="tag">Condition A</span><span class="rule-text"><b>With interaction (20-30 sec):</b> Hostage takers must present themselves as serious and threatening. You must be 3:1 outnumbering the hostage. After the interaction, takers may draw weapons.</span></div>
             <div class="rule"><span class="tag">Condition B</span><span class="rule-text"><b>Without extended interaction:</b> Hostage takers must be 3:1 with weapons already drawn. You must clearly identify that you are taking someone hostage without intent to immediately rob.</span></div>
             <div class="rule"><span class="tag danger">No EMS</span><span class="rule-text">You may never take EMS hostage under any circumstances.</span></div>
-            <div class="rule"><span class="tag">Limits</span><span class="rule-text">Maximum 2 hostages per scene, 3 if conducting a Pacific Bank Heist. You cannot rob the hostage. Maintain tension and seriousness throughout — hostage RP should never feel casual or friendly.</span></div>
-            <div class="rule"><span class="tag">Killing</span><span class="rule-text">You cannot kill a hostage unless PD is present and it makes absolute RP sense. If good valid RP allows, you may kill and rob — but you cannot flatback a player after robbing them.</span></div>
+            <div class="rule"><span class="tag">Limits</span><span class="rule-text">Maximum 2 hostages per scene, 3 if conducting a Pacific Bank Heist. You cannot rob the hostage. Maintain tension and seriousness throughout, hostage RP should never feel casual or friendly.</span></div>
+            <div class="rule"><span class="tag">Killing</span><span class="rule-text">You cannot kill a hostage unless PD is present and it makes absolute RP sense. If good valid RP allows, you may kill and rob, but you cannot flatback a player after robbing them.</span></div>
             <div class="rule"><span class="tag">PD Rights</span><span class="rule-text">PD may search a hostage for evidence during an active hostage scene.</span></div>
           </div>
         </div>
@@ -547,10 +467,10 @@
           <div class="rule-list">
             <div class="rule"><span class="tag">Use</span><span class="rule-text">Businesses must operate as actual businesses, not personal stashes or faction supply chains. Staff may revoke ownership of businesses not actively being used for RP.</span></div>
             <div class="rule"><span class="tag">Transfers</span><span class="rule-text">Business ownership transfers require Business Oversight approval before any deal is made. No Tebex transfers of mansions or businesses.</span></div>
-            <div class="rule"><span class="tag">Employees</span><span class="rule-text">Employees must clearly distinguish when they are on or off duty — use outfits, not /shirt commands. Invoicing must be done properly; no billing abuse for personal gain, friends, or factions.</span></div>
+            <div class="rule"><span class="tag">Employees</span><span class="rule-text">Employees must clearly distinguish when they are on or off duty, use outfits, not /shirt commands. Invoicing must be done properly; no billing abuse for personal gain, friends, or factions.</span></div>
             <div class="rule"><span class="tag">No Rob</span><span class="rule-text">You may not rob a business or its stashes because you were fired, left a faction, or dislike the owner. Hostile business interactions require 2 minutes of RP before violence.</span></div>
             <div class="rule"><span class="tag">Corrupt PD/EMS</span><span class="rule-text">PD and EMS are not allowed to play corrupt characters without explicit permission. If you want to run a corrupt RP scene, open a ticket. Chiefs may authorize it for officers they trust if it makes for good RP all around.</span></div>
-            <div class="rule"><span class="tag">GZ Sales</span><span class="rule-text">No transactions, deals, or selling of any kind in green zones — this includes drugs, gun deals, wig/sneaker sales, and all other trades.</span></div>
+            <div class="rule"><span class="tag">GZ Sales</span><span class="rule-text">No transactions, deals, or selling of any kind in green zones, this includes drugs, gun deals, wig/sneaker sales, and all other trades.</span></div>
           </div>
         </div>
 
@@ -566,9 +486,9 @@
             <div class="rule"><span class="tag">Civs vs Factions</span><span class="rule-text"><b>Civilians must show fear toward faction members at all times.</b> Civilians may not act violently against factions unless provoked first. Factions cannot target civilians unless the civ refuses to respect their life, refuses to pay taxes, or disregards faction authority.</span></div>
             <div class="rule"><span class="tag">Robbery</span><span class="rule-text">Factions may only rob civilians if: the civilian refuses to pay taxes at a drug spot, the civilian initiates violence, the civilian scams a faction member (rob back scammed items only), or the civilian blatantly refuses to show fear or respect for faction authority.</span></div>
             <div class="rule"><span class="tag">Spot Claims</span><span class="rule-text">Drug processing locations are claimable on a first-come, first-served basis. To claim a spot, open a ticket with proof of knowledge of all locations, proof of how to make the drug, possession of $100K worth of the drug, and a clip of taxing someone at a location.</span></div>
-            <div class="rule"><span class="tag">Taxing</span><span class="rule-text">Only the faction that owns a location may tax there. Owning factions may tax civilians up to 25%, other faction members up to 50%, and may charge civilians or factions $50K–$75K weekly to operate at the spot. The same individual may only be taxed once per hour.</span></div>
-            <div class="rule"><span class="tag">Beef</span><span class="rule-text">Gang wars require beef validation through Faction Support before becoming official. Gang leaders are responsible for their members — major rulebreaks by members can affect the entire gang.</span></div>
-            <div class="rule"><span class="tag">Events</span><span class="rule-text">Airdrops, turf events, and Empire Games follow event-specific rules posted by staff. After any event there is a 15-minute peace time — no robbing or pressing anyone during this buffer.</span></div>
+            <div class="rule"><span class="tag">Taxing</span><span class="rule-text">Only the faction that owns a location may tax there. Owning factions may tax civilians up to 25%, other faction members up to 50%, and may charge civilians or factions $50K-$75K weekly to operate at the spot. The same individual may only be taxed once per hour.</span></div>
+            <div class="rule"><span class="tag">Beef</span><span class="rule-text">Gang wars require beef validation through Faction Support before becoming official. Gang leaders are responsible for their members, major rulebreaks by members can affect the entire gang.</span></div>
+            <div class="rule"><span class="tag">Events</span><span class="rule-text">Airdrops, turf events, and Empire Games follow event-specific rules posted by staff. After any event there is a 15-minute peace time, no robbing or pressing anyone during this buffer.</span></div>
             <div class="rule"><span class="tag">Accountability</span><span class="rule-text">Gang leaders are responsible for their crew's conduct. Cheating or major rule violations can impact the entire faction's standing on Empire.</span></div>
           </div>
         </div>
@@ -596,14 +516,14 @@
             <span class="rule-count-badge">8 RULES</span>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag">Fear PD</span><span class="rule-text"><b>You must fear PD as you would in real life.</b> If police attempt to arrest you, you cannot immediately shoot them. If it is 3v1 and an officer makes an arrest, you may RP out a negotiated release — you cannot RDM or rob PD.</span></div>
-            <div class="rule"><span class="tag">PD Use of Force</span><span class="rule-text">PD may use lethal force — you are considered a threat to society. If police do anything invalid during a scene, open a DOJ case. Do not break PD recording equipment.</span></div>
+            <div class="rule"><span class="tag">Fear PD</span><span class="rule-text"><b>You must fear PD as you would in real life.</b> If police attempt to arrest you, you cannot immediately shoot them. If it is 3v1 and an officer makes an arrest, you may RP out a negotiated release, you cannot RDM or rob PD.</span></div>
+            <div class="rule"><span class="tag">PD Use of Force</span><span class="rule-text">PD may use lethal force, you are considered a threat to society. If police do anything invalid during a scene, open a DOJ case. Do not break PD recording equipment.</span></div>
             <div class="rule"><span class="tag">Impersonation</span><span class="rule-text">No impersonating law enforcement or EMS. Non-PD/EMS/DOJ players may not wear those uniforms.</span></div>
             <div class="rule"><span class="tag">EMS Calls</span><span class="rule-text">Do not spam EMS calls. Press "G" to call EMS after dying, or use /911ems for serious situations only. Scenes are considered over once EMS arrives.</span></div>
-            <div class="rule"><span class="tag">RP with EMS</span><span class="rule-text">You must properly RP with EMS personnel. Do not ask for "taps" — roleplay your injuries. Do not rush or instruct EMS on how to do their job. EMS have the right to deny treatment if you are disrespectful.</span></div>
+            <div class="rule"><span class="tag">RP with EMS</span><span class="rule-text">You must properly RP with EMS personnel. Do not ask for "taps", roleplay your injuries. Do not rush or instruct EMS on how to do their job. EMS have the right to deny treatment if you are disrespectful.</span></div>
             <div class="rule"><span class="tag">Stealing EMS</span><span class="rule-text">Stealing PD or EMS vehicles or weapons, kidnapping EMS workers, or robbing/assaulting EMS is a serious rule violation.</span></div>
             <div class="rule"><span class="tag">Respawn</span><span class="rule-text">In PD scenes you may not hold "E" to respawn unless you are unreachable by PD, medical, or you are glitched. If glitched and police are on scene, turn yourself in.</span></div>
-            <div class="rule"><span class="tag">DOJ</span><span class="rule-text">If police conduct is invalid during a scene, handle it through the DOJ case system — not by RDMing officers or escalating OOC.</span></div>
+            <div class="rule"><span class="tag">DOJ</span><span class="rule-text">If police conduct is invalid during a scene, handle it through the DOJ case system, not by RDMing officers or escalating OOC.</span></div>
           </div>
         </div>
 
@@ -615,7 +535,7 @@
             <span class="rule-count-badge">5 RULES</span>
           </div>
           <div class="rule-list">
-            <div class="rule"><span class="tag">Peace Time</span><span class="rule-text">After any event, there is a mandatory 15-minute peace period. No robbing, pressing, or hostile interactions during this window — give everyone time to leave safely.</span></div>
+            <div class="rule"><span class="tag">Peace Time</span><span class="rule-text">After any event, there is a mandatory 15-minute peace period. No robbing, pressing, or hostile interactions during this window, give everyone time to leave safely.</span></div>
             <div class="rule"><span class="tag">Airdrop KOS</span><span class="rule-text">All airdrops are KOS once you enter the marked zone. City airdrops are not KOS until inside the zone. You may not shoot anyone who is outside the zone.</span></div>
             <div class="rule"><span class="tag">No Rob Airdrop</span><span class="rule-text">You are not allowed to rob anyone at an airdrop location. Once the airdrop has been looted, combat must cease.</span></div>
             <div class="rule"><span class="tag">Cayo Perico</span><span class="rule-text">Cayo Perico Island is a full KOS zone. Flatback robbing is allowed. Non-faction members may attend. Factions may team up with their alliances. Non-faction players going with a faction must be flagged up.</span></div>
@@ -640,7 +560,7 @@
             <div class="rule"><span class="tag danger">Perma Ban</span><span class="rule-text"><b>Immediate permanent ban:</b> cheating/hacking, exploiting/duplication, derogatory slurs, PvP-advantage packs. No appeal for these offenses.</span></div>
             <div class="rule"><span class="tag">Discretion</span><span class="rule-text">Empire staff reserve the right to make judgment calls based on the situation, the RP quality of those involved, and the actual damage caused by the rule break. If something leads to a genuinely positive RP experience for all parties, staff may choose not to intervene.</span></div>
             <div class="rule"><span class="tag">Exploiting</span><span class="rule-text">Do not abuse in-game mechanics for personal gain. If something seems overpowered or broken, stop using it and report it. Abusing restart windows (30 min before/after scheduled restart) for major crime mechanics is prohibited. Selling materials meant for specific jobs outside those jobs is also exploitation.</span></div>
-            <div class="rule"><span class="tag">Staff Final</span><span class="rule-text">Empire RP staff decisions are final. The quality and intent of RP is evaluated by staff only. All punishments are subject to individual circumstance — the ladder above is a guide, not a guarantee.</span></div>
+            <div class="rule"><span class="tag">Staff Final</span><span class="rule-text">Empire RP staff decisions are final. The quality and intent of RP is evaluated by staff only. All punishments are subject to individual circumstance, the ladder above is a guide, not a guarantee.</span></div>
           </div>
         </div>
 
@@ -653,97 +573,131 @@
     <h2>Ready to play by the rules?</h2>
     <p>Join the Discord and connect to city. The streets are waiting.</p>
     <div class="cta-btns">
-      <a class="btn" href="#">▸ Play Now</a>
-      <a class="btn ghost" href="https://discord.gg/empirerp" target="_blank" rel="noopener">Join Discord</a>
-      <a class="btn ghost" href="index.html">← Back Home</a>
+      <a class="btn" href="fivem://connect/zjva9ey">▸ Play Now</a>
+      <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
+      <a class="btn ghost" href="index.html">Back Home</a>
     </div>
   </div>
 
   <footer>
-    <div class="footer-brand">
-      <img src="empire-logo.png" alt="Empire RP">
-      <p>A premium GTA V roleplay community. Built by players, for players.</p>
+    <div class="footer-inner">
+      <div class="footer-brand reveal">
+        <img src="empire-logo.png" alt="Empire RP">
+        <p>A premium GTA V roleplay community. Built by players, for players.</p>
+        <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join our Discord</a>
+      </div>
+      <div class="footer-links reveal">
+        <a href="index.html#home">Home</a>
+        <a href="rules.html">Rules</a>
+        <a href="faction-rules.html">Faction Rules</a>
+        <a href="showcase.html">Showcase</a>
+        <a href="events.html">Events</a>
+        <a href="index.html#features">Why Empire</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+        <a href="https://empireroleplay.tebex.io" target="_blank" rel="noopener">Store</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="rules.html">Rules</a>
-      <a href="faction-rules.html">Faction Rules</a>
-      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
-      <a href="#">Store</a>
-      <a href="login.html">Staff Login</a>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+      <p class="footer-copy">Built for the city by the Empire team.</p>
     </div>
-    <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
   </footer>
 
+  <script src="site.js"></script>
   <script>
-    // Mobile menu
-    document.getElementById('hamburger').addEventListener('click', () => {
-      document.getElementById('mobileMenu').classList.toggle('open');
-    });
-
-    // Search
-    const input = document.getElementById('ruleSearch');
-    const countEl = document.getElementById('ruleCount');
-    const clearBtn = document.getElementById('searchClear');
-    const noResults = document.getElementById('noResults');
-    const rules = Array.from(document.querySelectorAll('.rule'));
-    const sections = Array.from(document.querySelectorAll('.rule-section'));
-    const originals = new Map(rules.map(r => [r, r.querySelector('.rule-text').innerHTML]));
+    // ---- Rule search ----
+    var input = document.getElementById('ruleSearch');
+    var countEl = document.getElementById('ruleCount');
+    var clearBtn = document.getElementById('searchClear');
+    var noResults = document.getElementById('noResults');
+    var rules = Array.from(document.querySelectorAll('.rule'));
+    var sections = Array.from(document.querySelectorAll('.rule-section'));
+    var originals = new Map(rules.map(function (r) { return [r, r.querySelector('.rule-text').innerHTML]; }));
 
     function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
     function filterRules() {
-      const q = input.value.trim();
-      const ql = q.toLowerCase();
-      let visible = 0;
-
-      rules.forEach(rule => {
-        const rt = rule.querySelector('.rule-text');
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var visible = 0;
+      rules.forEach(function (rule) {
+        var rt = rule.querySelector('.rule-text');
         rt.innerHTML = originals.get(rule);
-        const tag = rule.querySelector('.tag').textContent;
-        const text = `${tag} ${rt.textContent}`.toLowerCase();
-        const match = !ql || text.includes(ql);
+        var tag = rule.querySelector('.tag').textContent;
+        var text = (tag + ' ' + rt.textContent).toLowerCase();
+        var match = !ql || text.includes(ql);
         rule.classList.toggle('no-match', !match);
         if (match) {
           visible++;
           if (ql) {
-            const re = new RegExp(`(${escRe(q)})`, 'gi');
+            var re = new RegExp('(' + escRe(q) + ')', 'gi');
             rt.innerHTML = rt.innerHTML.replace(re, '<mark>$1</mark>');
           }
         }
       });
-
-      let sectVisible = 0;
-      sections.forEach(sec => {
-        const has = Array.from(sec.querySelectorAll('.rule')).some(r => !r.classList.contains('no-match'));
+      var sectVisible = 0;
+      sections.forEach(function (sec) {
+        var has = Array.from(sec.querySelectorAll('.rule')).some(function (r) { return !r.classList.contains('no-match'); });
         sec.classList.toggle('no-match', !has);
         if (has) sectVisible++;
       });
-
       noResults.classList.toggle('show', sectVisible === 0 && ql.length > 0);
       clearBtn.style.display = ql ? 'block' : 'none';
       countEl.textContent = ql
-        ? `${visible} matching rule${visible === 1 ? '' : 's'} for "${q}"`
+        ? visible + ' matching rule' + (visible === 1 ? '' : 's') + ' for "' + q + '"'
         : 'Showing all rules';
     }
 
     input.addEventListener('input', filterRules);
-    clearBtn.addEventListener('click', () => { input.value = ''; filterRules(); input.focus(); });
-    document.getElementById('clearSearch')?.addEventListener('click', (e) => { e.preventDefault(); input.value=''; filterRules(); });
+    clearBtn.addEventListener('click', function () { input.value = ''; filterRules(); input.focus(); });
+    var clearLink = document.getElementById('clearSearch');
+    if (clearLink) clearLink.addEventListener('click', function (e) { e.preventDefault(); input.value = ''; filterRules(); });
 
-    // Sidebar active on scroll
-    const menuLinks = Array.from(document.querySelectorAll('.rule-menu a'));
-    const ruleSections = Array.from(document.querySelectorAll('.rule-section[id]'));
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          menuLinks.forEach(a => a.classList.remove('active'));
-          const link = document.querySelector(`.rule-menu a[href="#${entry.target.id}"]`);
+    // ---- Sidebar active section on scroll ----
+    var menuLinks = Array.from(document.querySelectorAll('.rule-menu a'));
+    var ruleSections = Array.from(document.querySelectorAll('.rule-section[id]'));
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          menuLinks.forEach(function (a) { a.classList.remove('active'); });
+          var link = document.querySelector('.rule-menu a[href="#' + entry.target.id + '"]');
           if (link) link.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-20% 0px -60% 0px' });
-    ruleSections.forEach(s => obs.observe(s));
+        });
+      }, { rootMargin: '-20% 0px -60% 0px' });
+      ruleSections.forEach(function (s) { obs.observe(s); });
+    }
+
+    // ---- Typewriter placeholder for common searches ----
+    (function () {
+      if (!input) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var terms = ['RDM', 'VDM', 'metagaming', 'powergaming', 'new life rule', 'robbery', 'hostage rules', 'green zones', 'combat logging', 'NVL', 'hostile timers', 'gang taxing'];
+      var base = 'Search rules: ';
+      var ti = 0, ci = 0, deleting = false, timer = null, active = false;
+
+      function frame() {
+        if (!active) return;
+        var term = terms[ti];
+        ci += deleting ? -1 : 1;
+        input.setAttribute('placeholder', base + term.slice(0, ci));
+        if (!deleting && ci === term.length) { deleting = true; return schedule(1600); }
+        if (deleting && ci === 0) { deleting = false; ti = (ti + 1) % terms.length; return schedule(350); }
+        schedule(deleting ? 45 : 80);
+      }
+      function schedule(ms) { timer = setTimeout(frame, ms); }
+      function stop() { active = false; clearTimeout(timer); }
+      function start() {
+        if (reduce) { input.setAttribute('placeholder', 'Search rules'); return; }
+        active = true; clearTimeout(timer); ti = 0; ci = 0; deleting = false; schedule(500);
+      }
+
+      input.addEventListener('focus', function () { stop(); input.setAttribute('placeholder', 'Search rules'); });
+      input.addEventListener('blur', function () { if (!input.value) start(); });
+      input.addEventListener('input', stop);
+      start();
+    })();
 
     filterRules();
   </script>

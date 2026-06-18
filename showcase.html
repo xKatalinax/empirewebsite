@@ -3,48 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Empire Roleplay — Community Showcase</title>
+  <title>Empire Roleplay, Community Showcase</title>
   <link rel="icon" type="image/png" href="empire-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,900;1,900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
   <style>
-    :root {
-      --bg: #060504;
-      --gold: #f6b13a;
-      --gold2: #ff7200;
-      --text: #f2ede4;
-      --muted: #a89880;
-      --line: rgba(246,177,58,.18);
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); overflow-x: hidden; }
-    a { color: inherit; text-decoration: none; }
-
-    /* NAV */
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 6%; height: 70px;
-      background: rgba(6,5,4,.88); backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--line);
-    }
-    .brand { display: flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; }
-    .brand img { height: 40px; filter: drop-shadow(0 0 12px rgba(246,177,58,.5)); animation: float 3.2s ease-in-out infinite; }
-    .nav-links { display: flex; gap: 26px; align-items: center; font-weight: 800; font-size: 13px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; }
-    .nav-links a { transition: color .2s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-    .btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(246,177,58,.5); background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #160b00; font-weight: 900; font-size: 14px; border-radius: 999px; padding: 10px 20px; transition: .2s; cursor: pointer; }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,114,0,.4); }
-    .btn.ghost { background: rgba(255,255,255,.05); color: var(--text); border-color: rgba(255,255,255,.15); box-shadow: none; }
-    .btn.ghost:hover { border-color: var(--gold); }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--gold); border-radius: 2px; }
-    .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99; background: rgba(6,5,4,.97); border-bottom: 1px solid var(--line); padding: 20px 6%; flex-direction: column; gap: 14px; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-weight: 800; font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding: 10px 0; border-bottom: 1px solid var(--line); }
-    .mobile-menu a:last-child { border-bottom: none; }
-
     /* HERO */
     .hero {
       min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -72,6 +36,7 @@
     .ticker-item { display: inline-flex; align-items: center; gap: 14px; padding: 0 28px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
     .ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
     .ticker-item span { color: var(--gold); }
+    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
     /* SECTION HEADER */
     .section-head { text-align: center; padding: 90px 6% 50px; }
@@ -81,13 +46,9 @@
 
     /* GALLERY */
     .gallery-shell { padding: 0 3% 100px; max-width: 1500px; margin: 0 auto; }
-
-    /* Row-based layout for precise control */
     .gallery-row { display: grid; gap: 10px; margin-bottom: 10px; }
     .row-1 { grid-template-columns: 2fr 1.1fr 1.1fr; height: 480px; }
     .row-2 { grid-template-columns: 1fr 1fr; height: 420px; }
-
-    /* CARD */
     .gcard {
       position: relative; overflow: hidden; border-radius: 18px;
       border: 1px solid var(--line); cursor: pointer;
@@ -96,16 +57,10 @@
     .gcard:hover {
       transform: scale(1.022) translateY(-4px);
       border-color: rgba(255,255,255,.88);
-      box-shadow:
-        0 0 8px rgba(255,255,255,.65),
-        0 0 22px rgba(246,177,58,.6),
-        0 0 50px rgba(255,114,0,.32),
-        0 0 90px rgba(246,177,58,.16);
+      box-shadow: 0 0 8px rgba(255,255,255,.65), 0 0 22px rgba(246,177,58,.6), 0 0 50px rgba(255,114,0,.32), 0 0 90px rgba(246,177,58,.16);
     }
     .gcard img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s cubic-bezier(.22,1,.36,1); }
     .gcard:hover img { transform: scale(1.07); }
-
-    /* Overlay */
     .go {
       position: absolute; inset: 0;
       background: linear-gradient(to top, rgba(6,5,4,.9) 0%, rgba(6,5,4,.25) 45%, transparent 70%);
@@ -136,15 +91,6 @@
     .cta p { color: var(--muted); font-size: 18px; margin-bottom: 36px; }
     .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
-    /* FOOTER */
-    footer { padding: 46px 6%; display: flex; justify-content: space-between; gap: 28px; flex-wrap: wrap; color: var(--muted); border-top: 1px solid var(--line); background: #030302; font-size: 14px; }
-    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
-    .footer-brand img { height: 46px; filter: drop-shadow(0 0 14px rgba(246,177,58,.3)); }
-    .footer-brand p { max-width: 260px; line-height: 1.6; }
-    .footer-copy { color: rgba(168,152,128,.5); font-size: 12px; }
-    .footer-links { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; padding-top: 4px; }
-    .footer-links a:hover { color: var(--gold); }
-
     /* LIGHTBOX */
     .lb { position: fixed; inset: 0; z-index: 999; background: rgba(4,3,2,.96); backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 40px; }
     .lb.open { display: flex; }
@@ -154,11 +100,7 @@
     .lb-close { position: absolute; top: -16px; right: -16px; width: 40px; height: 40px; border-radius: 50%; background: var(--gold2); border: none; cursor: pointer; font-size: 18px; color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(255,114,0,.5); transition: transform .2s; }
     .lb-close:hover { transform: scale(1.1); }
 
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-
     @media (max-width: 1000px) {
-      .nav-links { display: none; } .hamburger { display: flex; }
       .row-1 { grid-template-columns: 1fr 1fr; height: auto; grid-template-rows: 300px 300px; }
       .row-1 .gcard:first-child { grid-column: 1 / -1; }
       .row-2 { grid-template-columns: 1fr; height: auto; grid-template-rows: 300px 300px; }
@@ -172,18 +114,33 @@
 </head>
 <body>
 
-  <nav class="nav">
-    <a class="brand" href="index.html"><img src="empire-logo.png" alt="Empire RP"><span>Empire RP</span></a>
+  <!-- Discord logo (reused via <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="discord-logo" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286ZM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189Zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+    </symbol>
+  </svg>
+
+    <!-- NAV -->
+  <nav class="nav" id="mainNav">
+    <a class="brand" href="index.html">
+      <img src="empire-logo.png" alt="Empire RP Logo">
+      <span>Empire RP</span>
+    </a>
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="rules.html">Rules</a>
       <a href="faction-rules.html">Faction Rules</a>
       <a href="showcase.html" class="active">Showcase</a>
+      <a href="events.html">Events</a>
       <a href="index.html#features">Why Empire</a>
-      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
-      <a href="#" class="btn" style="padding:9px 20px;font-size:13px;">▸ Play Now</a>
+      <a href="index.html#faq">FAQ</a>
+      <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Discord</a>
+      <a href="fivem://connect/zjva9ey" class="btn-nav">&#9658; Play Now</a>
     </div>
-    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <div class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
   </nav>
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
@@ -191,7 +148,10 @@
     <a href="faction-rules.html">Faction Rules</a>
     <a href="showcase.html">Showcase</a>
     <a href="events.html">Events</a>
-    <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+    <a href="index.html#features">Why Empire</a>
+    <a href="index.html#faq">FAQ</a>
+    <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener" style="justify-content:center;border-bottom:none"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
+    <a href="fivem://connect/zjva9ey" class="btn" style="text-align:center">&#9658; Play Now</a>
   </div>
 
   <!-- HERO -->
@@ -205,7 +165,7 @@
       <p class="hero-quote">"Where every character matters and every story lives on."</p>
       <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
         <a href="#gallery" class="btn">▸ View Gallery</a>
-        <a href="https://discord.gg/empirerp" target="_blank" rel="noopener" class="btn ghost">Join the City</a>
+        <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join the City</a>
       </div>
     </div>
     <div class="scroll-hint"><span>Scroll</span><div class="scroll-arrow"></div></div>
@@ -243,7 +203,7 @@
     <!-- ROW 1: Pool party (big left) + EMS (top right) + Hospital (bottom right) -->
     <div class="gallery-row row-1">
 
-      <div class="gcard" onclick="openLB('gallery-pool.jpg','Pool Party — Empire Nights')">
+      <div class="gcard" onclick="openLB('gallery-pool.jpg','Pool Party, Empire Nights')">
         <img src="gallery-pool.jpg" alt="Empire RP pool party" loading="lazy">
         <div class="go">
           <div class="go-title">Pool Party</div>
@@ -251,7 +211,7 @@
         </div>
       </div>
 
-      <div class="gcard" onclick="openLB('gallery-ems.jpg','EMS Division — Always Ready')">
+      <div class="gcard" onclick="openLB('gallery-ems.jpg','EMS Division, Always Ready')">
         <img src="gallery-ems.jpg" alt="Empire RP EMS" loading="lazy">
         <div class="go">
           <div class="go-title">EMS Division</div>
@@ -259,7 +219,7 @@
         </div>
       </div>
 
-      <div class="gcard" onclick="openLB('gallery-1.jpg','The Crew — Empire Streets')">
+      <div class="gcard" onclick="openLB('gallery-1.jpg','The Crew, Empire Streets')">
         <img src="gallery-1.jpg" alt="Empire RP crew" loading="lazy">
         <div class="go">
           <div class="go-title">The Crew</div>
@@ -272,7 +232,7 @@
     <!-- ROW 2: Watermelon Wednesday (left) + Sunset couple (right) -->
     <div class="gallery-row row-2">
 
-      <div class="gcard" onclick="openLB('gallery-watermelon.jpg','Watermelon Wednesday — Empire Events')">
+      <div class="gcard" onclick="openLB('gallery-watermelon.jpg','Watermelon Wednesday, Empire Events')">
         <img src="gallery-watermelon.jpg" alt="Watermelon Wednesday event" loading="lazy">
         <div class="go">
           <div class="go-title">Watermelon Wednesday</div>
@@ -280,7 +240,7 @@
         </div>
       </div>
 
-      <div class="gcard" onclick="openLB('gallery-4.jpg','Golden Hour — Cayo Beach')">
+      <div class="gcard" onclick="openLB('gallery-4.jpg','Golden Hour, Cayo Beach')">
         <img src="gallery-4.jpg" alt="Empire RP sunset" loading="lazy">
         <div class="go">
           <div class="go-title">Golden Hour</div>
@@ -295,7 +255,7 @@
   <!-- QUOTE -->
   <div class="quote-break">
     <blockquote>"Where every character matters and <em>every story lives on.</em>"</blockquote>
-    <cite>— Empire Roleplay</cite>
+    <cite>Empire Roleplay</cite>
   </div>
 
   <!-- STATS -->
@@ -311,29 +271,36 @@
     <h2>Your Story<br>Starts Here</h2>
     <p>Join Empire RP and write your chapter in the city.</p>
     <div class="cta-btns">
-      <a class="btn" href="#">▸ Play Now</a>
-      <a class="btn ghost" href="https://discord.gg/empirerp" target="_blank" rel="noopener">Join Discord</a>
+      <a class="btn" href="fivem://connect/zjva9ey">▸ Play Now</a>
+      <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
       <a class="btn ghost" href="rules.html">Read the Rules</a>
     </div>
   </div>
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-brand">
-      <img src="empire-logo.png" alt="Empire RP">
-      <p>A premium GTA V roleplay community. Built by players, for players.</p>
+    <div class="footer-inner">
+      <div class="footer-brand reveal">
+        <img src="empire-logo.png" alt="Empire RP">
+        <p>A premium GTA V roleplay community. Built by players, for players.</p>
+        <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join our Discord</a>
+      </div>
+      <div class="footer-links reveal">
+        <a href="index.html#home">Home</a>
+        <a href="rules.html">Rules</a>
+        <a href="faction-rules.html">Faction Rules</a>
+        <a href="showcase.html">Showcase</a>
+        <a href="events.html">Events</a>
+        <a href="index.html#features">Why Empire</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+        <a href="https://empireroleplay.tebex.io" target="_blank" rel="noopener">Store</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="rules.html">Rules</a>
-      <a href="faction-rules.html">Faction Rules</a>
-      <a href="showcase.html">Showcase</a>
-      <a href="events.html">Events</a>
-      <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
-      <a href="#">Store</a>
-      <a href="login.html">Staff Login</a>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+      <p class="footer-copy">Built for the city by the Empire team.</p>
     </div>
-    <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
   </footer>
 
   <!-- LIGHTBOX -->
@@ -345,10 +312,9 @@
     </div>
   </div>
 
+  <script src="site.js"></script>
   <script>
-    document.getElementById('hamburger').addEventListener('click', () => {
-      document.getElementById('mobileMenu').classList.toggle('open');
-    });
+    // Lightbox (openLB / closeLB are called from inline onclick handlers, keep global)
     function openLB(src, caption) {
       document.getElementById('lbImg').src = src;
       document.getElementById('lbCaption').textContent = caption;
@@ -361,7 +327,7 @@
         document.body.style.overflow = '';
       }
     }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(null, true); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLB(null, true); });
   </script>
 </body>
 </html>
