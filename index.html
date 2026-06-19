@@ -76,29 +76,7 @@
       max-width: 680px; margin: 0 auto 36px;
       color: var(--muted); font-size: clamp(16px,2vw,20px); line-height: 1.65;
     }
-    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
-    .hero-stats {
-      display: grid; grid-template-columns: repeat(4,1fr); gap: 12px;
-      max-width: 900px; margin: 0 auto;
-    }
-    .hstat {
-      background: rgba(255,255,255,.04);
-      border: 1px solid var(--line);
-      border-radius: 18px; padding: 22px 16px;
-      transition: border-color .3s, transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s, background .3s;
-    }
-    .hstat:hover {
-      border-color: rgba(246,177,58,.5);
-      transform: translateY(-5px);
-      box-shadow: 0 14px 34px rgba(0,0,0,.45);
-      background: rgba(255,255,255,.06);
-    }
-    .hstat b {
-      display: block; font-family: 'Barlow Condensed', sans-serif;
-      font-size: 36px; font-weight: 900; color: var(--gold);
-      line-height: 1; margin-bottom: 4px;
-    }
-    .hstat span { color: var(--muted); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
 
     /* ── SECTIONS ── */
     section { padding: 100px 6%; }
@@ -112,113 +90,202 @@
     .section-head { text-align: center; max-width: 760px; margin: 0 auto 56px; }
     .section-head p { color: var(--muted); font-size: 18px; line-height: 1.65; }
 
-    /* ── FEATURES GRID ── */
-    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 1200px; margin: 0 auto; }
-    .feat-card {
-      background: linear-gradient(155deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.018) 100%);
+    /* ── EXPLORE GRID ── */
+    .explore-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      grid-template-rows: 260px 220px;
+      gap: 14px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .explore-tile {
+      position: relative; display: flex; flex-direction: column; justify-content: flex-end;
+      border-radius: var(--r); overflow: hidden;
       border: 1px solid var(--line);
-      border-radius: var(--r);
-      padding: 30px 26px 28px;
-      box-shadow: 0 8px 36px rgba(0,0,0,.3);
+      background-color: var(--panel2);
+      background-size: cover; background-position: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,.3);
       transition: transform .3s cubic-bezier(.22,1,.36,1), border-color .25s, box-shadow .3s;
-      position: relative; overflow: hidden;
     }
-    .feat-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      opacity: 0; transition: opacity .3s;
+    .explore-tile:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,255,255,.7);
+      box-shadow: 0 0 6px rgba(255,255,255,.45), 0 0 22px rgba(246,177,58,.4), 0 18px 44px rgba(0,0,0,.45);
     }
-    .feat-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(255,255,255,.75);
-      box-shadow: 0 0 6px rgba(255,255,255,.5), 0 0 22px rgba(246,177,58,.5), 0 0 50px rgba(255,114,0,.25), 0 20px 50px rgba(0,0,0,.4);
+    .explore-tile.big { grid-column: 1; grid-row: 1 / 3; }
+    .explore-tile.accent {
+      grid-column: 2 / 4; grid-row: 2;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(246,177,58,.14), rgba(255,114,0,.06));
     }
-    .feat-card:hover::before { opacity: 1; }
-    .feat-icon-wrap {
-      width: 52px; height: 52px; border-radius: 14px;
-      background: rgba(246,177,58,.1); border: 1px solid rgba(246,177,58,.2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 26px; margin-bottom: 18px;
-      transition: background .2s, border-color .2s;
+    .explore-tile.accent::before {
+      content: '📸'; position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+      font-size: 96px; opacity: .08; pointer-events: none;
     }
-    .feat-card:hover .feat-icon-wrap { background: rgba(246,177,58,.18); border-color: rgba(246,177,58,.45); }
-    .feat-card h3 { color: var(--text); font-size: 18px; font-weight: 900; margin-bottom: 10px; letter-spacing: -.01em; }
-    .feat-card h3 span { color: var(--gold); }
-    .feat-card p { color: var(--muted); line-height: 1.72; font-size: 14px; }
-    .feat-tag {
+    .explore-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(6,5,4,0) 30%, rgba(6,5,4,.92) 100%);
+      transition: background .3s;
+    }
+    .explore-tile:hover .explore-overlay { background: linear-gradient(180deg, rgba(6,5,4,.08) 15%, rgba(6,5,4,.95) 100%); }
+    .explore-body { position: relative; z-index: 1; padding: 26px; width: 100%; }
+    .explore-tag {
       display: inline-flex; align-items: center; gap: 5px;
-      background: rgba(246,177,58,.08); border: 1px solid rgba(246,177,58,.2);
-      color: var(--gold); border-radius: 999px; padding: 3px 10px;
+      background: rgba(6,5,4,.5); border: 1px solid rgba(246,177,58,.35);
+      color: var(--gold); border-radius: 999px; padding: 4px 12px;
       font-size: 10px; font-weight: 900; letter-spacing: .1em;
-      text-transform: uppercase; margin-bottom: 12px;
+      text-transform: uppercase; margin-bottom: 12px; width: fit-content;
+      backdrop-filter: blur(6px);
     }
+    .explore-tile h3 {
+      color: #fff; font-size: 21px; font-weight: 900; margin-bottom: 8px;
+      letter-spacing: -.01em; text-shadow: 0 2px 14px rgba(0,0,0,.5);
+    }
+    .explore-tile.big h3 { font-size: 28px; }
+    .explore-tile p {
+      color: rgba(242,237,228,.85); line-height: 1.6; font-size: 14px;
+      max-width: 380px; margin-bottom: 14px; text-shadow: 0 1px 10px rgba(0,0,0,.45);
+    }
+    .explore-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--gold); font-weight: 900; font-size: 13px; letter-spacing: .02em;
+    }
+    .explore-link i { font-style: normal; display: inline-block; transition: transform .25s; }
+    .explore-tile:hover .explore-link i { transform: translateX(4px); }
 
     .divider { border: none; border-top: 1px solid var(--line); max-width: 1200px; margin: 0 auto; }
 
-    /* ── FAQ ── */
-    .faq-list { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
-    .faq-item {
-      background: rgba(255,255,255,.032);
-      border: 1px solid var(--line);
-      border-radius: 18px; overflow: hidden;
-      transition: border-color .25s, box-shadow .25s;
+    /* ── GET STARTED (path + quick links) ── */
+    .path-track {
+      max-width: 1120px; margin: 0 auto 60px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;
+      position: relative;
     }
-    .faq-item:hover { border-color: rgba(246,177,58,.3); }
-    .faq-item.open {
-      border-color: rgba(255,255,255,.75);
-      box-shadow: 0 0 6px rgba(255,255,255,.5), 0 0 20px rgba(246,177,58,.4), 0 0 50px rgba(255,114,0,.2);
+    .path-track::before {
+      content: ''; position: absolute; top: 23px; left: 12.5%; right: 12.5%;
+      height: 1px; background: var(--line); z-index: 0;
     }
-    .faq-q {
-      display: flex; justify-content: space-between; align-items: center; gap: 16px;
-      padding: 22px 26px; cursor: pointer;
-      font-weight: 800; font-size: 16px;
-      transition: color .2s;
+    .path-step { position: relative; z-index: 1; }
+    .path-num {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: var(--panel2); border: 1px solid var(--cat); color: var(--cat);
+      font-weight: 900; font-size: 14px; letter-spacing: .02em;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px; box-shadow: 0 0 0 6px var(--bg);
     }
-    .faq-item.open .faq-q { color: var(--gold); }
-    .faq-q-left { display: flex; align-items: center; gap: 14px; }
-    .faq-icon { font-size: 18px; flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px; background: rgba(246,177,58,.1); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; transition: background .2s; }
-    .faq-item.open .faq-icon { background: rgba(246,177,58,.2); border-color: rgba(246,177,58,.4); }
-    .faq-q .arrow { color: var(--gold); font-size: 22px; transition: transform .3s; flex-shrink: 0; }
-    .faq-item.open .arrow { transform: rotate(45deg); }
-    .faq-a {
-      max-height: 0; overflow: hidden;
-      transition: max-height .4s cubic-bezier(.22,1,.36,1), padding .3s;
-      padding: 0 26px 0 76px; color: var(--muted); line-height: 1.75; font-size: 15px;
+    .path-step h3 { font-size: 16.5px; font-weight: 900; margin-bottom: 8px; }
+    .path-step p { color: var(--muted); font-size: 13px; line-height: 1.65; }
+
+    .quicklinks { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .quicklink-card {
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(255,255,255,.032); border: 1px solid var(--line);
+      border-radius: 16px; padding: 20px;
+      transition: border-color .25s, background .25s, transform .25s;
     }
-    .faq-item.open .faq-a { max-height: 600px; padding: 0 26px 22px 76px; }
-    .faq-a a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
-    .faq-a a:hover { color: var(--gold2); }
+    .quicklink-card:hover { transform: translateY(-3px); background: rgba(255,255,255,.05); border-color: rgba(246,177,58,.4); }
+    .quicklink-icon {
+      font-size: 20px; width: 44px; height: 44px; flex-shrink: 0; border-radius: 11px;
+      background: var(--gold-dim); display: flex; align-items: center; justify-content: center;
+    }
+    .quicklink-card h4 { font-size: 14.5px; font-weight: 900; margin-bottom: 4px; }
+    .quicklink-card p { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .quicklink-arrow { margin-left: auto; color: var(--gold); font-weight: 900; flex-shrink: 0; transition: transform .25s; }
+    .quicklink-card:hover .quicklink-arrow { transform: translateX(4px); }
 
     /* ── CTA ── */
     .cta-section {
       background: linear-gradient(135deg, rgba(246,177,58,.1), rgba(255,114,0,.05));
       border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-      text-align: center;
       position: relative; overflow: hidden;
     }
     .cta-section::before {
-      content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+      content: ''; position: absolute; top: -80px; left: 15%;
       width: 700px; height: 400px;
-      background: radial-gradient(ellipse, rgba(255,114,0,.18) 0%, transparent 70%);
+      background: radial-gradient(ellipse, rgba(255,114,0,.16) 0%, transparent 70%);
       pointer-events: none;
     }
-    .cta-section .section-head { position: relative; z-index: 1; margin-bottom: 32px; }
-    .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+    .cta-grid {
+      position: relative; z-index: 1;
+      max-width: 1180px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: center;
+    }
+    .cta-copy .section-label { margin-bottom: 14px; }
+    .cta-copy h2 { text-align: left; margin-bottom: 18px; }
+    .cta-copy p { color: var(--muted); font-size: 16px; line-height: 1.75; max-width: 460px; margin-bottom: 30px; }
+    .cta-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .cta-panel {
+      position: relative;
+      background: rgba(8,6,4,.55);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 30px 28px;
+      backdrop-filter: blur(8px);
+      transition: border-color .35s, box-shadow .35s;
+    }
+    .cta-panel:hover {
+      border-color: rgba(246,177,58,.55);
+      box-shadow: 0 0 0 1px rgba(246,177,58,.15), 0 0 50px rgba(246,177,58,.3), 0 24px 60px rgba(0,0,0,.45);
+    }
+    .cta-corner {
+      position: absolute; width: 16px; height: 16px;
+      border: 2px solid var(--gold); opacity: .55;
+      transition: opacity .35s, width .35s, height .35s;
+    }
+    .cta-corner.tl { top: -1px; left: -1px; border-right: none; border-bottom: none; border-radius: 8px 0 0 0; }
+    .cta-corner.tr { top: -1px; right: -1px; border-left: none; border-bottom: none; border-radius: 0 8px 0 0; }
+    .cta-corner.bl { bottom: -1px; left: -1px; border-right: none; border-top: none; border-radius: 0 0 0 8px; }
+    .cta-corner.br { bottom: -1px; right: -1px; border-left: none; border-top: none; border-radius: 0 0 8px 0; }
+    .cta-panel:hover .cta-corner { opacity: 1; width: 24px; height: 24px; }
+    .cta-panel-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 26px; flex-wrap: wrap; }
+    .cta-panel-top .server-status { padding: 5px 12px; font-size: 11px; gap: 6px; }
+    .cta-panel-tag { font-size: 10px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .cta-panel-readout { display: flex; align-items: baseline; gap: 9px; margin-bottom: 16px; }
+    .cta-panel-num {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 54px; font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .cta-panel-of { color: var(--muted); font-weight: 700; font-size: 13px; }
+    .cta-panel-bar { height: 6px; border-radius: 999px; background: rgba(255,255,255,.07); overflow: hidden; margin-bottom: 18px; }
+    .cta-panel-fill {
+      height: 100%; width: 0%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      box-shadow: 0 0 14px rgba(246,177,58,.6);
+      transition: width 1s cubic-bezier(.22,1,.36,1);
+    }
+    .cta-panel-foot { color: var(--muted); font-size: 12px; letter-spacing: .03em; }
 
     /* ── HERO ENTRANCES ── */
     .hero-content > .live-badge   { animation: heroRise .7s .15s both cubic-bezier(.22,1,.36,1); }
     .hero-content > h1            { animation: heroRise .8s .28s both cubic-bezier(.22,1,.36,1); }
     .hero-content > .hero-sub     { animation: heroRise .8s .42s both cubic-bezier(.22,1,.36,1); }
     .hero-content > .hero-actions { animation: heroRise .8s .56s both cubic-bezier(.22,1,.36,1); }
-    .hero-content > .hero-stats   { animation: heroRise .8s .70s both cubic-bezier(.22,1,.36,1); }
 
     /* ── PAGE RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .features-grid { grid-template-columns: 1fr 1fr; }
-      .hero-stats { grid-template-columns: repeat(2,1fr); }
+    @media (max-width: 900px) and (min-width: 601px) {
+      .explore-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 220px 180px 180px; }
+      .explore-tile.big { grid-column: 1 / 3; grid-row: 1; }
+      .explore-tile.accent { grid-column: 1 / 3; grid-row: 3; }
+      .explore-grid > a:nth-of-type(2) { grid-column: 1; grid-row: 2; }
+      .explore-grid > a:nth-of-type(3) { grid-column: 2; grid-row: 2; }
+      .cta-grid { grid-template-columns: 1fr; gap: 36px; }
+      .cta-copy p { max-width: 100%; }
+      .path-track { grid-template-columns: 1fr 1fr; row-gap: 32px; }
+      .path-track::before { display: none; }
+      .quicklinks { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
-      .features-grid, .hero-stats { grid-template-columns: 1fr; }
+      .explore-grid { grid-template-columns: 1fr; grid-template-rows: none; }
+      .explore-tile, .explore-tile.big, .explore-tile.accent { grid-column: 1; grid-row: auto; height: 240px; }
+      .explore-tile.accent::before { font-size: 70px; }
+      .path-track { grid-template-columns: 1fr; gap: 26px; }
+      .path-track::before { display: none; }
+      .quicklinks { grid-template-columns: 1fr; }
+      .cta-grid { grid-template-columns: 1fr; gap: 30px; }
+      .cta-copy p { max-width: 100%; }
+      .cta-actions { gap: 10px; }
       section { padding: 70px 5%; }
       .hero { padding: 90px 5% 60px; }
     }
@@ -237,16 +304,19 @@
   <nav class="nav" id="mainNav">
     <a class="brand" href="index.html">
       <img src="empire-logo.png" alt="Empire RP Logo">
-      <span>Empire RP</span>
     </a>
     <div class="nav-links">
       <a href="index.html" class="active">Home</a>
       <a href="rules.html">Rules</a>
       <a href="faction-rules.html">Faction Rules</a>
+      <a href="jobboard.html">Jobs</a>
       <a href="showcase.html">Showcase</a>
       <a href="events.html">Events</a>
-      <a href="index.html#features">Why Empire</a>
-      <a href="index.html#faq">FAQ</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#start">Get Started</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-actions">
       <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Discord</a>
       <a href="fivem://connect/zjva9ey" class="btn-nav">&#9658; Play Now</a>
     </div>
@@ -255,13 +325,14 @@
     </div>
   </nav>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="index.html">Home</a>
+    <a href="index.html" class="active">Home</a>
     <a href="rules.html">Rules</a>
     <a href="faction-rules.html">Faction Rules</a>
+      <a href="jobboard.html">Jobs</a>
     <a href="showcase.html">Showcase</a>
     <a href="events.html">Events</a>
-    <a href="index.html#features">Why Empire</a>
-    <a href="index.html#faq">FAQ</a>
+    <a href="index.html#features">Features</a>
+    <a href="index.html#start">Get Started</a>
     <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener" style="justify-content:center;border-bottom:none"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
     <a href="fivem://connect/zjva9ey" class="btn" style="text-align:center">&#9658; Play Now</a>
   </div>
@@ -281,177 +352,152 @@
         <a class="btn ghost" href="rules.html">Read Rules</a>
         <a class="btn ghost" href="faction-rules.html">Faction Rules</a>
       </div>
-      <div class="hero-stats">
-        <div class="hstat"><b>24/7</b><span>City Online</span></div>
-        <div class="hstat"><b>PD</b><span>Active Police</span></div>
-        <div class="hstat"><b>EMS</b><span>Active Medical</span></div>
-        <div class="hstat"><b>RP</b><span>Story Driven</span></div>
-      </div>
     </div>
   </header>
 
-  <!-- FEATURES -->
+  <!-- EXPLORE -->
   <section id="features">
     <div class="section-head reveal">
-      <div class="section-label">Why Empire Roleplay</div>
-      <h2>Your lane. Your story.<br>Your <em style="font-style:italic;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">empire.</em></h2>
-      <p>Whether you're running blocks, building a business, or protecting the city, Empire gives every character a purpose and every story a place to live.</p>
+      <div class="section-label">See It For Yourself</div>
+      <h2>One city.<br>Four <em style="font-style:italic;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ways in.</em></h2>
+      <p>Don't just take our word for it. Read the rules, meet the factions, watch the city in action, and see what's coming next.</p>
     </div>
-    <div class="features-grid">
+    <div class="explore-grid">
 
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">👑</div>
-        <div class="feat-tag">🔥 Street Life</div>
-        <h3>Faction & <span>Gang RP</span></h3>
-        <p>Build your crew from the ground up. Empire's faction system supports drug spots, turf ownership, beef validation, alliances, and tax collections. The streets have structure, and there's real power to be earned.</p>
-      </div>
+      <a href="faction-rules.html" class="explore-tile big reveal" style="background-image:url('gallery-1.jpg')">
+        <div class="explore-overlay"></div>
+        <div class="explore-body">
+          <div class="explore-tag">🔥 Factions & Gangs</div>
+          <h3>Faction Rules</h3>
+          <p>Turf, tax collections, beef validation, and how power actually works on the streets of Empire.</p>
+          <span class="explore-link">Read the rules <i>&rarr;</i></span>
+        </div>
+      </a>
 
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🚔</div>
-        <div class="feat-tag">⚖️ Law & Order</div>
-        <h3>PD & <span>EMS</span></h3>
-        <p>Whitelisted departments with depth. Chase suspects through the city, run investigations, work medical scenes, and develop characters who actually matter to the city's story, not just NPCs with a badge.</p>
-      </div>
+      <a href="rules.html" class="explore-tile reveal" style="background-image:url('gallery-ems.jpg')">
+        <div class="explore-overlay"></div>
+        <div class="explore-body">
+          <div class="explore-tag">⚖️ The Fine Print</div>
+          <h3>Server Rules</h3>
+          <p>Whitelisted PD &amp; EMS, voice RP requirements, and what's expected of every player.</p>
+          <span class="explore-link">Know before you go <i>&rarr;</i></span>
+        </div>
+      </a>
 
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🏪</div>
-        <div class="feat-tag">💼 Civilian Life</div>
-        <h3>Player-Owned <span>Businesses</span></h3>
-        <p>Open a shop, run a mechanic bay, operate a nightclub. Empire's economy is player-driven, with real employees, invoicing, Business Oversight, and consequences if you go inactive. Build something worth protecting.</p>
-      </div>
+      <a href="events.html" class="explore-tile reveal" style="background-image:url('gallery-watermelon.jpg')">
+        <div class="explore-overlay"></div>
+        <div class="explore-body">
+          <div class="explore-tag">🎪 Mark Your Calendar</div>
+          <h3>City Events</h3>
+          <p>Airdrops, turf nights, Watermelon Wednesdays. See what's running this week.</p>
+          <span class="explore-link">View events <i>&rarr;</i></span>
+        </div>
+      </a>
 
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🎭</div>
-        <div class="feat-tag">✨ RP First</div>
-        <h3>Story-Driven <span>Roleplay</span></h3>
-        <p>Empire is an RP server first. Every interaction has weight, beef has backstory, robberies need buildup, and scenes have consequences. We don't reward grind. We reward characters who make the city feel alive.</p>
-      </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🌟</div>
-        <div class="feat-tag">🎪 Events</div>
-        <h3>City <span>Events</span></h3>
-        <p>Airdrops, Watermelon Wednesdays, pool parties, turf nights, and more, Empire runs regular events that bring the whole city together. Some are chaos. Some are culture. All of them are content.</p>
-      </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🛡</div>
-        <div class="feat-tag">💬 Community</div>
-        <h3>Staff That <span>Actually Helps</span></h3>
-        <p>Empire's staff team is active, fair, and focused on protecting your RP experience, not micromanaging it. Clear rules, quick tickets, and a community that calls out bad behavior so good players can thrive.</p>
-      </div>
+      <a href="showcase.html" class="explore-tile accent reveal">
+        <div class="explore-body">
+          <div class="explore-tag">📸 Straight From The City</div>
+          <h3>Showcase</h3>
+          <p>Real screenshots from real players. See what your character could be part of.</p>
+          <span class="explore-link">Browse the gallery <i>&rarr;</i></span>
+        </div>
+      </a>
 
     </div>
   </section>
 
   <hr class="divider">
 
-  <!-- FAQ -->
-  <section id="faq">
+  <!-- GET STARTED -->
+  <section id="start">
     <div class="section-head reveal">
-      <div class="section-label">Got Questions?</div>
-      <h2>Frequently Asked Questions</h2>
-      <p>Everything you need to know before your first day in Empire.</p>
+      <div class="section-label">New Here?</div>
+      <h2>Your Path Into The City</h2>
+      <p>Four steps between you and your first day in Empire.</p>
     </div>
-    <div class="faq-list">
 
-      <div class="faq-item reveal">
-        <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">🎮</div> How do I get into Empire RP?</div>
-          <span class="arrow">+</span>
-        </div>
-        <div class="faq-a">Download FiveM, <a href="https://discord.gg/empirerp" target="_blank">join our Discord</a>, read the rules, then hit the Play Now button to connect. The whole process takes about 10 minutes. Once you're in, fully customize your character before doing anything, default models aren't allowed.</div>
+    <div class="path-track">
+      <div class="path-step reveal" style="--cat:#f6b13a">
+        <div class="path-num">01</div>
+        <h3>Download &amp; Connect</h3>
+        <p>Grab FiveM, <a href="https://discord.gg/empirerp" target="_blank" style="color:var(--gold)">join the Discord</a>, then hit Play Now. Start to finish, you're in the city in about 10 minutes.</p>
       </div>
-
-      <div class="faq-item reveal">
-        <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">🎤</div> Do I need a mic to play?</div>
-          <span class="arrow">+</span>
-        </div>
-        <div class="faq-a">Yes, a working microphone is required. Empire RP is a serious voice-RP server. Text-only roleplay is not how we operate. If you don't have a mic, get one before joining. This is non-negotiable.</div>
+      <div class="path-step reveal" style="--cat:#ff6b4a">
+        <div class="path-num">02</div>
+        <h3>Gear Up</h3>
+        <p>A working mic and clipping software (ShadowPlay, Medal, etc.) are required at all times. No exceptions, no text-only RP, no unrecorded reports.</p>
       </div>
-
-      <div class="faq-item reveal">
-        <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">🎬</div> Do I need to record my gameplay?</div>
-          <span class="arrow">+</span>
-        </div>
-        <div class="faq-a">Yes. You must run clipping software at all times, Nvidia ShadowPlay, Medal.tv, or similar. Clips must be at least 2 minutes long with audio from both sides. No clip means no item returns and no valid reports. If you're not clipping, you're not protected.</div>
+      <div class="path-step reveal" style="--cat:#3ad6ff">
+        <div class="path-num">03</div>
+        <h3>Build Your Character</h3>
+        <p>Skip the default models. Fully customize your look and read the rules before your first scene, it sets the tone for everything after.</p>
       </div>
-
-      <div class="faq-item reveal">
-        <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">👑</div> Can I start my own gang or faction?</div>
-          <span class="arrow">+</span>
-        </div>
-        <div class="faq-a">Yes, Empire RP supports player-created factions. Open a Faction Support ticket in Discord to get started. You'll need to show an active roster, demonstrated RP history in the city, and meet the gang creation requirements. Quality RP and commitment are what get factions approved, not just numbers.</div>
+      <div class="path-step reveal" style="--cat:#ff4d6d">
+        <div class="path-num">04</div>
+        <h3>Pick Your Path</h3>
+        <p>Civilian, business owner, gang, PD or EMS, your story is yours to write. Use the links below to see what each route requires.</p>
       </div>
-
-      <div class="faq-item reveal">
-        <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">⚔️</div> How does gang beef and conflict work?</div>
-          <span class="arrow">+</span>
-        </div>
-        <div class="faq-a">Conflicts between factions must be escalated through Faction Support before going official. This isn't red tape, it keeps wars story-driven and fair for both sides. Random shooting with no RP context will get you punished. Build the narrative, then bring the smoke.</div>
-      </div>
-
-      <div class="faq-item reveal">
-        <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">🚔</div> How do I join PD or EMS?</div>
-          <span class="arrow">+</span>
-        </div>
-        <div class="faq-a">PD and EMS require applications and/or interviews. Check the <a href="https://discord.gg/empirerp" target="_blank">Empire Discord</a> for current openings, requirements, and the application process. You'll need solid RP experience in the city before applying, show us you know how to play first.</div>
-      </div>
-
-      <div class="faq-item reveal">
-        <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">🏪</div> Can I own a business in the city?</div>
-          <span class="arrow">+</span>
-        </div>
-        <div class="faq-a">Yes. Player-owned businesses are a major part of Empire RP's economy and roleplay. Businesses must be actively operated as real businesses, not used as stashes or faction supply chains. Ownership transfers require Business Oversight approval. If you go inactive, staff may revoke the business.</div>
-      </div>
-
-      <div class="faq-item reveal">
-        <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">🚨</div> Someone broke the rules, what do I do?</div>
-          <span class="arrow">+</span>
-        </div>
-        <div class="faq-a">Stay in the scene and finish the roleplay first, don't break character to address it. After the scenario ends, open a support ticket in Discord with your clip. Reports require video and audio evidence from both sides, minimum 2 minutes. Reports must be submitted within 1 hour of the scene. Petty or revenge reports are penalized.</div>
-      </div>
-
-      <div class="faq-item reveal">
-        <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">💀</div> What happens if I F8 or disconnect mid-scene?</div>
-          <span class="arrow">+</span>
-        </div>
-        <div class="faq-a">F8 quitting during active RP is one of the most serious offenses on Empire. First offense: Warning + community service + pocket wipe. Second: 2-day ban + bank wipe. Third: 1-week ban + character deletion. Fourth: Permanent ban. There is no valid reason to leave mid-scene, if your game crashes, you must return and continue.</div>
-      </div>
-
-      <div class="faq-item reveal">
-        <div class="faq-q">
-          <div class="faq-q-left"><div class="faq-icon">💬</div> Still have questions?</div>
-          <span class="arrow">+</span>
-        </div>
-        <div class="faq-a">Join the <a href="https://discord.gg/empirerp" target="_blank">Empire RP Discord</a> and open a support ticket. Our staff and community are active and happy to help new and existing members. The city is waiting, come get your questions answered and get in.</div>
-      </div>
-
     </div>
+
+    <div class="quicklinks">
+      <a href="rules.html" class="quicklink-card reveal">
+        <span class="quicklink-icon">📜</span>
+        <div>
+          <h4>Server Rules</h4>
+          <p>Conduct, reporting, and the F8/disconnect strike system.</p>
+        </div>
+        <span class="quicklink-arrow">&rarr;</span>
+      </a>
+      <a href="faction-rules.html" class="quicklink-card reveal">
+        <span class="quicklink-icon">⚔️</span>
+        <div>
+          <h4>Factions &amp; Gangs</h4>
+          <p>How to start a faction and how conflict gets handled.</p>
+        </div>
+        <span class="quicklink-arrow">&rarr;</span>
+      </a>
+      <a href="https://discord.gg/empirerp" target="_blank" class="quicklink-card reveal">
+        <span class="quicklink-icon">💬</span>
+        <div>
+          <h4>Open A Ticket</h4>
+          <p>PD/EMS applications, business approval, faction support.</p>
+        </div>
+        <span class="quicklink-arrow">&rarr;</span>
+      </a>
+    </div>
+
   </section>
+
 
   <!-- CTA -->
   <section id="discord" class="cta-section">
-    <div class="section-head reveal">
-      <div class="section-label">The streets are waiting</div>
-      <h2>Start Your Empire Story Now</h2>
-      
-    </div>
-    <div class="server-status-wrap reveal">
-      <span class="server-status" id="ctaStatus"><span class="dot"></span> <span id="ctaStatusText">Checking live server status</span></span>
-    </div>
-    <div class="cta-actions reveal">
-      <a class="btn" href="fivem://connect/zjva9ey">▸ Play Now</a>
-      <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
-      <a id="store" class="btn-store" href="https://empireroleplay.tebex.io" target="_blank" rel="noopener"><span class="gem">💎</span> Store</a>
+    <div class="cta-grid">
+
+      <div class="cta-copy reveal">
+        <div class="section-label">The City Never Sleeps</div>
+        <h2>Somebody's already<br>taking your <em style="font-style:italic;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">block.</em></h2>
+        <p>No tutorials, no safe zones, no NPCs holding your hand. Just a city full of players already writing their story, waiting on you to show up.</p>
+        <div class="cta-actions">
+          <a class="btn" href="fivem://connect/zjva9ey">▸ Play Now</a>
+          <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
+          <a id="store" class="btn-store" href="https://empireroleplay.tebex.io" target="_blank" rel="noopener"><span class="gem">💎</span> Store</a>
+        </div>
+      </div>
+
+      <div class="cta-panel reveal">
+        <span class="cta-corner tl"></span><span class="cta-corner tr"></span><span class="cta-corner bl"></span><span class="cta-corner br"></span>
+        <div class="cta-panel-top">
+          <span class="cta-panel-tag">Live Server Feed</span>
+          <span class="server-status" id="ctaStatus"><span class="dot"></span><span id="ctaStatusText">Checking</span></span>
+        </div>
+        <div class="cta-panel-readout">
+          <span class="cta-panel-num" id="ctaPlayerNum">--</span>
+          <span class="cta-panel-of">/ <span id="ctaPlayerMax">400</span> in the city</span>
+        </div>
+        <div class="cta-panel-bar"><div class="cta-panel-fill" id="ctaFill"></div></div>
+        <div class="cta-panel-foot">📍 Empire City &nbsp;•&nbsp; Online 24/7</div>
+      </div>
+
     </div>
   </section>
 
@@ -467,10 +513,11 @@
         <a href="index.html#home">Home</a>
         <a href="rules.html">Rules</a>
         <a href="faction-rules.html">Faction Rules</a>
+      <a href="jobboard.html">Jobs</a>
         <a href="showcase.html">Showcase</a>
         <a href="events.html">Events</a>
-        <a href="index.html#features">Why Empire</a>
-        <a href="index.html#faq">FAQ</a>
+        <a href="index.html#features">Features</a>
+        <a href="index.html#start">Get Started</a>
         <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
         <a href="https://empireroleplay.tebex.io" target="_blank" rel="noopener">Store</a>
       </div>
@@ -482,16 +529,5 @@
   </footer>
 
   <script src="site.js"></script>
-  <script>
-    // FAQ accordion
-    document.querySelectorAll('.faq-q').forEach(function (q) {
-      q.addEventListener('click', function () {
-        var item = q.closest('.faq-item');
-        var isOpen = item.classList.contains('open');
-        document.querySelectorAll('.faq-item.open').forEach(function (i) { i.classList.remove('open'); });
-        if (!isOpen) item.classList.add('open');
-      });
-    });
-  </script>
 </body>
 </html>

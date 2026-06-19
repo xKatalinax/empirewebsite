@@ -87,6 +87,9 @@
   var badge = document.getElementById('liveBadgeText');
   var ctaPill = document.getElementById('ctaStatus');
   var ctaText = document.getElementById('ctaStatusText');
+  var ctaNum = document.getElementById('ctaPlayerNum');
+  var ctaMax = document.getElementById('ctaPlayerMax');
+  var ctaFill = document.getElementById('ctaFill');
   if (badge || ctaPill) {
     var API = 'https://frontend.cfx-services.net/api/servers/single/' + SERVER_CODE;
     var refresh = function () {
@@ -98,14 +101,17 @@
           var max = Number(d.sv_maxclients || d.svMaxclients) || 0;
           if (badge) badge.innerHTML = '<strong>' + players + '</strong> / ' + max + ' players online';
           if (ctaPill) ctaPill.classList.remove('offline');
-          if (ctaText) ctaText.innerHTML = max
-            ? '<b>' + players + '</b> players in the city right now'
-            : 'Server online';
+          if (ctaText) ctaText.textContent = 'Live';
+          if (ctaNum) ctaNum.textContent = players;
+          if (ctaMax && max) ctaMax.textContent = max;
+          if (ctaFill) ctaFill.style.width = (max ? Math.min(100, (players / max) * 100) : 0) + '%';
         })
         .catch(function () {
           if (badge) badge.textContent = 'Empire Roleplay is Live';
           if (ctaPill) ctaPill.classList.add('offline');
-          if (ctaText) ctaText.textContent = 'Live count unavailable, hit Play Now to connect';
+          if (ctaText) ctaText.textContent = 'Offline';
+          if (ctaNum) ctaNum.textContent = '--';
+          if (ctaFill) ctaFill.style.width = '0%';
         });
     };
     refresh();
