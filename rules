@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empire Roleplay, Rules</title>
+  <link rel="icon" type="image/png" href="empire-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+<style>
+    :root { --blue: #38b6ff; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 52vh; display: grid; place-items: center;
+      text-align: center; padding: 130px 6% 70px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+    .hero-bg video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 30%;
+      opacity: .68; pointer-events: none;
+    }
+    .hero-bg video.loaded { animation: vidFadeIn .6s ease forwards; }
+    @keyframes vidFadeIn { from { opacity: 0; } to { opacity: .68; } }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(6,5,4,.3) 0%, rgba(6,5,4,.6) 55%, rgba(6,5,4,.97) 100%),
+        linear-gradient(90deg, rgba(255,114,0,.07) 0%, transparent 60%);
+    }
+    .hero-glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(255,114,0,.22) 0%, transparent 65%); z-index: 1; pointer-events: none; }
+    .hero-scan {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,.06) 3px, rgba(0,0,0,.06) 4px);
+    }
+    @keyframes vignette-pulse { 0%, 100% { opacity: .55; } 50% { opacity: .75; } }
+    .hero-vignette {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(6,5,4,.65) 100%);
+      animation: vignette-pulse 4s ease-in-out infinite;
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-logo { width: min(280px, 65vw); margin-bottom: 20px; filter: drop-shadow(0 16px 32px rgba(255,114,0,.35)); animation: float 3.2s ease-in-out infinite; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .2em; font-size: 12px; margin-bottom: 14px; background: rgba(246,177,58,.08); border: 1px solid var(--line); border-radius: 999px; padding: 6px 16px; }
+    .eyebrow-icon { font-size: 14px; }
+    h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(52px, 8vw, 100px); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; line-height: .92; margin-bottom: 16px; text-shadow: 0 0 60px rgba(255,114,0,.25); }
+    h1 em { font-style: normal; background: linear-gradient(90deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { color: var(--muted); font-size: 17px; line-height: 1.7; max-width: 600px; margin: 0 auto 30px; }
+    .hero-pills { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+    /* ── SEARCH ── */
+    .search-shell { max-width: 900px; margin: -24px auto 44px; padding: 0 6%; position: relative; z-index: 10; }
+    .search-box { background: rgba(8,7,5,.96); border: 1px solid var(--line); border-radius: 18px; padding: 14px 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.6); transition: border-color .2s; }
+    .search-box:focus-within { border-color: var(--gold); box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 3px rgba(246,177,58,.1); }
+    .search-icon { font-size: 20px; color: var(--gold); flex-shrink: 0; }
+    .search-box input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 15px; font-family: inherit; }
+    .search-box input::placeholder { color: var(--muted); }
+    .search-clear { display: none; cursor: pointer; color: var(--muted); font-size: 18px; padding: 0 4px; transition: color .2s; }
+    .search-clear:hover { color: var(--gold); }
+    .result-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding: 0 4px; }
+    .result-count { color: var(--muted); font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+    .section-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .spill { background: rgba(255,255,255,.04); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; cursor: pointer; transition: .2s; text-decoration: none; }
+    .spill:hover { border-color: var(--gold); color: var(--gold); background: rgba(246,177,58,.08); }
+
+    /* ── LAYOUT ── */
+    .page-shell { max-width: 1240px; margin: 0 auto; padding: 0 6% 110px; }
+    .page-wrap { display: grid; grid-template-columns: 240px 1fr; gap: 20px; align-items: start; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position: sticky; top: 88px; }
+    .sidebar-card { background: rgba(255,255,255,.032); border: 1px solid var(--line); border-radius: 20px; padding: 10px; margin-bottom: 14px; overflow: hidden; }
+    .sidebar-label { color: var(--muted); font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .16em; padding: 8px 12px 10px; }
+    .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 12px; color: var(--muted); font-weight: 800; font-size: 12px; transition: .2s; cursor: pointer; }
+    .sidebar-link:hover { background: rgba(246,177,58,.1); color: var(--gold); }
+    .sidebar-link.active { background: rgba(246,177,58,.14); color: var(--gold); }
+    .sidebar-link .s-icon { font-size: 15px; flex-shrink: 0; }
+    .sidebar-link .s-count { margin-left: auto; background: rgba(246,177,58,.12); border-radius: 999px; padding: 2px 8px; font-size: 10px; font-weight: 900; color: var(--gold); }
+    .sidebar-cta { text-align: center; }
+    .sidebar-cta a { display: block; background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #160b00; font-weight: 900; font-size: 13px; border-radius: 14px; padding: 13px 16px; margin-bottom: 8px; transition: .2s; }
+    .sidebar-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,114,0,.35); }
+    .sidebar-cta a.ghost { background: rgba(255,255,255,.05); color: var(--muted); border: 1px solid var(--line); }
+    .sidebar-cta a.ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── SECTIONS ── */
+    .rule-section { background: rgba(255,255,255,.028); border: 1px solid var(--line); border-radius: 22px; margin-bottom: 14px; overflow: hidden; transition: border-color .25s, box-shadow .25s; }
+    .rule-section:hover { border-color: rgba(255,255,255,.9); box-shadow: 0 0 6px rgba(255,255,255,.7), 0 0 18px rgba(246,177,58,.55), 0 0 40px rgba(255,114,0,.3), 0 0 80px rgba(246,177,58,.15), inset 0 0 40px rgba(246,177,58,.06); }
+    .rule-section.highlighted { border-color: rgba(246,177,58,.5); box-shadow: 0 0 0 1px rgba(246,177,58,.1); }
+    .section-header { padding: 18px 26px; background: linear-gradient(90deg, rgba(246,177,58,.1) 0%, transparent 55%); display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--line); cursor: pointer; }
+    .sh-icon { font-size: 22px; flex-shrink: 0; }
+    .sh-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; color: var(--gold); text-transform: uppercase; letter-spacing: .06em; }
+    .sh-desc { color: var(--muted); font-size: 12px; margin-top: 1px; font-weight: 600; }
+    .sh-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .sh-count { background: rgba(246,177,58,.12); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 900; color: var(--gold); letter-spacing: .06em; white-space: nowrap; }
+    .sh-toggle { color: var(--gold); font-size: 18px; transition: transform .3s; flex-shrink: 0; }
+    .rule-section.collapsed .sh-toggle { transform: rotate(-90deg); }
+    .rule-list { padding: 4px 0; }
+    .rule-section.collapsed .rule-list { display: none; }
+
+    /* ── RULES ── */
+    .rule { display: flex; align-items: flex-start; gap: 14px; padding: 15px 26px; border-bottom: 1px solid rgba(255,255,255,.05); line-height: 1.7; color: #ddd5c8; font-size: 14px; transition: background .2s, box-shadow .2s; position: relative; }
+    .rule:last-child { border-bottom: none; }
+    .rule:hover { background: rgba(246,177,58,.09); box-shadow: inset 4px 0 0 rgba(246,177,58,.9), inset 0 0 30px rgba(246,177,58,.06); }
+    .rule.no-match { display: none; }
+    .rule b { color: var(--text); }
+    .rule-text { flex: 1; }
+    .tag { display: inline-flex; align-items: center; flex-shrink: 0; border-radius: 8px; padding: 4px 10px; font-size: 10px; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; min-width: 68px; justify-content: center; margin-top: 2px; }
+    .tag.default { background: rgba(246,177,58,.1); border: 1px solid rgba(246,177,58,.22); color: var(--gold); }
+    .tag.danger  { background: rgba(255,60,60,.1);  border: 1px solid rgba(255,60,60,.25);  color: var(--danger); }
+    .tag.green   { background: rgba(57,255,130,.08); border: 1px solid rgba(57,255,130,.22); color: var(--green); }
+    .tag.blue    { background: rgba(56,182,255,.08); border: 1px solid rgba(56,182,255,.22); color: var(--blue); }
+
+    /* notice blocks */
+    .notice { margin: 10px 26px 6px; border-radius: 12px; padding: 12px 18px; font-size: 13px; line-height: 1.7; }
+    .notice.warn { background: rgba(255,60,60,.07); border: 1px solid rgba(255,60,60,.22); color: #ffb3b3; }
+    .notice.info { background: rgba(56,182,255,.07); border: 1px solid rgba(56,182,255,.22); color: #aadeff; }
+    .notice.gold { background: rgba(246,177,58,.07); border: 1px solid rgba(246,177,58,.22); color: #f6d89a; }
+    .notice b { color: #fff; }
+
+    /* table inside rule-list */
+    .rule-table { width: calc(100% - 52px); margin: 6px 26px 14px; border-collapse: collapse; font-size: 13px; }
+    .rule-table th { background: rgba(246,177,58,.1); color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .06em; padding: 8px 14px; border: 1px solid var(--line); font-size: 11px; }
+    .rule-table td { padding: 9px 14px; border: 1px solid rgba(255,255,255,.07); color: #ddd5c8; vertical-align: top; }
+    .rule-table tr:nth-child(even) td { background: rgba(255,255,255,.018); }
+
+    /* search highlight */
+    mark { background: rgba(246,177,58,.3); color: #fff; border-radius: 3px; padding: 0 2px; }
+    .rule-section.no-match { display: none; }
+    .no-results { display: none; text-align: center; padding: 70px 20px; color: var(--muted); }
+    .no-results.show { display: block; }
+    .no-results h3 { color: var(--text); font-size: 24px; margin-bottom: 10px; }
+
+    /* ── STRIKE METER ── */
+    .strike-visual { display: flex; gap: 8px; padding: 14px 26px 18px; border-top: 1px solid rgba(255,255,255,.05); }
+    .strike-step { flex: 1; border-radius: 10px; padding: 12px 10px; text-align: center; border: 1px solid var(--line); background: rgba(255,255,255,.03); }
+    .strike-step .s-num { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+    .strike-step .s-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    .strike-step.s1 { border-color: rgba(246,177,58,.3); } .strike-step.s1 .s-num { color: var(--gold); }
+    .strike-step.s2 { border-color: rgba(255,160,0,.3); } .strike-step.s2 .s-num { color: #ff9f1a; }
+    .strike-step.s3 { border-color: rgba(255,60,60,.35); } .strike-step.s3 .s-num { color: var(--danger); }
+
+    /* ── CTA SECTION ── */
+    .page-cta { text-align: center; padding: 80px 6%; background: linear-gradient(135deg, rgba(246,177,58,.09), rgba(255,114,0,.04)); border-top: 1px solid var(--line); position: relative; overflow: hidden; }
+    .page-cta::before { content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: radial-gradient(ellipse, rgba(255,114,0,.15) 0%, transparent 70%); pointer-events: none; }
+    .page-cta h2 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(34px, 5vw, 62px); font-weight: 900; text-transform: uppercase; margin-bottom: 14px; letter-spacing: -.02em; position: relative; }
+    .page-cta p { color: var(--muted); font-size: 17px; margin-bottom: 30px; position: relative; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+    @media (max-width: 960px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      .sidebar { position: relative; top: 0; }
+      .section-pills { display: none; }
+    }
+    @media (max-width: 600px) {
+      .page-shell { padding: 0 5% 80px; }
+      .hero { padding: 110px 5% 55px; }
+      .strike-visual { flex-direction: column; }
+      .rule-table { width: 100%; margin: 6px 0 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Discord logo (reused via <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="discord-logo" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286ZM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189Zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+    </symbol>
+  </svg>
+
+    <!-- NAV -->
+  <nav class="nav" id="mainNav">
+    <a class="brand" href="/">
+      <img src="empire-logo.png" alt="Empire RP Logo">
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/rules" class="active">Rules</a>
+      <a href="/faction-rules">Faction Rules</a>
+      <a href="/jobboard">Jobs</a>
+      <a href="/showcase">Showcase</a>
+      <a href="/events">Events</a>
+      <a href="/#features">Features</a>
+      <a href="/#start">Get Started</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-actions">
+      <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Discord</a>
+      <a href="fivem://connect/zjva9ey" class="btn-nav">&#9658; Play Now</a>
+    </div>
+    <div class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/">Home</a>
+    <a href="/rules" class="active">Rules</a>
+    <a href="/faction-rules">Faction Rules</a>
+      <a href="/jobboard">Jobs</a>
+    <a href="/showcase">Showcase</a>
+    <a href="/events">Events</a>
+    <a href="/#features">Features</a>
+    <a href="/#start">Get Started</a>
+    <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener" style="justify-content:center;border-bottom:none"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
+    <a href="fivem://connect/zjva9ey" class="btn" style="text-align:center">&#9658; Play Now</a>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-bg">
+      <video
+        id="heroBgVideo"
+        autoplay muted loop playsinline
+        preload="auto"
+        poster="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1800&q=80">
+        <source src="https://cdn.pixabay.com/video/2020/07/30/46269-448587562_large.mp4" type="video/mp4">
+        <source src="https://cdn.pixabay.com/video/2022/10/20/135517-763921684_large.mp4" type="video/mp4">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-city-at-night-11-large.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-scan"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="eyebrow"><span class="eyebrow-icon">📋</span> Official Rulebook</div>
+      <h1>Empire RP <em>Rules</em></h1>
+      <p class="hero-sub">Empire RP is a serious, 18+ GTA V roleplay community. Rules are enforced to protect your experience and everyone else's. Read them, know them, play by them.</p>
+      <div class="hero-pills">
+        <span class="pill"><span class="pill-dot"></span> 27 Sections</span>
+        <span class="pill"><span class="pill-dot"></span> Last Updated June 2026</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEARCH -->
+  <div class="search-shell">
+    <div class="search-box">
+      <span class="search-icon">⌕</span>
+      <input id="ruleSearch" type="search" placeholder="Search rules" autocomplete="off">
+      <span class="search-clear" id="searchClear">✕</span>
+    </div>
+    <div class="result-bar">
+      <span id="ruleCount" class="result-count">Showing all rules</span>
+      <div class="section-pills">
+        <a class="spill" href="#general">General</a>
+        <a class="spill" href="#harassment">Harassment</a>
+        <a class="spill" href="#roleplay">Roleplay</a>
+        <a class="spill" href="#vyl">VYL</a>
+        <a class="spill" href="#rdmvdm">RDM/VDM</a>
+        <a class="spill" href="#drugs">Drugs</a>
+        <a class="spill" href="#greenzones">Greenzone</a>
+        <a class="spill" href="#heist">Heists</a>
+        <a class="spill" href="#platform">Platform</a>
+        <a class="spill" href="#reporting">Reporting</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="page-shell">
+    <div class="page-wrap">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-label">Jump to Section</div>
+          <a class="sidebar-link" href="#golden-rule"><span class="s-icon">👑</span> Golden Rule & Staff</a>
+          <a class="sidebar-link" href="#general"><span class="s-icon">🛡</span> General Conduct</a>
+          <a class="sidebar-link" href="#character"><span class="s-icon">🧍</span> Character Creation</a>
+          <a class="sidebar-link" href="#harassment"><span class="s-icon">🚫</span> Harassment & Respect</a>
+          <a class="sidebar-link" href="#rmt"><span class="s-icon">💵</span> Real Money Trading (RMT)</a>
+          <a class="sidebar-link" href="#roleplay"><span class="s-icon">🎭</span> Roleplay First & Fail RP</a>
+          <a class="sidebar-link" href="#ooc"><span class="s-icon">🗨️</span> Out-of-Character (OOC) Conduct</a>
+          <a class="sidebar-link" href="#vyl"><span class="s-icon">😰</span> Value Your Life (VYL)</a>
+          <a class="sidebar-link" href="#nlr"><span class="s-icon">🔁</span> New Life Rule (NLR)</a>
+          <a class="sidebar-link" href="#powergaming"><span class="s-icon">💪</span> Powergaming</a>
+          <a class="sidebar-link" href="#metagaming"><span class="s-icon">📡</span> Metagaming & Streaming Delay</a>
+          <a class="sidebar-link" href="#rdmvdm"><span class="s-icon">🔫</span> RDM / VDM / Combat Logging</a>
+          <a class="sidebar-link" href="#cheating"><span class="s-icon">⚠️</span> Cheating & Exploiting</a>
+          <a class="sidebar-link" href="#killorrob"><span class="s-icon">💰</span> Kill or Rob & Body Dumping</a>
+          <a class="sidebar-link" href="#gangs"><span class="s-icon">👑</span> Super Civing & Gang/Faction Rules</a>
+          <a class="sidebar-link" href="#drugs"><span class="s-icon">💊</span> Drug Rules & Taxing</a>
+          <a class="sidebar-link" href="#targeting"><span class="s-icon">🎯</span> Targeting & New Player Protection</a>
+          <a class="sidebar-link" href="#impersonation"><span class="s-icon">🚓</span> Cop Baiting, Impersonation & Whitelisted Jobs</a>
+          <a class="sidebar-link" href="#greenzones"><span class="s-icon">🟢</span> Green Zones</a>
+          <a class="sidebar-link" href="#afk"><span class="s-icon">💤</span> AFK & Safe Zone / RP Avoidance</a>
+          <a class="sidebar-link" href="#yellowzones"><span class="s-icon">🏪</span> Yellow Zones (Businesses)</a>
+          <a class="sidebar-link" href="#interactions"><span class="s-icon">⏳</span> Interaction Guidelines & Hot Spots</a>
+          <a class="sidebar-link" href="#heist"><span class="s-icon">🔒</span> Hostage & Heist Rules</a>
+          <a class="sidebar-link" href="#vehicles"><span class="s-icon">🚗</span> Vehicles, Props & Tsunami Rule</a>
+          <a class="sidebar-link" href="#platform"><span class="s-icon">⚙️</span> Accounts & Platform Policy</a>
+          <a class="sidebar-link" href="#discord"><span class="s-icon">💬</span> Discord, Graphics & Scamming</a>
+          <a class="sidebar-link" href="#reporting"><span class="s-icon">📋</span> Reporting & Tickets</a>
+        </div>
+        <div class="sidebar-card sidebar-cta">
+          <div class="sidebar-label">Quick Actions</div>
+          <a href="fivem://connect/zjva9ey">▸ Play Now</a>
+          <a href="/faction-rules" class="ghost">👑 Faction Rules</a>
+          <a href="https://discord.gg/empirerp" target="_blank" rel="noopener" class="ghost">💬 Discord</a>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main id="rulesList">
+        <div id="noResults" class="no-results">
+          <h3>No rules found</h3>
+          <p>Try a different keyword or <a href="#" id="clearSearch" style="color:var(--gold)">clear the search</a>.</p>
+        </div>
+
+        <!-- NOTICE -->
+        <div class="notice gold" style="margin:0 0 18px;border-radius:18px;">
+          <b>📋 EVERY PLAYER, READ THIS FIRST.</b> Reading and understanding these rules is your responsibility before you set foot in the city.<br><br>
+          <b>⚠️ IGNORANCE OF THE RULES IS NOT AN EXCUSE.</b> By joining the server you confirm you've read, understood, and agreed to abide by every rule below. Anything not explicitly covered falls under the Golden Rule — staff have final authority on all matters, in-game and out.
+        </div>
+
+        <div id="golden-rule" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">👑</span>
+            <div>
+              <div class="sh-title">Golden Rule &amp; Staff</div>
+              <div class="sh-desc">Staff have final authority over anything these rules don't explicitly cover</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="notice gold" style="margin:14px 26px 6px;">👑 Any situation not explicitly covered by the written rules falls under the Golden Rule — staff have final authority on all matters, in-game and out.</div>
+            <div class="rule"><span class="tag default">Golden Rule</span><span class="rule-text">These rules exist to protect the quality and integrity of roleplay, not to create unnecessary restrictions. Staff may revise, add to, or reinterpret any rule at any time, without prior notice, when doing so serves that goal.</span></div>
+            <div class="rule"><span class="tag default">Know the Rules</span><span class="rule-text">Reading and understanding the rules is your responsibility. "I didn't know" is not a valid excuse — by joining the city, you confirm you've read, understood, and agreed to abide by all server rules.</span></div>
+            <div class="rule"><span class="tag default">Our Staff</span><span class="rule-text">Staff are here to help, guide, and ensure rules are followed. If a rule has no specified punishment, staff may issue a fair consequence based on the situation — you may always submit an appeal if you believe a punishment was unfair.</span></div>
+            <div class="rule"><span class="tag danger">Bans</span><span class="rule-text">Staff reserve the right to ban any player at any time if they are found to be disruptive, harming RP quality, or suspected of having poor intentions toward the server or its members. If you get banned, open a ban appeal ticket in the Empire Discord — staff are happy to look into it and help where they can.</span></div>
+          </div>
+        </div>
+
+        <div id="general" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🛡</span>
+            <div>
+              <div class="sh-title">General Conduct</div>
+              <div class="sh-desc">Core requirements every player must follow at all times</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Language</span><span class="rule-text"><b>English is the primary language of Empire Roleplay.</b> You must be able to speak and understand English while playing on this server.</span></div>
+            <div class="rule"><span class="tag default">18+</span><span class="rule-text">All players must be 18 years of age or older. Failure to meet this requirement results in removal from the server. Exceptions are granted only in extremely rare cases, with approval from the management team.</span></div>
+            <div class="rule"><span class="tag default">Microphone</span><span class="rule-text">A working microphone is required for all players while in the city.</span></div>
+            <div class="rule"><span class="tag default">Clipping &amp; Evidence</span><span class="rule-text">You must run clipping software (Medal, Nvidia Shadowplay, Steelseries, etc.) at all times. Reports must include the other player's ID — hold "Home" on a 100% keyboard — unless it's clear RDM; if you're getting shot at from across the map and don't have a chance to grab an ID, just make sure you're clipping and send it as soon as it happens, before you die again. Clips must be at least 2 minutes long and include video/audio evidence of the full interaction leading up to the violation — the one exception is an F8/combat log report, which doesn't need to meet the 2-minute minimum since the disconnect itself is the violation. It's your responsibility to keep clips — failure to provide one results in denial of item recovery and in-game reports.</span></div>
+            <div class="rule"><span class="tag default">Staff Respect</span><span class="rule-text">Constructive criticism and feedback are always welcome. Disrespectful, hostile, or toxic behavior toward staff will not be tolerated — if you disagree with a decision, raise it respectfully through a staff complaint ticket rather than personal attacks.</span></div>
+          </div>
+        </div>
+
+        <div id="character" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🧍</span>
+            <div>
+              <div class="sh-title">Character Creation</div>
+              <div class="sh-desc">Naming and appearance standards for your character</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Naming</span><span class="rule-text">All character names must be original and realistic. Names containing slang, offensive language, symbols, numbers, special characters, or otherwise unrealistic content are not permitted. Staff reserve the right to require a name change if a character's name is deemed inappropriate or immersion-breaking.</span></div>
+            <div class="rule"><span class="tag default">Appearance &amp; Identity</span><span class="rule-text">All players must fully customize their character after joining — running around with a default appearance is not permitted. Use common sense: names, appearances, and presentation should remain appropriate and believable. Animal outfits, mascot outfits, and costumes designed to make a character appear non-human are not allowed; characters must maintain a realistic human appearance.</span></div>
+          </div>
+        </div>
+
+        <div id="harassment" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🚫</span>
+            <div>
+              <div class="sh-title">Harassment &amp; Respect</div>
+              <div class="sh-desc">Zero tolerance for harassment, doxxing, and discrimination</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">Harassment</span><span class="rule-text">Harassment of any kind is strictly prohibited — sexual harassment, targeted bullying, intimidation, threats, stalking, repeated unwanted contact, or any behavior intended to make another player uncomfortable on an OOC level. Repeated aggressive pressure, personal attacks, or a hostile environment may result in disciplinary action up to a permanent ban.</span></div>
+            <div class="rule"><span class="tag danger">Doxxing</span><span class="rule-text">Sharing, threatening to share, or seeking out another player's real-life personal information — name, address, phone number, workplace, social media — is strictly prohibited, both in-game and in the Empire Discord. Doxxing is treated as a severe offense and may result in an immediate, permanent ban.</span></div>
+            <div class="rule"><span class="tag danger">Gender-Based Harassment</span><span class="rule-text">Harassment, discrimination, disrespect, or targeted attacks based on gender will not be tolerated, including sexist remarks, unwanted sexual comments, or degrading language. These reports are reviewed by the appropriate oversight team and may result in severe penalties, including permanent removal.</span></div>
+          </div>
+        </div>
+
+        <div id="rmt" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">💵</span>
+            <div>
+              <div class="sh-title">Real Money Trading (RMT)</div>
+              <div class="sh-desc">No buying, selling, or trading in-game value for real money</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">RMT</span><span class="rule-text">Empire Roleplay's economy exists entirely in-game. Buying, selling, or trading in-game currency, items, vehicles, properties, whitelist slots, or services for real-world money or its equivalent (CashApp, PayPal, gift cards, gifted subs, cryptocurrency, etc.) is strictly prohibited — this applies to all transactions between players, regardless of whether both parties consent.</span></div>
+            <div class="rule"><span class="tag default">Account Sales</span><span class="rule-text">Selling or transferring an Empire account, in whole or in part, for real money is treated as RMT.</span></div>
+            <div class="rule"><span class="tag danger">Enforcement</span><span class="rule-text">Reported RMT will be investigated using available evidence and may result in removal of the involved items or currency and a permanent ban for all parties involved.</span></div>
+          </div>
+        </div>
+
+        <div id="roleplay" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🎭</span>
+            <div>
+              <div class="sh-title">Roleplay First &amp; Fail RP</div>
+              <div class="sh-desc">Stay in character and never abandon a scene mid-interaction</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag green">RP First</span><span class="rule-text"><b>Empire Roleplay is an RP-first server.</b> Remain in character at all times. If another player initiates roleplay with you, engage and reciprocate, even if you're focused on grinding. If your character is threatened, robbed, kidnapped, injured, or otherwise victimized, you must roleplay through it — these scenarios are an expected part of GTA roleplay.</span></div>
+            <div class="rule"><span class="tag default">Cop &amp; Crime RP</span><span class="rule-text">If you're committing a crime and law enforcement attempts to roleplay with you, you must provide meaningful roleplay in return rather than immediately escalating or avoiding the interaction.</span></div>
+            <div class="rule"><span class="tag default">Report After</span><span class="rule-text">If a rule break occurs mid-scene, continue the roleplay and report it after the scenario concludes. The only exceptions are severe violations such as racism, sexual abuse, or harassment.</span></div>
+            <div class="rule"><span class="tag default">Fail RP</span><span class="rule-text">Fail RP is breaking immersion or acting in a way no real person would, even when not specifically named elsewhere: avoiding properly-initiated roleplay, treating danger/injury/loss as inconsequential, stalling a scene with fake "lag" or disconnect excuses, or using OOC knowledge to dodge a scene's natural outcome.</span></div>
+            <div class="rule"><span class="tag danger">Never Violence</span><span class="rule-text">Violence is never an appropriate response to RP avoidance. Shooting, robbing, or otherwise harming a player because they avoided or refused roleplay with you is RDM, not a valid consequence — report it as Fail RP instead.</span></div>
+            <div class="rule"><span class="tag default">Staff Discretion</span><span class="rule-text">As with any situation not explicitly covered elsewhere, staff retain discretion to determine whether an action counts as Fail RP and what consequence fits, per the Golden Rule.</span></div>
+          </div>
+        </div>
+
+        <div id="ooc" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🗨️</span>
+            <div>
+              <div class="sh-title">Out-of-Character (OOC) Conduct</div>
+              <div class="sh-desc">Keep out-of-character knowledge and behavior out of the roleplay</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Stay IC</span><span class="rule-text">All players must remain in character at all times while in the city, including within Green Zones. Don't break character to explain rules, threaten reports, or discuss staff actions — finish the roleplay and submit a ticket afterward. OOC information must never influence IC decisions.</span></div>
+            <div class="rule"><span class="tag default">OOC Phrases</span><span class="rule-text">References to Green Zones — like telling someone to "come out of the green grass" — are considered OOC, since Green Zones don't exist in-character. Avoid discussing Discord or server rules, or saying things like "this is just a game," while roleplaying.</span></div>
+            <div class="rule"><span class="tag default">Gender</span><span class="rule-text">Referring to a player as a gender other than what their character appears to be in-game is considered OOC and may result in a ban.</span></div>
+            <div class="rule"><span class="tag default">RMT Reminder</span><span class="rule-text">Buying, selling, or trading in-game currency, items, or services for real-world money is prohibited — see Real Money Trading (RMT) for full details.</span></div>
+          </div>
+        </div>
+
+        <div id="vyl" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">😰</span>
+            <div>
+              <div class="sh-title">Value Your Life (VYL)</div>
+              <div class="sh-desc">React to danger like a real person would, not an action hero</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">1v1</span><span class="rule-text">You may defend yourself only if your weapon is already drawn before the threat presents theirs. If someone points a gun at you while your weapon is holstered, you cannot draw it in response.</span></div>
+            <div class="rule"><span class="tag default">2v1</span><span class="rule-text">If you aren't currently held at gunpoint and don't have a weapon out, you may attempt to flee. Once a gun is drawn and pointed at you, you lose the option to pull your own weapon — your only options become compliance or escape, if still realistically possible.</span></div>
+            <div class="rule"><span class="tag default">3v1</span><span class="rule-text">Being outnumbered three-to-one with weapons visible should be treated as a serious, fear-inducing situation. You cannot escape or fight back unless your weapon was already out before the encounter began — three armed opponents against one is not survivable odds.</span></div>
+            <div class="rule"><span class="tag default">Equal Numbers</span><span class="rule-text">In equal-numbers situations (2v2, 3v3, etc.) you have more freedom to attempt defense or escape, but you still risk dying. Equal numbers don't guarantee safety — just a fairer fight.</span></div>
+            <div class="rule"><span class="tag default">Guns vs Melee</span><span class="rule-text">Guns beat melee, always. You may never engage someone holding a firearm with a melee weapon (knife, bat, fists, etc.) — a gun is a lethal threat at range and must be respected as such, regardless of what you're holding.</span></div>
+          </div>
+        </div>
+
+        <div id="nlr" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🔁</span>
+            <div>
+              <div class="sh-title">New Life Rule (NLR)</div>
+              <div class="sh-desc">What your character remembers — and forgets — after being downed</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Memory Wipe</span><span class="rule-text">If your character is fully downed by another player, they forget everything that happened in the lead-up to their death — events, enemies, conflicts, and storylines tied to that scene.</span></div>
+            <div class="rule"><span class="tag green">What Carries Over</span><span class="rule-text"><b>Forgotten:</b> the scene itself — who was involved, why it happened, and any plans or grudges tied to it. <b>Retained:</b> your job, faction ties, and existing relationships and friendships, since those are part of who your character is, not what happened in that scene.</span></div>
+            <div class="rule"><span class="tag default">Body Cam</span><span class="rule-text">Body cam footage exists only to report rule violations — it's an OOC tool, not an in-character memory device. Don't reference having body cam footage mid-scene to recall details. The one exception is courtroom roleplay, where it may be referenced as evidence.</span></div>
+            <div class="rule"><span class="tag default">No Returning</span><span class="rule-text">Once you leave to get medical attention, that location and its surrounding area are off-limits for that storyline. Don't go back to confront anyone, retaliate, or pick the scene back up.</span></div>
+            <div class="rule"><span class="tag default">While Downed</span><span class="rule-text">On your side, bleeding out: roleplay your injuries realistically. Flat-backed: /me actions are for describing injuries only — no comms, no planning, nothing scene-related.</span></div>
+            <div class="rule"><span class="tag default">Timing</span><span class="rule-text">Don't use /911ems until the scene has fully concluded, and don't press E to respawn at the hospital during an active scene — wait until it's over.</span></div>
+          </div>
+        </div>
+
+        <div id="powergaming" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">💪</span>
+            <div>
+              <div class="sh-title">Powergaming</div>
+              <div class="sh-desc">No forcing outcomes or abusing mechanics to dodge consequences</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">Forcing Actions</span><span class="rule-text">Forcing an action ("/me ties you up," "/me shoots you in the head") without giving the other player a reasonable chance to respond or resist is powergaming.</span></div>
+            <div class="rule"><span class="tag default">Mechanic Abuse</span><span class="rule-text">Using animations, glitches, vehicle exploits, or other mechanics to escape, no-sell damage, or avoid RP consequences entirely is not allowed.</span></div>
+            <div class="rule"><span class="tag default">Unrealistic Actions</span><span class="rule-text">Performing actions your character couldn't realistically do given their injuries, equipment, or the situation — fighting at full strength while "unconscious," carrying unrealistic amounts of items — is powergaming.</span></div>
+            <div class="rule"><span class="tag default">Combat Logging</span><span class="rule-text">Combat logging or disconnecting to avoid the outcome of an RP scenario is powergaming as well as a combat-log offense.</span></div>
+            <div class="rule"><span class="tag default">Fair RP</span><span class="rule-text">Roleplay must remain fair, realistic, and responsive for all parties — both sides need a chance to react. Metagaming alongside powergaming, using OOC info to justify an in-character forced action, is also prohibited.</span></div>
+          </div>
+        </div>
+
+        <div id="metagaming" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">📡</span>
+            <div>
+              <div class="sh-title">Metagaming &amp; Streaming Delay</div>
+              <div class="sh-desc">Using outside information in-character, and stream delay requirements</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">Metagaming</span><span class="rule-text"><b>Metagaming is strictly prohibited.</b> Your character may only act on information they personally learned through in-game roleplay.</span></div>
+            <div class="rule"><span class="tag default">Examples</span><span class="rule-text">This includes using Twitch/YouTube clips to locate or act on players, reading Discord messages or tickets and applying that knowledge in roleplay, sharing info between characters that wasn't obtained IC, using another player's POV to gain awareness of a scene you weren't part of, relaying scene information to people not present, and being in a Discord call while in the city.</span></div>
+            <div class="rule"><span class="tag default">Streaming Delay</span><span class="rule-text">Players who livestream their gameplay (Twitch, Kick, YouTube, TikTok, etc.) must run their stream on a delay of at least 3 minutes to prevent viewers from using live footage to metagame.</span></div>
+            <div class="rule"><span class="tag default">Streamer Responsibility</span><span class="rule-text">Streamers are responsible for ensuring their chat or viewers don't relay a player's live location, identity, or situational information into the city. A confirmed instance of a viewer doing so is treated as metagaming, and the streamer may also face action if they knowingly allow it to continue.</span></div>
+          </div>
+        </div>
+
+        <div id="rdmvdm" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🔫</span>
+            <div>
+              <div class="sh-title">RDM / VDM / Combat Logging</div>
+              <div class="sh-desc">Violence needs a story — no random kills, vehicle hits, or F8 quitting</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">RDM</span><span class="rule-text">Random Deathmatch — engaging in violence against another player without proper roleplay interaction or valid in-character justification — is prohibited. All violence on Empire Roleplay must be driven by a clear storyline, motive, or situation.</span></div>
+            <div class="rule"><span class="tag default">RP Avoidance ≠ Excuse</span><span class="rule-text">A player avoiding or refusing roleplay with you is not valid justification for violence — shooting, robbing, or otherwise harming them in response is still RDM. Continue the interaction as best you can and report the avoidance as Fail RP instead.</span></div>
+            <div class="rule"><span class="tag danger">VDM</span><span class="rule-text">Vehicle Deathmatch is strictly prohibited. This includes using a vehicle to intentionally harm, kill, or repeatedly strike another player, even in self-defense — vehicles exist for transportation and immersive roleplay, not as weapons.</span></div>
+            <div class="rule"><span class="tag danger">Combat Logging</span><span class="rule-text">Combat logging ("F8 quitting") is any intentional disconnection from the server to avoid roleplay, staff interaction, or in-game consequences — including F8 quitting during an active scene, force-closing the game, unplugging your router, or shutting down your computer to leave.</span></div>
+          </div>
+        </div>
+
+        <div id="cheating" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">⚠️</span>
+            <div>
+              <div class="sh-title">Cheating &amp; Exploiting</div>
+              <div class="sh-desc">Zero-tolerance ban policy for cheats, hacks, and exploited bugs</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">Cheating</span><span class="rule-text">Using cheats, hacks, trainers, macros, scripts, or any third-party software that provides an unfair advantage — including aimbots, ESP/wallhacks, speed modifiers, or auto-clickers — is strictly prohibited. This includes injecting, modifying, or interfering with the client or server in any way not explicitly permitted by Empire.</span></div>
+            <div class="rule"><span class="tag danger">Zero Tolerance</span><span class="rule-text">Possessing cheat software is treated the same as using it, whether or not it was actively running. Cheating is a zero-tolerance offense and will result in an immediate, permanent, non-appealable ban.</span></div>
+            <div class="rule"><span class="tag default">Exploiting</span><span class="rule-text">Exploiting bugs, glitches, or unintended game mechanics is strictly prohibited — gaining an unfair advantage, escaping arrests/RP scenarios/combat through unintended means, or duplicating items or currency. Any exploit discovered must be reported immediately rather than used or shared.</span></div>
+            <div class="rule"><span class="tag default">Severity</span><span class="rule-text">Severe or repeated exploiting violations may result in a permanent ban or character wipe.</span></div>
+          </div>
+        </div>
+
+        <div id="killorrob" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">💰</span>
+            <div>
+              <div class="sh-title">Kill or Rob &amp; Body Dumping</div>
+              <div class="sh-desc">Kill or rob a player — never both, and never dump the body</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Kill or Rob</span><span class="rule-text">Empire Roleplay is a kill-or-rob city — never both. If you fully down (kill) a player, you may not rob them. If you rob a player, they must remain conscious throughout.</span></div>
+            <div class="rule"><span class="tag default">Robbery Limits</span><span class="rule-text">You must leave the player with at least one means of communication (phone or radio), and you cannot pocket-wipe someone if they're carrying food — don't rob the food.</span></div>
+            <div class="rule"><span class="tag default">No Shielding</span><span class="rule-text">"Flatbacking" friends or allies to shield them from being robbed is strictly prohibited.</span></div>
+            <div class="rule"><span class="tag default">Body Dumping</span><span class="rule-text">Body dumping — moving, hiding, or disposing of another player's body after they've been downed — is not allowed. This includes any attempt to remove a downed player from the scene or delay them from receiving assistance.</span></div>
+          </div>
+        </div>
+
+        <div id="gangs" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">👑</span>
+            <div>
+              <div class="sh-title">Super Civing &amp; Gang/Faction Rules</div>
+              <div class="sh-desc">Whitelisting requirements for organized criminal activity</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Super Civing</span><span class="rule-text">Civilians acting as an organized gang or faction without being whitelisted is Super Civing. This includes regularly engaging in shootouts/robberies as a primary activity, operating in coordinated groups of 4+ that function like a gang, claiming or defending territory, wearing matching "crew" colors or identifiers, stockpiling weapons for planned attacks, and repeatedly targeting the same individuals or groups.</span></div>
+            <div class="rule"><span class="tag default">Whitelisting</span><span class="rule-text">All gangs and criminal organizations must be approved and whitelisted by staff before operating publicly. Unapproved groups acting as a gang fall under Super Civing.</span></div>
+            <div class="rule"><span class="tag default">Scope</span><span class="rule-text">Member counts, territory, and conflict scope are set during the whitelisting process and may vary by gang size or tier. Declaring a war or major conflict between gangs requires staff notification beforehand so it can be tracked and mediated fairly.</span></div>
+            <div class="rule"><span class="tag default">Collective Accountability</span><span class="rule-text">Gangs found violating server rules as a group (mass RDM, VDM, etc.) may face collective consequences, including disbandment.</span></div>
+          </div>
+        </div>
+
+        <div id="drugs" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">💊</span>
+            <div>
+              <div class="sh-title">Drug Rules &amp; Taxing</div>
+              <div class="sh-desc">Manufacturing limits and the rules for taxing a drug location</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Drug Locations</span><span class="rule-text">Drug manufacturing, growing, and distribution must take place at designated in-game locations and follow the quantity and cooldown limits set by the server's scripts. Stockpiling beyond what's reasonable for your character, solely to bypass economy limits, is considered exploiting.</span></div>
+            <div class="rule"><span class="tag default">Selling Rules</span><span class="rule-text">Selling drugs in a location or manner specifically designed to avoid roleplay or police interaction is not permitted, and pulling NPCs out of vehicles to sell them drugs is not allowed, as this is considered exploiting.</span></div>
+            <div class="rule"><span class="tag default">No Glitching</span><span class="rule-text">Using glitches, bugs, or script exploits related to drug manufacturing, selling, or cooldowns is strictly forbidden — report any bugs you find instead of abusing them. Powergaming during drug deals or police interactions is not allowed, and drug-related activity is not permitted in designated safe zones or any area used to deliberately dodge PD response.</span></div>
+            <div class="rule"><span class="tag default">What Is Taxing?</span><span class="rule-text">Taxing is when a faction controls a drug location and demands a percentage of materials or crafted product from players using that location. Taxing is NOT a free pass to rob everything a player owns — these limits apply equally whether you're the gang taxing or the civilian being taxed.</span></div>
+            <div class="rule"><span class="tag default">Tax Limits</span><span class="rule-text">Weed is a civilian drug — gangs cannot tax weed under any circumstances. Taxing/robbery is limited to only the drugs produced or ingredients present at that specific location: up to 50% maximum for faction members, 25% maximum for civilians. If they refuse, you may rob or kill them — a proper interaction is still required, but flatbacking is not.</span></div>
+            <div class="rule"><span class="tag default">Location Examples</span><span class="rule-text">Tax limits are location-specific: a Hard Candy spot may only have Hard Candy taxed, a Cough Syrup spot only Cough Syrup, the Lean Bench only Lean ingredients or crafted Lean Cups, and the Coke Bench only Coke ingredients or crafted Cocaine.</span></div>
+            <div class="rule"><span class="tag default">Cannot Tax</span><span class="rule-text">Weapons, radios, phones, unrelated items, and bank/cash can never be taxed (unless a separate, valid robbery occurs). "Double Dip" — taxing and then immediately fully robbing the same person — is not allowed.</span></div>
+            <div class="rule"><span class="tag default">Tax Protection</span><span class="rule-text">Once taxed, a player receives 1-hour Tax Protection at that specific location and cannot be taxed again by multiple gangs or chain-taxed across locations during this window. Example: if you're taxed at the Lean Bench at 6:00 PM, you cannot be taxed for Lean again until 7:00 PM.</span></div>
+            <div class="rule"><span class="tag default">Proof &amp; Quality</span><span class="rule-text">Every tax interaction requires proof — a screenshot or clip showing the player's name/ID, time, location, and items taxed — plus proper initiation, an opportunity to comply, and high-quality RP (no instantly running up yelling "tax"). Repeated taxing, exceeding the limit, taxing unrelated items, faking a tax, or holding a location hostage with no real RP is Tax Abuse, and staff may void any tax scene deemed unfair, excessive, or low quality.</span></div>
+          </div>
+        </div>
+
+        <div id="targeting" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🎯</span>
+            <div>
+              <div class="sh-title">Targeting &amp; New Player Protection</div>
+              <div class="sh-desc">No repeated harassment of one player, and new player protections</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Targeting</span><span class="rule-text">Repeatedly targeting the same player or group without a valid, in-character RP reason is prohibited. A single robbery, conflict, or kill that arises naturally from RP is fine — the issue is when it becomes a pattern aimed at one person or group with no real story behind it.</span></div>
+            <div class="rule"><span class="tag default">Examples</span><span class="rule-text">This includes constant robberies of the same player within a short time frame, repeated killings especially after they've already lost their gear, targeting disguised as RP, targeting a player actively engaged in RP elsewhere purely to hijack that scene, and following or camping near a player's spawn or home to re-engage them.</span></div>
+            <div class="rule"><span class="tag default">Genuine Storylines OK</span><span class="rule-text">If there's a genuine ongoing storyline (gang rivalry, debt, revenge arc, etc.) agreed upon by both parties, that's not a violation — staff may ask for context if reported.</span></div>
+            <div class="rule"><span class="tag green">New Player Protection</span><span class="rule-text">Characters created within the last 2 hours of playtime are protected from being killed, robbed, or kidnapped. This protection ends immediately once the new player initiates hostile or illegal roleplay themselves, and doesn't exempt them from following all other server rules. Staff may extend or shorten this window for events or special circumstances.</span></div>
+          </div>
+        </div>
+
+        <div id="impersonation" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🚓</span>
+            <div>
+              <div class="sh-title">Cop Baiting, Impersonation &amp; Whitelisted Jobs</div>
+              <div class="sh-desc">No baiting cops for clout, and no faking a whitelisted job</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Cop Baiting</span><span class="rule-text">Intentionally provoking law enforcement purely for a reaction, chase, or content/clips without genuine RP motivation is not allowed — no repeated pointless crimes, trolling or taunting PD on comms, or excessive fleeing purely to drag out a chase for entertainment. Engaging with PD as part of organic RP (a heist, planned escape, legitimate confrontation) is fine.</span></div>
+            <div class="rule"><span class="tag danger">Impersonation</span><span class="rule-text">Players may not impersonate any official government or emergency service role (EMS, PD, DOJ) unless properly whitelisted and on-duty. This includes wearing their uniforms/badges or using their vehicles without authorization (even as a joke), claiming to hold the position, using emergency equipment to mislead or manipulate, or conducting stops, arrests, treatment, or legal proceedings while not officially on-duty.</span></div>
+            <div class="rule"><span class="tag default">Whitelisted Conduct</span><span class="rule-text">Players holding a whitelisted role (PD, EMS, DOJ, mechanic, or other staff-approved jobs) are expected to provide a higher standard of roleplay while on-duty, since these roles directly shape the experience of everyone they interact with.</span></div>
+            <div class="rule"><span class="tag default">Perks</span><span class="rule-text">Whitelisted perks, equipment, and access may only be used for their intended in-character purpose — never for personal gain or to benefit friends, gang affiliates, or yourself outside of legitimate duty.</span></div>
+            <div class="rule"><span class="tag default">Removal</span><span class="rule-text">Abandoning a scene, ignoring calls, or refusing to engage without a valid in-character reason is not permitted while on-duty. Repeated unprofessional conduct, favoritism, or abuse of a whitelisted position may result in removal from the role, in addition to any standard disciplinary action.</span></div>
+          </div>
+        </div>
+
+        <div id="greenzones" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🟢</span>
+            <div>
+              <div class="sh-title">Green Zones</div>
+              <div class="sh-desc">Designated safe areas where all hostile RP is off-limits</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag green">Purpose</span><span class="rule-text">Green Zones (hospitals, designated safe zones) are areas where violence and crime are prohibited so players have a safe space to start or reset their RP — no robbing, shooting, fighting, hostile interaction, deals, trades, or RP transactions of any kind.</span></div>
+            <div class="rule"><span class="tag default">No Baiting</span><span class="rule-text">No baiting players into a Green Zone to get them killed or robbed there, or baiting players out of one to attack them the moment they cross the boundary. No trolling, loitering, blocking paths, or using vehicles to block exits/entrances or harass players within these areas.</span></div>
+            <div class="rule"><span class="tag default">Locations</span><span class="rule-text">Designated Green Zones include apartments (interiors and immediate surrounding areas), hospitals (including parking areas), the VIP and public gyms, clothing stores, tattoo shops, hair salons, the recycling center, and the arena lobby. Check #greenzones in Discord for the complete, up-to-date list.</span></div>
+            <div class="rule"><span class="tag danger">Strictly Prohibited</span><span class="rule-text">Never permitted inside a Green Zone: robbing or attempting to rob any player, scamming or fraudulent behavior, pickpocketing or stealing of any kind, stealing vehicles (especially PD or EMS), and possessing or using weapons in a threatening manner.</span></div>
+          </div>
+        </div>
+
+        <div id="afk" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">💤</span>
+            <div>
+              <div class="sh-title">AFK &amp; Safe Zone / RP Avoidance</div>
+              <div class="sh-desc">Going AFK safely, and using safe zones to dodge active scenes</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Going AFK</span><span class="rule-text">If you need to go AFK, you must fly out (log off) or move to a safe, private location where you are not actively involved in roleplay and cannot reasonably be interacted with by other players.</span></div>
+            <div class="rule"><span class="tag default">AFK Risk</span><span class="rule-text">Being inside a Green Zone does not guarantee protection while AFK — players who remain idle in public areas, including Green Zones, do so at their own risk. Items, money, vehicles, or property lost while AFK in public locations will not be replaced by staff; losses in a Green Zone are only replaced with sufficient video evidence showing a rule violation occurred.</span></div>
+            <div class="rule"><span class="tag default">AFK Removal</span><span class="rule-text">Being AFK in high-traffic, high-population, or active roleplay areas may result in staff relocating, kicking, or otherwise removing you from the server to prevent disruption.</span></div>
+            <div class="rule"><span class="tag danger">RP Avoidance</span><span class="rule-text">Green Zones, apartments, houses, businesses, and other protected areas may not be used to avoid, escape, delay, or otherwise circumvent active roleplay — running into a Green Zone to avoid an ongoing interaction, entering an interior solely to escape RP, stalling inside to wait out an active scene, or using a protected location as a shield while continuing to participate in or influence the situation from safety.</span></div>
+            <div class="rule"><span class="tag default">Still Responsible</span><span class="rule-text">If you are involved in an active scene, you must roleplay it out. Entering a protected location does not automatically end the interaction or remove you from its consequences. Abusing protected locations to avoid roleplay may result in disciplinary action for Fail RP and Safe Zone Abuse.</span></div>
+          </div>
+        </div>
+
+        <div id="yellowzones" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🏪</span>
+            <div>
+              <div class="sh-title">Yellow Zones (Businesses)</div>
+              <div class="sh-desc">Consent-based rules for roleplay inside player-owned businesses</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Classification</span><span class="rule-text">All player-owned business locations are classified as Yellow Zones — areas where roleplay is expected to remain consensual and non-hostile. A Yellow Zone covers the interior of the business; if you're unsure of the boundary, ask staff or check the business's designated markers before acting.</span></div>
+            <div class="rule"><span class="tag default">Consent Required</span><span class="rule-text">Any interaction initiated inside a business zone (RP scenes, negotiations, sales, confrontations, etc.) requires the clear agreement of everyone involved — an explicit yes, not silence, hesitation, or assumed consent. Staff-organized events or scripted mechanics that override this will be explicitly announced in advance.</span></div>
+            <div class="rule"><span class="tag danger">Prohibited Inside</span><span class="rule-text">Hostile or violent actions are strictly prohibited inside a Yellow Zone: robbery or theft, kidnapping or forced restraint, shooting or brandishing a weapon threateningly, physical assault, threats of violence to coerce someone into a scene, or forcing anyone into a non-consensual scene. This applies regardless of prior IC history — beef from outside the zone does not carry hostile privileges inside it.</span></div>
+            <div class="rule"><span class="tag default">Escalation</span><span class="rule-text">If a situation organically escalates toward hostility, all hostile action must stop the moment it would occur inside the zone, and all parties must relocate outside the boundary before any hostile action is permitted. Once clear of the zone, normal hostile RP rules apply — re-entering the zone to escape consequences or reset the situation is not permitted.</span></div>
+            <div class="rule"><span class="tag default">Zone Misuse</span><span class="rule-text">Considered misuse: baiting/provoking conflict from inside the zone knowing the other party can't retaliate, hiding/escaping mid-scene to dodge death/arrest/robbery, cornering or pressuring a player into an unwanted scene because the zone blocks force, and using the zone as cover or a staging area during a nearby active shootout.</span></div>
+            <div class="rule"><span class="tag default">Enforcement</span><span class="rule-text">Violations should be reported to staff with relevant evidence where possible. Staff will evaluate intent and context — accidental boundary crossings during fast-moving scenes are treated differently than deliberate misuse. Repeated or deliberate abuse may result in warnings, suspension, or further disciplinary action.</span></div>
+          </div>
+        </div>
+
+        <div id="interactions" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">⏳</span>
+            <div>
+              <div class="sh-title">Interaction Guidelines &amp; Hot Spots</div>
+              <div class="sh-desc">Timers and standards for robberies, confrontations, and hot spots</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="notice info" style="margin:14px 26px 6px;">⏳ Every hostile interaction — robberies, confrontations, kidnappings — runs on a timer so both sides have a fair, realistic chance to respond.</div>
+            <div class="rule"><span class="tag default">45 Sec</span><span class="rule-text"><b>Standard interactions:</b> a 45-second timer applies to most hostile interactions — robberies, confrontations, and other scenes that don't take place at a hot spot.</span></div>
+            <div class="rule"><span class="tag default">30 Sec</span><span class="rule-text"><b>Hot spot interactions (drug locations):</b> a 30-second timer applies, since everyone present already knows the area carries risk. You're allowed to have your weapon already drawn from the start, and the interaction must be played hostile from the very first moment — no friendly bait-and-switch into "hands up." Once a weapon comes out, the scene is locked into the 30-second hostile timer with no walking it back to a peaceful conversation.</span></div>
+            <div class="rule"><span class="tag default">Justification</span><span class="rule-text">Hostile actions — robbing, threatening, attacking, or otherwise targeting another player — must be backed by believable, in-character reasoning. Personal dislike or any other OOC motive is never valid justification. If you can't explain the "why" in character, the interaction shouldn't happen.</span></div>
+            <div class="rule"><span class="tag danger">Prohibited Starters</span><span class="rule-text">Phone-based contact (Birdy, texts, calls) may never be used to open a hostile interaction — it must be started in person. Vehicle ramming is also not a valid way to start or escalate a scene, including as a pretext to force a robbery or kidnapping.</span></div>
+          </div>
+        </div>
+
+        <div id="heist" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🔒</span>
+            <div>
+              <div class="sh-title">Hostage &amp; Heist Rules</div>
+              <div class="sh-desc">Crew size, hostage limits, and timing for robberies and heists</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Crew Size</span><span class="rule-text">Maximum 6 people on scene for a robbery or heist, not including hostages, plus one additional person outside the immediate scene purely as a spotter or outside shooter. Mixing gangs, criminal organizations, and civilians on a crew is only permitted during heists.</span></div>
+            <div class="rule"><span class="tag default">Hostage Limits</span><span class="rule-text">Fleeca Banks and store robberies allow 2 hostages max; all other robberies/heists allow 3 max. Hostages cannot be friends or members of your own gang, and once released or rescued, they cannot rejoin the scene for the rest of that heist.</span></div>
+            <div class="rule"><span class="tag default">Hostage Conduct</span><span class="rule-text">Hostages must fear for their life at all times and may not assist the crew in any way (no acting as lookouts, opening doors, or giving codes). You may hold a hostage for a maximum of 5 minutes before releasing them, and hostages cannot be used to stall or extend a heist past its cooldown.</span></div>
+            <div class="rule"><span class="tag default">PD/EMS Hostages</span><span class="rule-text">PD or EMS personnel may be taken hostage, but only with quality roleplay. A PD/EMS hostage counts as 2 demands rather than 1 when negotiating.</span></div>
+            <div class="rule"><span class="tag default">PD Response Window</span><span class="rule-text">Once PD arrives on scene, the crew has 20 minutes to complete the heist. If the heist isn't completed within that window, PD is cleared to breach and resolve the situation as they see fit.</span></div>
+            <div class="rule"><span class="tag default">Restrictions</span><span class="rule-text">Refrain from starting any heist within 15 minutes of a restart — doing so will be deemed Fail RP. Helicopters, airplanes, and emergency vehicles are not allowed during heists.</span></div>
+          </div>
+        </div>
+
+        <div id="vehicles" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🚗</span>
+            <div>
+              <div class="sh-title">Vehicles, Props &amp; Tsunami Rule</div>
+              <div class="sh-desc">Realistic driving, parking, prop placement, and restart timing</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Parking</span><span class="rule-text">Vehicles should be driven and parked in a realistic manner consistent with immersive roleplay. Do not park or position vehicles to deliberately block roads, business entrances, spawn points, or other players with no RP purpose. Mass-spawning vehicles, or spawning one on top of another player to block or trap them, is not permitted.</span></div>
+            <div class="rule"><span class="tag default">Reckless Driving</span><span class="rule-text">Reckless driving with no RP justification — weaving through traffic, ignoring collisions, or driving on sidewalks purely for stunts — should remain rare and in-character. Test-driving a dealership vehicle and using it to commit crimes or flee without paying is treated as theft.</span></div>
+            <div class="rule"><span class="tag default">Prop Abuse</span><span class="rule-text">Placing props, barriers, or builds to intentionally block roads, trap players, or grief gameplay outside of legitimate, approved business builds is not permitted. Do not block emergency vehicle access (hospitals, PD, fire), and approved business builds must stay within the boundaries of your owned property.</span></div>
+            <div class="rule"><span class="tag default">Tsunami Rule</span><span class="rule-text">"Tsunami" refers to a scheduled server restart. Players may not start or escalate new scenes — robberies/heists, kidnappings, shootings, police chases, or any new criminal or civilian scenario — within 15 minutes of a scheduled restart, or once the in-game 15-minute warning appears.</span></div>
+            <div class="rule"><span class="tag default">Active Scenes</span><span class="rule-text">A scene already underway before the 15-minute warning may continue only if it can be concluded naturally before the restart. Staff may step in if a scene is being deliberately drawn out to dodge consequences, and starting a new scenario during the warning window may be treated as Fail RP.</span></div>
+          </div>
+        </div>
+
+        <div id="platform" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">⚙️</span>
+            <div>
+              <div class="sh-title">Accounts &amp; Platform Policy</div>
+              <div class="sh-desc">Account, inactivity, and advertising policy across the server</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Inactivity</span><span class="rule-text">Characters and owned property (including business and house MLOs) are subject to removal after 1 month of inactivity, or for business strikes. Empire holds no responsibility for losses unless a valid leave-of-absence (LOA) was submitted and approved beforehand.</span></div>
+            <div class="rule"><span class="tag danger">Platform TOS</span><span class="rule-text">Empire abides by the Terms of Service of Twitch, Kick, and FiveM. Violations involving hateful conduct, hate speech, racism, homophobia, or similar behavior result in an automatic, non-appealable ban.</span></div>
+            <div class="rule"><span class="tag danger">Ban Evasion</span><span class="rule-text">Attempting to bypass a suspension or ban using an alternate account, another person's account, or any other method is strictly prohibited. Any alternate account used to evade a ban will be banned alongside the original. Ban evasion resets prior appeal eligibility and is grounds for a permanent ban on all associated accounts.</span></div>
+            <div class="rule"><span class="tag default">Multi-Accounting</span><span class="rule-text">Logging into a second account to interact with, trade with, fund, or otherwise benefit your own main character — including self-robbing, self-heisting, or padding your own inventory or currency — is not permitted. Each player may only have one actively played character set on the server unless explicitly approved by staff.</span></div>
+            <div class="rule"><span class="tag default">Advertising</span><span class="rule-text">Advertising other servers, communities, or unrelated services — in-game, in the Empire Discord, or through in-character means — is not permitted without prior staff approval. Streamers and content creators may credit Empire Roleplay and share their own content, but may not use the platform to recruit players for other communities.</span></div>
+          </div>
+        </div>
+
+        <div id="discord" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">💬</span>
+            <div>
+              <div class="sh-title">Discord, Graphics &amp; Scamming</div>
+              <div class="sh-desc">Community conduct, visual settings, and scamming limits</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Discord Conduct</span><span class="rule-text">The Empire Discord is an extension of the community and is held to the same respect standards as in-game. NSFW content, excessive spam, and disruptive behavior are not permitted in any channel. Discord moderation actions follow the same appeal process as in-game punishments.</span></div>
+            <div class="rule"><span class="tag default">Graphics &amp; Sound Packs</span><span class="rule-text">Any graphics pack, sound pack, or reshade that provides a gameplay advantage or breaks realism — including stretched FOV or settings that remove props/vegetation — is not allowed. Day/night and weather cycles must remain enabled at all times; your surroundings should never appear as bright as daytime while it's actually night in-game.</span></div>
+            <div class="rule"><span class="tag default">Scamming</span><span class="rule-text">Scamming is allowed; however, scamming of donation items (spray cans, flame tunes, tuner chips, cars) is not allowed. All scam roleplay is still subject to the standard interaction timer. The scamming limit on all items is $600,000.</span></div>
+            <div class="rule"><span class="tag default">Tebex Melee Weapons</span><span class="rule-text">Robbing, scamming, or otherwise taking another player's Tebex melee weapons or items is strictly prohibited, as these are real-money purchases. If your Tebex melee item is taken, you must submit a report within 2 hours of the incident.</span></div>
+          </div>
+        </div>
+
+        <div id="reporting" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">📋</span>
+            <div>
+              <div class="sh-title">Reporting &amp; Tickets</div>
+              <div class="sh-desc">How to file a ticket and what proof staff require</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Roleplay First</span><span class="rule-text">If you witness or experience another player breaking the rules, roleplay your way out of the situation in character first, then report it OOC afterward. Never tell a player you're reporting them, that "that's a clip," or that you're "sending this up" — this includes avoiding in-character code terms like "flight" or "Bahama," and never referring to players who report as snitches, rats, or police in-character. Reporting is purely an OOC process and should never be referenced, hinted at, or joked about in-game.</span></div>
+            <div class="rule"><span class="tag default">Ticket Requirements</span><span class="rule-text">To report a rule violation, open a ticket in the official Empire Discord with a continuous clip of at least 2 minutes showing full context, audio, and player IDs — several shorter clips added together will not count, even if they total 2 minutes. The one exception is an F8/combat log report, which is exempt from the 2-minute minimum since the disconnect itself is the violation. Submit within 2 hours of the incident; screenshots are only accepted in rare cases.</span></div>
+            <div class="rule"><span class="tag default">In-City Issues</span><span class="rule-text">For being stuck, encountering a bug, or a wizard/exploit situation, use the in-game /report command instead of a Discord ticket.</span></div>
+            <div class="rule"><span class="tag default">Staff Respect</span><span class="rule-text">Staff must be treated with respect at all times. Harassing or disrespecting staff over a ticket decision is not tolerated — if you disagree with a ruling, file a staff complaint instead.</span></div>
+            <div class="rule"><span class="tag default">Appeals</span><span class="rule-text">If you get banned or believe a punishment was issued in error, make a ban appeal ticket in the Empire Discord — don't just walk away, staff want the chance to look into it and help where they can. Appeals are reviewed by a staff member who was not involved in the original decision.</span></div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="page-cta">
+    <h2>Ready to play by the rules?</h2>
+    <p>Join the Discord and connect to city. The streets are waiting.</p>
+    <div class="cta-btns">
+      <a class="btn" href="fivem://connect/zjva9ey">▸ Play Now</a>
+      <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
+      <a class="btn ghost" href="/faction-rules">👑 Faction Rules</a>
+      <a class="btn ghost" href="/">Back Home</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand reveal">
+        <img src="empire-logo.png" alt="Empire RP">
+        <p>A premium GTA V roleplay community. Built by players, for players.</p>
+        <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join our Discord</a>
+      </div>
+      <div class="footer-links reveal">
+        <a href="/#home">Home</a>
+        <a href="/rules">Rules</a>
+        <a href="/faction-rules">Faction Rules</a>
+      <a href="/jobboard">Jobs</a>
+        <a href="/showcase">Showcase</a>
+        <a href="/events">Events</a>
+        <a href="/#features">Features</a>
+        <a href="/#start">Get Started</a>
+        <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+        <a href="https://empireroleplay.tebex.io" target="_blank" rel="noopener">Store</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+      <p class="footer-copy">Built for the city by the Empire team.</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+  <script>
+    // Video background, force play immediately, fade in on first frame
+    (function () {
+      var v = document.getElementById('heroBgVideo');
+      if (!v) return;
+      var tryPlay = function () { v.play().catch(function () {}); };
+      tryPlay();
+      v.addEventListener('canplay', tryPlay, { once: true });
+      v.addEventListener('playing', function () { v.classList.add('loaded'); }, { once: true });
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) v.play().catch(function () {});
+      });
+    })();
+
+    // Collapsible sections
+    document.querySelectorAll('.section-header').forEach(function (header) {
+      header.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;
+        header.closest('.rule-section').classList.toggle('collapsed');
+      });
+    });
+
+    // ---- Rule search ----
+    var input = document.getElementById('ruleSearch');
+    var countEl = document.getElementById('ruleCount');
+    var clearBtn = document.getElementById('searchClear');
+    var noResults = document.getElementById('noResults');
+    var rules = Array.from(document.querySelectorAll('.rule'));
+    var sections = Array.from(document.querySelectorAll('.rule-section'));
+    var originals = new Map(rules.map(function (r) { return [r, r.querySelector('.rule-text').innerHTML]; }));
+    var TOTAL = rules.length;
+
+    function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function filterRules() {
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var visible = 0;
+      rules.forEach(function (rule) {
+        var rt = rule.querySelector('.rule-text');
+        rt.innerHTML = originals.get(rule);
+        var tag = rule.querySelector('.tag').textContent;
+        var text = (tag + ' ' + rt.textContent).toLowerCase();
+        var match = !ql || text.includes(ql);
+        rule.classList.toggle('no-match', !match);
+        if (match) {
+          visible++;
+          if (ql) {
+            var re = new RegExp('(' + escRe(q) + ')', 'gi');
+            rt.innerHTML = rt.innerHTML.replace(re, '<mark>$1</mark>');
+          }
+        }
+      });
+      var sectVisible = 0;
+      sections.forEach(function (sec) {
+        var has = Array.from(sec.querySelectorAll('.rule')).some(function (r) { return !r.classList.contains('no-match'); });
+        sec.classList.toggle('no-match', !has);
+        if (has) {
+          sectVisible++;
+          if (ql) sec.classList.remove('collapsed');
+        }
+      });
+      noResults.classList.toggle('show', sectVisible === 0 && ql.length > 0);
+      clearBtn.style.display = ql ? 'block' : 'none';
+      countEl.textContent = ql
+        ? visible + ' matching rule' + (visible === 1 ? '' : 's') + ' for "' + q + '"'
+        : 'Showing all ' + TOTAL + ' rules';
+    }
+
+    input.addEventListener('input', filterRules);
+    clearBtn.addEventListener('click', function () { input.value = ''; filterRules(); input.focus(); });
+    var clearLink = document.getElementById('clearSearch');
+    if (clearLink) clearLink.addEventListener('click', function (e) { e.preventDefault(); input.value = ''; filterRules(); });
+
+    // ---- Sidebar active section on scroll ----
+    // Tracks scroll position directly so the highlighted sidebar link always
+    // matches the section actually under the reading line (just below the
+    // fixed nav), instead of relying on IntersectionObserver enter/exit
+    // events, which can desync on short sections or fast scrolling.
+    var sideLinks = Array.from(document.querySelectorAll('.sidebar-link[href^="#"]'));
+    var sectionEls = Array.from(document.querySelectorAll('.rule-section[id]'));
+    var READ_LINE = 110; // px from top of viewport; just under the fixed nav
+
+    function setActiveLink(id) {
+      sideLinks.forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+
+    function updateActiveSection() {
+      if (!sectionEls.length) return;
+      var current = sectionEls[0];
+      for (var i = 0; i < sectionEls.length; i++) {
+        var rect = sectionEls[i].getBoundingClientRect();
+        if (rect.top - READ_LINE <= 0) {
+          current = sectionEls[i];
+        } else {
+          break;
+        }
+      }
+      var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (atBottom) current = sectionEls[sectionEls.length - 1];
+      setActiveLink(current.id);
+    }
+
+    var scrollTicking = false;
+    window.addEventListener('scroll', function () {
+      if (scrollTicking) return;
+      scrollTicking = true;
+      requestAnimationFrame(function () { updateActiveSection(); scrollTicking = false; });
+    }, { passive: true });
+    window.addEventListener('resize', updateActiveSection);
+    updateActiveSection();
+
+    // ---- Typewriter placeholder for common searches ----
+    (function () {
+      if (!input) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var terms = ['RDM', 'VDM', 'metagaming', 'powergaming', 'new life rule', 'kill or rob', 'hostage rules', 'green zones', 'combat logging', 'VYL', 'fail RP', 'gang taxing'];
+      var base = 'Search rules: ';
+      var ti = 0, ci = 0, deleting = false, timer = null, active = false;
+
+      function frame() {
+        if (!active) return;
+        var term = terms[ti];
+        ci += deleting ? -1 : 1;
+        input.setAttribute('placeholder', base + term.slice(0, ci));
+        if (!deleting && ci === term.length) { deleting = true; return schedule(1600); }
+        if (deleting && ci === 0) { deleting = false; ti = (ti + 1) % terms.length; return schedule(350); }
+        schedule(deleting ? 45 : 80);
+      }
+      function schedule(ms) { timer = setTimeout(frame, ms); }
+      function stop() { active = false; clearTimeout(timer); }
+      function start() {
+        if (reduce) { input.setAttribute('placeholder', 'Search rules'); return; }
+        active = true; clearTimeout(timer); ti = 0; ci = 0; deleting = false; schedule(500);
+      }
+
+      input.addEventListener('focus', function () { stop(); input.setAttribute('placeholder', 'Search rules'); });
+      input.addEventListener('blur', function () { if (!input.value) start(); });
+      input.addEventListener('input', stop);
+      start();
+    })();
+
+    filterRules();
+  </script>
+</body>
+</html>
