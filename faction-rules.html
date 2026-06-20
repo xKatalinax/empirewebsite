@@ -1,13 +1,901 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Empire Roleplay</title>
-<link rel="canonical" href="https://empireroleplay.net/faction-rules">
-<meta http-equiv="refresh" content="0; url=/faction-rules">
-<script>location.replace('/faction-rules');</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empire Roleplay</title>
+  <link rel="icon" type="image/png" href="empire-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+  <style>
+    :root { --blue: #38b6ff; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 52vh; display: grid; place-items: center;
+      text-align: center; padding: 130px 6% 70px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+    .hero-bg video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 30%;
+      opacity: .68; pointer-events: none;
+    }
+    .hero-bg video.loaded { animation: vidFadeIn .6s ease forwards; }
+    @keyframes vidFadeIn { from { opacity: 0; } to { opacity: .68; } }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(6,5,4,.3) 0%, rgba(6,5,4,.6) 55%, rgba(6,5,4,.97) 100%),
+        linear-gradient(90deg, rgba(255,114,0,.07) 0%, transparent 60%);
+    }
+    .hero-glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(255,114,0,.22) 0%, transparent 65%); z-index: 1; pointer-events: none; }
+    .hero-scan {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,.06) 3px, rgba(0,0,0,.06) 4px);
+    }
+    @keyframes vignette-pulse { 0%, 100% { opacity: .55; } 50% { opacity: .75; } }
+    .hero-vignette {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(6,5,4,.65) 100%);
+      animation: vignette-pulse 4s ease-in-out infinite;
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-logo { width: min(280px, 65vw); margin-bottom: 20px; filter: drop-shadow(0 16px 32px rgba(255,114,0,.35)); animation: float 3.2s ease-in-out infinite; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .2em; font-size: 12px; margin-bottom: 14px; background: rgba(246,177,58,.08); border: 1px solid var(--line); border-radius: 999px; padding: 6px 16px; }
+    .eyebrow-icon { font-size: 14px; }
+    h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(52px, 8vw, 100px); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; line-height: .92; margin-bottom: 16px; text-shadow: 0 0 60px rgba(255,114,0,.25); }
+    h1 em { font-style: normal; background: linear-gradient(90deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { color: var(--muted); font-size: 17px; line-height: 1.7; max-width: 600px; margin: 0 auto 30px; }
+    .hero-pills { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+    /* ── SEARCH ── */
+    .search-shell { max-width: 900px; margin: -24px auto 44px; padding: 0 6%; position: relative; z-index: 10; }
+    .search-box { background: rgba(8,7,5,.96); border: 1px solid var(--line); border-radius: 18px; padding: 14px 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.6); transition: border-color .2s; }
+    .search-box:focus-within { border-color: var(--gold); box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 3px rgba(246,177,58,.1); }
+    .search-icon { font-size: 20px; color: var(--gold); flex-shrink: 0; }
+    .search-box input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 15px; font-family: inherit; }
+    .search-box input::placeholder { color: var(--muted); }
+    .search-clear { display: none; cursor: pointer; color: var(--muted); font-size: 18px; padding: 0 4px; transition: color .2s; }
+    .search-clear:hover { color: var(--gold); }
+    .result-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding: 0 4px; }
+    .result-count { color: var(--muted); font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+    .section-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .spill { background: rgba(255,255,255,.04); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; cursor: pointer; transition: .2s; text-decoration: none; }
+    .spill:hover { border-color: var(--gold); color: var(--gold); background: rgba(246,177,58,.08); }
+
+    /* ── LAYOUT ── */
+    .page-shell { max-width: 1240px; margin: 0 auto; padding: 0 6% 110px; }
+    .page-wrap { display: grid; grid-template-columns: 240px 1fr; gap: 20px; align-items: start; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position: sticky; top: 88px; }
+    .sidebar-card { background: rgba(255,255,255,.032); border: 1px solid var(--line); border-radius: 20px; padding: 10px; margin-bottom: 14px; overflow: hidden; }
+    .sidebar-label { color: var(--muted); font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .16em; padding: 8px 12px 10px; }
+    .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 12px; color: var(--muted); font-weight: 800; font-size: 12px; transition: .2s; cursor: pointer; }
+    .sidebar-link:hover { background: rgba(246,177,58,.1); color: var(--gold); }
+    .sidebar-link.active { background: rgba(246,177,58,.14); color: var(--gold); }
+    .sidebar-link .s-icon { font-size: 15px; flex-shrink: 0; }
+    .sidebar-link .s-count { margin-left: auto; background: rgba(246,177,58,.12); border-radius: 999px; padding: 2px 8px; font-size: 10px; font-weight: 900; color: var(--gold); }
+    .sidebar-cta { text-align: center; }
+    .sidebar-cta a { display: block; background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #160b00; font-weight: 900; font-size: 13px; border-radius: 14px; padding: 13px 16px; margin-bottom: 8px; transition: .2s; }
+    .sidebar-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,114,0,.35); }
+    .sidebar-cta a.ghost { background: rgba(255,255,255,.05); color: var(--muted); border: 1px solid var(--line); }
+    .sidebar-cta a.ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── SECTIONS ── */
+    .rule-section { background: rgba(255,255,255,.028); border: 1px solid var(--line); border-radius: 22px; margin-bottom: 14px; overflow: hidden; transition: border-color .25s, box-shadow .25s; }
+    .rule-section:hover { border-color: rgba(255,255,255,.9); box-shadow: 0 0 6px rgba(255,255,255,.7), 0 0 18px rgba(246,177,58,.55), 0 0 40px rgba(255,114,0,.3), 0 0 80px rgba(246,177,58,.15), inset 0 0 40px rgba(246,177,58,.06); }
+    .rule-section.highlighted { border-color: rgba(246,177,58,.5); box-shadow: 0 0 0 1px rgba(246,177,58,.1); }
+    .section-header { padding: 18px 26px; background: linear-gradient(90deg, rgba(246,177,58,.1) 0%, transparent 55%); display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--line); cursor: pointer; }
+    .sh-icon { font-size: 22px; flex-shrink: 0; }
+    .sh-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; color: var(--gold); text-transform: uppercase; letter-spacing: .06em; }
+    .sh-desc { color: var(--muted); font-size: 12px; margin-top: 1px; font-weight: 600; }
+    .sh-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .sh-count { background: rgba(246,177,58,.12); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 900; color: var(--gold); letter-spacing: .06em; white-space: nowrap; }
+    .sh-toggle { color: var(--gold); font-size: 18px; transition: transform .3s; flex-shrink: 0; }
+    .rule-section.collapsed .sh-toggle { transform: rotate(-90deg); }
+    .rule-list { padding: 4px 0; }
+    .rule-section.collapsed .rule-list { display: none; }
+
+    /* ── RULES ── */
+    .rule { display: flex; align-items: flex-start; gap: 14px; padding: 15px 26px; border-bottom: 1px solid rgba(255,255,255,.05); line-height: 1.7; color: #ddd5c8; font-size: 14px; transition: background .2s, box-shadow .2s; position: relative; }
+    .rule:last-child { border-bottom: none; }
+    .rule:hover { background: rgba(246,177,58,.09); box-shadow: inset 4px 0 0 rgba(246,177,58,.9), inset 0 0 30px rgba(246,177,58,.06); }
+    .rule.no-match { display: none; }
+    .rule b { color: var(--text); }
+    .rule-text { flex: 1; }
+    .tag { display: inline-flex; align-items: center; flex-shrink: 0; border-radius: 8px; padding: 4px 10px; font-size: 10px; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; min-width: 68px; justify-content: center; margin-top: 2px; }
+    .tag.default { background: rgba(246,177,58,.1); border: 1px solid rgba(246,177,58,.22); color: var(--gold); }
+    .tag.danger  { background: rgba(255,60,60,.1);  border: 1px solid rgba(255,60,60,.25);  color: var(--danger); }
+    .tag.green   { background: rgba(57,255,130,.08); border: 1px solid rgba(57,255,130,.22); color: var(--green); }
+    .tag.blue    { background: rgba(56,182,255,.08); border: 1px solid rgba(56,182,255,.22); color: var(--blue); }
+
+    /* notice blocks */
+    .notice { margin: 10px 26px 6px; border-radius: 12px; padding: 12px 18px; font-size: 13px; line-height: 1.7; }
+    .notice.warn { background: rgba(255,60,60,.07); border: 1px solid rgba(255,60,60,.22); color: #ffb3b3; }
+    .notice.info { background: rgba(56,182,255,.07); border: 1px solid rgba(56,182,255,.22); color: #aadeff; }
+    .notice.gold { background: rgba(246,177,58,.07); border: 1px solid rgba(246,177,58,.22); color: #f6d89a; }
+    .notice b { color: #fff; }
+
+    /* table inside rule-list */
+    .rule-table { width: calc(100% - 52px); margin: 6px 26px 14px; border-collapse: collapse; font-size: 13px; }
+    .rule-table th { background: rgba(246,177,58,.1); color: var(--gold); font-weight: 900; text-transform: uppercase; letter-spacing: .06em; padding: 8px 14px; border: 1px solid var(--line); font-size: 11px; }
+    .rule-table td { padding: 9px 14px; border: 1px solid rgba(255,255,255,.07); color: #ddd5c8; vertical-align: top; }
+    .rule-table tr:nth-child(even) td { background: rgba(255,255,255,.018); }
+
+    /* search highlight */
+    mark { background: rgba(246,177,58,.3); color: #fff; border-radius: 3px; padding: 0 2px; }
+    .rule-section.no-match { display: none; }
+    .no-results { display: none; text-align: center; padding: 70px 20px; color: var(--muted); }
+    .no-results.show { display: block; }
+    .no-results h3 { color: var(--text); font-size: 24px; margin-bottom: 10px; }
+
+    /* ── STRIKE METER ── */
+    .strike-visual { display: flex; gap: 8px; padding: 14px 26px 18px; border-top: 1px solid rgba(255,255,255,.05); }
+    .strike-step { flex: 1; border-radius: 10px; padding: 12px 10px; text-align: center; border: 1px solid var(--line); background: rgba(255,255,255,.03); }
+    .strike-step .s-num { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+    .strike-step .s-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    .strike-step.s1 { border-color: rgba(246,177,58,.3); } .strike-step.s1 .s-num { color: var(--gold); }
+    .strike-step.s2 { border-color: rgba(255,160,0,.3); } .strike-step.s2 .s-num { color: #ff9f1a; }
+    .strike-step.s3 { border-color: rgba(255,60,60,.35); } .strike-step.s3 .s-num { color: var(--danger); }
+
+    /* ── CTA SECTION ── */
+    .page-cta { text-align: center; padding: 80px 6%; background: linear-gradient(135deg, rgba(246,177,58,.09), rgba(255,114,0,.04)); border-top: 1px solid var(--line); position: relative; overflow: hidden; }
+    .page-cta::before { content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: radial-gradient(ellipse, rgba(255,114,0,.15) 0%, transparent 70%); pointer-events: none; }
+    .page-cta h2 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(34px, 5vw, 62px); font-weight: 900; text-transform: uppercase; margin-bottom: 14px; letter-spacing: -.02em; position: relative; }
+    .page-cta p { color: var(--muted); font-size: 17px; margin-bottom: 30px; position: relative; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+    @media (max-width: 960px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      .sidebar { position: relative; top: 0; }
+      .section-pills { display: none; }
+    }
+    @media (max-width: 600px) {
+      .page-shell { padding: 0 5% 80px; }
+      .hero { padding: 110px 5% 55px; }
+      .strike-visual { flex-direction: column; }
+      .rule-table { width: 100%; margin: 6px 0 14px; }
+    }
+  </style>
 </head>
 <body>
-<p>This page has moved to <a href="/faction-rules">https://empireroleplay.net/faction-rules</a>.</p>
+
+  <!-- Discord logo (reused via <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="discord-logo" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286ZM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189Zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+    </symbol>
+  </svg>
+
+    <!-- NAV -->
+  <nav class="nav" id="mainNav">
+    <a class="brand" href="index.html">
+      <img src="empire-logo.png" alt="Empire RP Logo">
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="rules.html">Rules</a>
+      <a href="faction-rules.html" class="active">Faction Rules</a>
+      <a href="jobboard.html">Jobs</a>
+      <a href="showcase.html">Showcase</a>
+      <a href="events.html">Events</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#start">Get Started</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-actions">
+      <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Discord</a>
+      <a href="fivem://connect/zjva9ey" class="btn-nav">&#9658; Play Now</a>
+    </div>
+    <div class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="rules.html">Rules</a>
+    <a href="faction-rules.html" class="active">Faction Rules</a>
+      <a href="jobboard.html">Jobs</a>
+    <a href="showcase.html">Showcase</a>
+    <a href="events.html">Events</a>
+    <a href="index.html#features">Features</a>
+    <a href="index.html#start">Get Started</a>
+    <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener" style="justify-content:center;border-bottom:none"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join Discord</a>
+    <a href="fivem://connect/zjva9ey" class="btn" style="text-align:center">&#9658; Play Now</a>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-bg">
+      <!--
+        Multiple free-use night city / GTA-vibe MP4 sources.
+        The browser picks the first one it can load.
+        All are royalty-free and direct-serve, no buffering delay.
+      -->
+      <video
+        id="heroBgVideo"
+        autoplay muted loop playsinline
+        preload="auto"
+        poster="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1800&q=80">
+        <!-- Pixabay: Night city aerial timelapse, instant load, GTA vibe -->
+        <source src="https://cdn.pixabay.com/video/2020/07/30/46269-448587562_large.mp4" type="video/mp4">
+        <!-- Pixabay: Car driving through lit city streets at night -->
+        <source src="https://cdn.pixabay.com/video/2022/10/20/135517-763921684_large.mp4" type="video/mp4">
+        <!-- Fallback: Mixkit night city loop -->
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-city-at-night-11-large.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-scan"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+
+      <div class="eyebrow"><span class="eyebrow-icon">👑</span> Faction Guidelines</div>
+      <h1>Faction <em>Rules</em></h1>
+      <p class="hero-sub">Everything you need to run, join, or build a faction in Empire RP. Bosses are accountable, read every word. Last updated June 10, 2026.</p>
+      <div class="hero-pills">
+        <span class="pill"><span class="pill-dot"></span> 19 Sections</span>
+        <span class="pill"><span class="pill-dot"></span> Last Updated June 10, 2026</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEARCH -->
+  <div class="search-shell">
+    <div class="search-box">
+      <span class="search-icon">⌕</span>
+      <input id="ruleSearch" type="search" placeholder="Search faction rules (drugs, turf, POV, strikes)" autocomplete="off">
+      <span class="search-clear" id="searchClear">✕</span>
+    </div>
+    <div class="result-bar">
+      <span id="ruleCount" class="result-count">Showing all rules</span>
+      <div class="section-pills">
+        <a class="spill" href="#general">General</a>
+        <a class="spill" href="#greenzone">Greenzone</a>
+        <a class="spill" href="#pov">POV</a>
+        <a class="spill" href="#basics">Basics</a>
+        <a class="spill" href="#strikes">Strikes</a>
+        <a class="spill" href="#joining">Joining</a>
+        <a class="spill" href="#leaving">Leaving</a>
+        <a class="spill" href="#disbanding">Disbanding</a>
+        <a class="spill" href="#drugtaxing">Drugs</a>
+        <a class="spill" href="#pd">vs PD</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="page-shell">
+    <div class="page-wrap">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-label">Jump to Section</div>
+          <a class="sidebar-link" href="#general"><span class="s-icon">📃</span> General Rules</a>
+          <a class="sidebar-link" href="#greenzone"><span class="s-icon">🟢</span> Greenzone</a>
+          <a class="sidebar-link" href="#pov"><span class="s-icon">📷</span> POV / Clipping</a>
+          <a class="sidebar-link" href="#ticketing"><span class="s-icon">🚫</span> Petty Ticketing</a>
+          <a class="sidebar-link" href="#basics"><span class="s-icon">📜</span> Faction Basics</a>
+          <a class="sidebar-link" href="#strikes"><span class="s-icon">❌</span> Strikes</a>
+          <a class="sidebar-link" href="#starting"><span class="s-icon">👥</span> Starting a Faction</a>
+          <a class="sidebar-link" href="#joining"><span class="s-icon">🧡</span> Joining a Faction</a>
+          <a class="sidebar-link" href="#leaving"><span class="s-icon">👋</span> Leaving a Faction</a>
+          <a class="sidebar-link" href="#disbanding"><span class="s-icon">🚫</span> Disbanding</a>
+          <a class="sidebar-link" href="#interactions"><span class="s-icon">🤼</span> Interactions &amp; Cooldowns</a>
+          <a class="sidebar-link" href="#blockinteractions"><span class="s-icon">🚧</span> Interactions on Block</a>
+          <a class="sidebar-link" href="#blockfights"><span class="s-icon">🏠</span> Block Fights</a>
+          <a class="sidebar-link" href="#onfoot"><span class="s-icon">👟</span> On-Foot & Avoiding</a>
+          <a class="sidebar-link" href="#streetfights"><span class="s-icon">🛣️</span> Street Fights</a>
+          <a class="sidebar-link" href="#drugclaiming"><span class="s-icon">💊</span> Drug Claiming</a>
+          <a class="sidebar-link" href="#drugtaxing"><span class="s-icon">💊</span> Drug Taxing</a>
+          <a class="sidebar-link" href="#factionvciv"><span class="s-icon">🧍</span> Faction vs Civ</a>
+          <a class="sidebar-link" href="#pd"><span class="s-icon">🚨</span> Faction vs PD</a>
+        </div>
+        <div class="sidebar-card sidebar-cta">
+          <div class="sidebar-label">Quick Actions</div>
+          <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">▸ Apply for Faction</a>
+          <a href="rules.html" class="ghost">📋 General Rules</a>
+          <a href="https://discord.gg/empirerp" target="_blank" rel="noopener" class="ghost">💬 Discord</a>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main id="rulesList">
+        <div id="noResults" class="no-results">
+          <h3>No rules found</h3>
+          <p>Try a different keyword or <a href="#" id="clearSearch" style="color:var(--gold)">clear the search</a>.</p>
+        </div>
+
+        <!-- NOTICES -->
+        <div class="notice gold" style="margin:0 0 18px;border-radius:18px;">
+          <b>📋 FACTION BOSSES, READ THIS FIRST.</b> It is your responsibility to ensure ALL of your members are reading, following, and understanding the rules. This includes both the Faction Rulebook and the Empire Rulebook.<br><br>
+          <b>⚠️ IGNORANCE OF THE RULES IS NOT AN EXCUSE.</b> By joining a faction you confirm you have read all rules and will be held <b>accountable</b>. If Faction Support catches you violating the Faction Rulebook or any Empire RP guidelines, you may be subject to removal.
+        </div>
+
+        <!-- GENERAL RULES -->
+        <div id="general" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">📃</span>
+            <div>
+              <div class="sh-title">General Rules</div>
+              <div class="sh-desc">Core rules and expectations for all faction members</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">City Rules</span><span class="rule-text"><b>All factions must follow all city rules listed in the Empire Rulebook at all times.</b></span></div>
+            <div class="rule"><span class="tag danger">Alliances</span><span class="rule-text"><b>Faction alliances are NOT permitted.</b> There is no teaming up or shooting alongside opposing factions or civilians.</span></div>
+            <div class="notice warn" style="margin:6px 0 4px;">⚠️ <b>YOU MUST FOLLOW THE EMPIRE RULEBOOK.</b> You must also follow all rules in the official Empire Rulebook at all times, in addition to this Faction Rulebook. Any rule breaks will be handled per the city/Empire guidelines, and will also be punished with a Strike under the Strike punishment ladder in this rulebook.</div>
+            <div class="rule"><span class="tag danger">Staff Conduct</span><span class="rule-text"><b>Disrespecting staff will NOT be tolerated.</b> Oversight Leads have the right to FA (Free Agent) a member for staff disrespect, at their discretion. If you feel an FA for staff disrespect was wrong, or that the offense wasn't a big enough deal to warrant it, you may open a staff complaint (staff comm) to have it reviewed.</span></div>
+            <div class="rule"><span class="tag danger">Harassment</span><span class="rule-text"><b>"Running a faction out of the city" is considered harassment.</b> Any attempt to force another faction to leave the city will be treated as harassing an individual and will result in punishment. This applies to both in-city and out-of-city interactions.</span></div>
+            <div class="rule"><span class="tag danger">Exploiting</span><span class="rule-text"><b>Reloading skin is NOT allowed</b>treated as exploiting. <b>B-reloading is NOT allowed</b>treated as exploiting. Binding emotes to GTA keybinds to gain an advantage is considered exploiting.</span></div>
+            <div class="rule"><span class="tag danger">Power Gaming</span><span class="rule-text">Once an interaction has begun, you may NOT access your stash for any reason. Stashing items during an interaction is power gaming. <b>Tackling is NOT allowed</b>considered power gaming.</span></div>
+            <div class="rule"><span class="tag default">Registration</span><span class="rule-text">You may NOT flag up until Faction Support has assigned roles, an updated roster screenshot is submitted, and roles are officially given in Faction Discord.</span></div>
+            <div class="rule"><span class="tag blue">8v8 Rule</span><span class="rule-text"><b>Factions are limited to 8 active participants per side</b> in any scene (shootouts, criminal activities, car chases). Any extra members MUST disengage and leave the area, they cannot assist, act as lookout, or provide callouts.</span></div>
+            <div class="rule"><span class="tag danger">Fail RP</span><span class="rule-text"><b>Deliberately flatbacking your own faction members</b> to prevent them from being robbed is strictly prohibited and WILL be considered Fail RP.</span></div>
+            <div class="rule"><span class="tag danger">Roofs</span><span class="rule-text"><b>Roofs are NOT allowed under any circumstances</b>block pushes, street fights, fights vs PD or civilians. The only exception is if specifically listed in an event.</span></div>
+            <div class="rule"><span class="tag default">Weed</span><span class="rule-text">Weed is a civilian drug. You may go there to get weed to sell, but there is <b>NO taxing anyone for weed</b>.</span></div>
+            <div class="rule"><span class="tag danger">Factions + Civs</span><span class="rule-text">Factions are NOT permitted to team up with civilians under any circumstances (killing, robbing, any criminal activity). You can farm drugs together, but if civilians start getting pressed by other civs/gangs, your gang must not interfere, and vice versa.</span></div>
+            <div class="notice warn" style="margin:8px 0 4px;">
+              <b>🚫 DO NOT F8 DURING AN ACTIVE SCENE.</b> Your pockets/items WILL be taken if you disconnect during a scene. You will be handled for an F8 offense. Repeated situations may lead to gang-wide consequences.<br>
+              <b>What counts as an F8:</b> Leaving during a shooting or hostile interaction · Disconnecting to avoid being robbed, captured, or killed · Crashing intentionally to avoid RP outcomes.<br>
+              <b>If you genuinely crash:</b> Return as quickly as possible and communicate with involved players or staff.
+            </div>
+            <div class="rule"><span class="tag blue">EMS</span><span class="rule-text"><b>EMS must be allowed to safely perform their duties without interference during active scenes.</b> Once EMS is cleared to enter the scene, all fighting must immediately stop. No continued shootings, punching, or hostile actions while EMS is actively treating or transporting players. If EMS arrives while the scene is still ongoing, inform EMS it is still active and wait until fighting officially ends. NOT allowed: shooting while EMS treats players, using EMS as cover, or attacking EMS personnel.</span></div>
+          </div>
+        </div>
+
+        <!-- GREENZONE -->
+        <div id="greenzone" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🟢</span>
+            <div>
+              <div class="sh-title">Greenzone Rules</div>
+              <div class="sh-desc">Safe zones, no hostile scenes allowed</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="notice gold" style="margin:10px 0 4px;">🌿 <b>GREENZONES ARE SAFE ZONES, NO ACTIVE SCENES.</b> Greenzones (GZs) are controlled safe areas. No hostile scenes should be started or escalated inside a Greenzone.</div>
+            <div class="rule"><span class="tag danger">No Violence</span><span class="rule-text">Initiating or having hostile scenes inside greenzones is prohibited. Escalating interactions into shootings, fights, or killings is prohibited. Using a greenzone interaction to immediately start a scene afterward is prohibited.</span></div>
+            <div class="rule"><span class="tag default">Interaction</span><span class="rule-text">If you approach another gang inside a GZ, the interaction must remain non-violent. Talking trash inside a GZ is fine, <b>do NOT take it further than that</b>.</span></div>
+            <div class="rule"><span class="tag blue">Purpose</span><span class="rule-text">Greenzones provide safe areas around the city and prevent unnecessary conflict in public spaces. They keep RP organized and fair for everyone.</span></div>
+            <div class="rule"><span class="tag default">Clothing Stores</span><span class="rule-text">Do NOT try to kill or take hostage any member who is actively in a clothing menu. Do NOT camp outside clothing stores waiting for them to come outside.</span></div>
+            <div class="notice warn" style="margin:6px 0 10px;">⚠️ <b>FAILURE TO FOLLOW GREENZONE RULES MAY RESULT IN:</b> Punishment and scene termination · Gang-wide consequences depending on the situation.</div>
+          </div>
+        </div>
+
+        <!-- POV -->
+        <div id="pov" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">📷</span>
+            <div>
+              <div class="sh-title">POV / Clipping Rules</div>
+              <div class="sh-desc">Recording requirements, requests, and failure consequences</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">General</span><span class="rule-text"><b>All kills must be clipped and kept for 48 hours.</b> Only Bosses and Underbosses can request POV from the other bosses. Faction Support may NOT discuss possible cheaters, punishments, or irrelevant information with other faction members.</span></div>
+            <div class="rule"><span class="tag blue">Clip Sharing</span><span class="rule-text">All POVs must be sent to <b>#clip-request</b>, this channel is only so the Boss and Underboss can see it. If you'd like to request a POV, send the request to your Boss or Underboss, they will @ the faction involved. Clips are NOT allowed to be saved and sent around in faction chat, only if it's been requested can a clip be sent to your faction.</span></div>
+            <div class="rule"><span class="tag danger">Invalid POV</span><span class="rule-text">The following will <b>automatically invalidate your POV:</b> No props, no vegetation, no water in the clip · Missing HUD elements (health bar, stamina bar, or other HUD stats) · Any rule-break by the player requesting or providing POV.</span></div>
+            <div class="rule"><span class="tag danger">Audio</span><span class="rule-text">All audio must be clearly audible, <b>game audio AND microphone audio.</b> If Faction Support determines audio cannot be clearly heard, the POV will be automatically denied.</span></div>
+            <div class="rule"><span class="tag blue">Oversight</span><span class="rule-text">POV requests are at the sole discretion of Oversight. If required, you MUST provide it. Players are NOT entitled to receiving another player's POV.</span></div>
+            <div class="rule"><span class="tag default">Requesting</span><span class="rule-text">Clip must be a <b>minimum of 60 seconds</b>: 50 seconds leading up to your death + 10 seconds after. Your POV must clearly show your death, POV will NOT be requested if you did not die. You must request POV within <b>4 hours</b> of your death. Requests submitted after 4 hours are automatically denied.</span></div>
+            <div class="rule"><span class="tag default">Providing</span><span class="rule-text">Clip must be a minimum of 60 seconds: 50 seconds leading up to your death/kill + 10 seconds after. You have <b>1 hour</b> from when Faction Support requests your POV to provide it. Failure to submit within 1 hour = punishment at Oversight discretion. Any disrespect, refusal, or arguing with staff regarding a POV request is treated as failure to provide POV.</span></div>
+            <div style="padding: 0 26px 14px;">
+              <table class="rule-table">
+                <tr><th>Offense</th><th>Consequence</th></tr>
+                <tr><td><b>1st Offense</b></td><td>Warning + 100 Comms</td></tr>
+                <tr><td><b>2nd Offense</b></td><td>100k fine + Clip Watch (1 week)</td></tr>
+                <tr><td><b>3rd Offense</b></td><td>2-week blacklist from factions + 400k buyback</td></tr>
+                <tr><td><b>4th Offense</b></td><td>Blacklisted from gang life</td></tr>
+              </table>
+              <div class="notice info" style="margin:4px 0 0;">ℹ️ Strikes fall off after 1 month.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PETTY TICKETING -->
+        <div id="ticketing" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🚫</span>
+            <div>
+              <div class="sh-title">Petty Ticketing</div>
+              <div class="sh-desc">Requirements for valid reports, no frivolous tickets</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Requirements</span><span class="rule-text">All tickets must include a <b>2-3 minute clip</b> of the full scenario with clear audio from all involved parties and IDs. If the clip doesn't include audio from both sides or IDs, the ticket will be considered invalid and closed without action.</span></div>
+            <div class="notice warn" style="margin:6px 0 10px;">🚫 <b>PETTY TICKETS WILL NOT BE TOLERATED.</b> Submitting tickets without a valid rule violation · Wasting staff time with minor issues · Spiteful or retaliatory reports. Possible punishments: Community Service, Discord timeouts, and more.</div>
+          </div>
+        </div>
+
+        <!-- FACTION BASICS -->
+        <div id="basics" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">📜</span>
+            <div>
+              <div class="sh-title">Faction Basics</div>
+              <div class="sh-desc">Territory, Empire Games, Warzone, and Clothing rules</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="notice gold" style="margin:10px 0 4px;">🗺️ <b>TERRITORIES ARE CONTROLLED BY ACTIVITY, NOT KILLS.</b> Each action a gang member performs inside a zone increases their control percentage. This is NOT a kill zone, killing another gang will NOT gain territory. You must follow interaction guidelines.</div>
+            <div class="rule"><span class="tag blue">Territory</span><span class="rule-text"><b>Ways to build control:</b> Graffiti Tagging (coming soon) · Selling Drugs, completing sales in a zone increases influence, and selling in your territory also increases your drug payout. Control of a zone shifts dynamically based on which gang is most active there.</span></div>
+            <div class="rule"><span class="tag default">Empire Games</span><span class="rule-text">Every month there will be one event at the end of the month (rotating format, RP, Hunger Games style, etc.).</span></div>
+            <div class="rule"><span class="tag blue">Warzone</span><span class="rule-text">Unlimited T-count allowed. Grenades and sticky bombs are allowed. Only <b>consumables</b> are to be robbed. Everyone MUST stay in the zone, going out of zone will result in you or your team getting /killed. Everyone will be starting inside a helicopter piloted by staff. Once the helicopter gets into the zone everyone is free to jump out. <b>If you fail to deploy the parachute</b>, you will be picked up wherever you landed.</span></div>
+            <div class="rule"><span class="tag default">Clothing</span><span class="rule-text"><b>Faction colors/flags must be worn AT ALL TIMES</b> unless working at a whitelisted business or doing a heist. Pretending to wear another faction's colors or flag to confuse others is a strike. All faction-branded clothing must be approved by Faction Oversight before being imported into the city. <b>We are NOT responsible for unapproved clothing</b>, get approval before purchasing.</span></div>
+            <div style="padding: 0 26px 14px;">
+              <table class="rule-table">
+                <tr><th>Offense</th><th>Consequence</th></tr>
+                <tr><td><b>1st Warning</b></td><td>25 Comms</td></tr>
+                <tr><td><b>2nd Warning</b></td><td>50 Comms</td></tr>
+                <tr><td><b>3rd Warning</b></td><td>75 Comms</td></tr>
+                <tr><td><b>4th Warning</b></td><td>Personal Strike</td></tr>
+                <tr><td><b>5th+ Offense</b></td><td>Deflag + removal from faction for up to 5 days. Two deflags = permanent blacklist from faction life.</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- STRIKES -->
+        <div id="strikes" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">❌</span>
+            <div>
+              <div class="sh-title">Strikes</div>
+              <div class="sh-desc">Personal and faction strike consequences</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="notice warn" style="margin:10px 0 4px;">⚠️ <b>UPON RECEIVING A PERSONAL STRIKE, DEFLAG IMMEDIATELY.</b> You MUST de-flag immediately and remain deflagged until the strike is resolved. Strikes fall off after 1 month.</div>
+            <div style="padding: 0 26px 10px;">
+              <div style="color:var(--gold);font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Personal Strike Consequences</div>
+              <table class="rule-table">
+                <tr><th>Strike</th><th>Consequence</th></tr>
+                <tr><td><b>1st Strike</b></td><td>Warning + 100 Comms</td></tr>
+                <tr><td><b>2nd Strike</b></td><td>100k + 200 Comms</td></tr>
+                <tr><td><b>3rd Strike</b></td><td>150k + Removal from gang life for ONE week</td></tr>
+              </table>
+            </div>
+            <div class="rule"><span class="tag danger">Faction Strikes</span><span class="rule-text">Faction strikes must be paid within <b>1 week</b>. Failure to pay may result in faction disbandment. Faction strikes remain on record for 30 days and are issued when <b>5+ members are involved in a scene</b>.</span></div>
+            <div style="padding: 0 26px 14px;">
+              <table class="rule-table">
+                <tr><th>Strike</th><th>Consequence</th></tr>
+                <tr><td><b>1st Strike</b></td><td>75k per person</td></tr>
+                <tr><td><b>2nd Strike</b></td><td>150k per person</td></tr>
+                <tr><td><b>3rd Strike</b></td><td>200k per person</td></tr>
+                <tr><td><b>4th Strike</b></td><td>Disbandment + 1-week cooldown for all members</td></tr>
+              </table>
+            </div>
+            <div class="strike-visual">
+              <div class="strike-step s1"><div class="s-num">1st</div><div class="s-label">Warning + Comms</div></div>
+              <div class="strike-step s2"><div class="s-num">2nd</div><div class="s-label">Fine + Comms</div></div>
+              <div class="strike-step s3"><div class="s-num">3rd</div><div class="s-label">Removal</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STARTING A FACTION -->
+        <div id="starting" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">👥</span>
+            <div>
+              <div class="sh-title">Starting a Faction</div>
+              <div class="sh-desc">Whitelist requirements and creation process</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Name</span><span class="rule-text">Faction Name, No fighting over names. Must not break TOS, must be original. <b>No 'cartel', 'mafia', or real-life gang/organization names.</b></span></div>
+            <div class="rule"><span class="tag default">Colors</span><span class="rule-text">Faction Colors, No fighting over colors. Must be approved by Faction Oversight.</span></div>
+            <div class="rule"><span class="tag default">Block</span><span class="rule-text">Faction Block, No fighting over blocks. Must be approved by Faction Oversight.</span></div>
+            <div class="rule"><span class="tag blue">Roster</span><span class="rule-text">Up to <b>25 members</b> (including boss). No more than 1 boss, up to 2 underbosses, 2 captains. <b>Minimum 6 members</b> to form and remain a faction. Custom flag required (temp flag allowed initially, but custom flag must be purchased eventually).</span></div>
+            <div class="rule"><span class="tag default">Creation Process</span><span class="rule-text">Fill out the faction application, Faction Oversight will determine if your faction is a good fit for the city. Open a faction support ticket to begin the process after completing the application. Faction Oversight has the right to deny any application deemed unfit.</span></div>
+            <div class="rule"><span class="tag danger">Faction Lore</span><span class="rule-text">Your lore must describe how your faction came to be and how it will grow in the city. <b>Minimum 500 words, 0% AI.</b> Low-quality or low-effort responses may result in being asked to rewrite, or an outright denial. Not following the lore you create may result in disbandment.</span></div>
+            <div class="notice gold" style="margin:6px 0 10px;">🛡️ <b>NEW FACTION, 1-WEEK PROTECTION OPTION.</b> New factions may activate a 1-week protection period to get started without outside attacks. During protection: you CANNOT press other groups or be caught at high-risk spots like drug areas. Breaking these rules ends your protection immediately.</div>
+          </div>
+        </div>
+
+        <!-- JOINING A FACTION -->
+        <div id="joining" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🧡</span>
+            <div>
+              <div class="sh-title">Joining a Faction</div>
+              <div class="sh-desc">Requirements and prohibited activities before approval</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Requirements</span><span class="rule-text">Roster change requests may only be submitted by the Faction Boss and/or Underbosses. Must have a <b>minimum of 3 hours playtime</b> to join a faction. You CANNOT engage in any faction activity until Faction Support approves with a ✅ in the Claim your Faction channel AND you have the appropriate Discord roles.</span></div>
+            <div class="notice warn" style="margin:6px 0 4px;">🚫 <b>PROHIBITED BEFORE APPROVAL:</b> Wearing or putting on the faction's flag/colors · Being added to stash · Sliding, assisting, or participating in interactions with the faction · Joining faction events or representing the faction in any capacity.</div>
+            <div class="rule"><span class="tag blue">Roster Format</span><span class="rule-text">Use this format for roster additions: <b>Steam:</b> &nbsp; <b>Discord:</b> &nbsp; <b>Character Name:</b> &nbsp; <b>Rank:</b></span></div>
+            <div class="notice warn" style="margin:6px 0 10px;">⚠️ <b>IMPORTANT NOTICE.</b> Having blacklisted players or players on cooldowns flagged up with your faction will result in disciplinary action. All enforcement is at Faction Oversight and/or Management discretion.</div>
+          </div>
+        </div>
+
+        <!-- LEAVING A FACTION -->
+        <div id="leaving" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">👋</span>
+            <div>
+              <div class="sh-title">Leaving a Faction</div>
+              <div class="sh-desc">Free Agent status, removals, and cooldowns</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Requesting FA</span><span class="rule-text">Go to the Bleeding Out channel, tag Faction Support, and type "FA". Standard cooldown is <b>5 days</b>. You may NOT join another faction until your cooldown is complete OR you are approved to use/purchase a CD skip.</span></div>
+            <div class="rule"><span class="tag danger">Removal</span><span class="rule-text">Bosses/Underbosses have the right to remove anyone at any time. Cooldown for removal is <b>1 week (7 days)</b>.</span></div>
+            <div class="notice warn" style="margin:6px 0 4px;">🚫 <b>DURING YOUR COOLDOWN YOU MAY NOT:</b> Participate in faction activities · Wear faction colors/flags · Use faction radio · Represent a faction in any capacity.</div>
+            <div class="rule"><span class="tag green">Cooldown Buyout</span><span class="rule-text">You may pay <b>50k per day</b> to reduce your cooldown.</span></div>
+          </div>
+        </div>
+
+        <!-- DISBANDING -->
+        <div id="disbanding" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🚫</span>
+            <div>
+              <div class="sh-title">Disbanding</div>
+              <div class="sh-desc">Voluntary, forced, and cheating-related disbandment rules</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">General</span><span class="rule-text">If a faction boss disbands, all members receive a <b>5-day cooldown</b> before joining or creating another faction. Instead of disbanding, the boss may transfer ownership to another approved member. If a faction is fully disbanded, all Tebex items tied to that faction are permanently lost. After disbandment, the faction name is locked for 1 week and MAY be reused.</span></div>
+            <div class="rule"><span class="tag danger">Forced Disbandment</span><span class="rule-text">Forced disbandments may occur due to: excessive faction strikes (typically 3+), inactive faction leadership, or other disciplinary reasons. After forced disbandment, the boss may be prohibited from creating another faction in Empire, at Management discretion.</span></div>
+            <div class="notice warn" style="margin:6px 0 4px;">☠️ <b>CHEATING-RELATED DISBANDMENTS:</b> 30-day cooldown for the entire roster · Possible blacklisting from faction life. Punishments may vary per player and are at Oversight discretion, some members may not be blacklisted depending on the situation.</div>
+            <div class="rule"><span class="tag default">Voluntary</span><span class="rule-text">Only the faction boss may request voluntary disbandment. Cooldown is <b>5 days</b> (can be paid down).</span></div>
+            <div class="rule"><span class="tag blue">Support Disbandment</span><span class="rule-text">If Faction Support disbands the gang due to rule breaks or other circumstances, all members receive a <b>1-week cooldown</b>.</span></div>
+          </div>
+        </div>
+
+        <!-- INTERACTIONS & COOLDOWNS -->
+        <div id="interactions" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🤼</span>
+            <div>
+              <div class="sh-title">Interactions &amp; Cooldowns</div>
+              <div class="sh-desc">Interaction timers and the post-fight cooldown</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div style="padding: 14px 26px 4px;">
+              <table class="rule-table">
+                <tr><th>Scenario</th><th>Timer &amp; Rules</th></tr>
+                <tr><td><b>Gang vs Gang</b></td><td>45 seconds before any weapons can be drawn. No guns during interaction.</td></tr>
+                <tr><td><b>Gang vs Civilian</b></td><td>45 seconds before any weapons can be drawn.</td></tr>
+                <tr><td><b>Gang vs Police</b></td><td>45 seconds before any weapons can be drawn.</td></tr>
+                <tr><td><b>Hot Spots</b></td><td>30 seconds before any weapons can be drawn.</td></tr>
+              </table>
+            </div>
+            <div class="notice warn" style="margin:6px 0 10px;">⏱️ <b>AFTER ANY FIGHT, A 20-MINUTE COOLDOWN IS REQUIRED.</b> Post any interaction into your designated cooldown channel. After fighting another gang, wait 20 minutes before sliding on them again or engaging in another hostile scene.</div>
+          </div>
+        </div>
+
+        <!-- INTERACTIONS ON THE BLOCK -->
+        <div id="blockinteractions" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🚧</span>
+            <div>
+              <div class="sh-title">Interactions on the Block</div>
+              <div class="sh-desc">Block-only timer, T-count, and backup calls</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag blue">Timer</span><span class="rule-text">The official faction timer count has been updated from its previous duration to <b>60 seconds for BLOCK ONLY</b>.</span></div>
+            <div class="rule"><span class="tag default">T-Count</span><span class="rule-text">When defending your block, you may have <b>unlimited T</b>. Whoever is already on the block when the interaction begins will be your official T count for that situation.</span></div>
+            <div class="rule"><span class="tag danger">Backup</span><span class="rule-text">You may only call for backup at the start of the interaction. If an interaction starts on your block with another gang, backup must be called at the start, no additional calls once it has already begun.</span></div>
+          </div>
+        </div>
+
+        <!-- BLOCK FIGHTS -->
+        <div id="blockfights" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🏠</span>
+            <div>
+              <div class="sh-title">Block Fights</div>
+              <div class="sh-desc">Rules for pushing a faction's home block</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="notice gold" style="margin:10px 0 4px;">📋 <b>MANDATORY RULES WHEN PUSHING A FACTION BLOCK.</b> Minimum 30-second good roleplay interaction before a shootout can occur. Weapons CANNOT be drawn during the interaction period, even if you are on your own block.</div>
+            <div class="rule"><span class="tag blue">T-Count</span><span class="rule-text">If pushed on your block, you are allowed <b>unlimited T-Count within a 2-street radius</b> of your home block. Once outside that 2-street radius, T-Count is reduced from unlimited to 8.</span></div>
+          </div>
+        </div>
+
+        <!-- ON-FOOT & AVOIDING -->
+        <div id="onfoot" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">👟</span>
+            <div>
+              <div class="sh-title">On-Foot &amp; Avoiding</div>
+              <div class="sh-desc">Interaction timer, pursuit rules, and avoiding classification</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Timer</span><span class="rule-text">Interaction must last a <b>minimum of 45 seconds</b>, conducted clearly and verbally giving the opposing faction sufficient time to acknowledge and respond.</span></div>
+            <div class="rule"><span class="tag blue">Pursuit</span><span class="rule-text">If the opposing faction flees, you may pursue for up to <b>10 seconds</b> before drawing weapons. After 10 seconds of continued evasion, you are permitted to shoot.</span></div>
+            <div class="rule"><span class="tag danger">Safe Zones</span><span class="rule-text">Players are strictly prohibited from fleeing into or initiating within businesses, greenzones, or clothing stores. This is considered powergaming and may result in disciplinary action.</span></div>
+            <div class="rule"><span class="tag danger">Avoiding</span><span class="rule-text">Running in circles or not replying until the interaction timer expires is classified as <b>FAIL RP</b> and will be handled accordingly.</span></div>
+          </div>
+        </div>
+
+        <!-- STREET FIGHTS -->
+        <div id="streetfights" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🛣️</span>
+            <div>
+              <div class="sh-title">Street Fights</div>
+              <div class="sh-desc">Rules for fights away from your home block</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">No Retreat</span><span class="rule-text">If you have an interaction in the streets, <b>you CANNOT run back to block.</b></span></div>
+            <div class="rule"><span class="tag default">No Setup</span><span class="rule-text">NO setting up while an interaction is happening. All members must be present during the interaction unless coming from a different area. Baiting your own faction members to intentionally cause a scene just to shoot without interaction is Fail RP.</span></div>
+            <div class="notice info" style="margin:6px 0 4px;">📌 <b>EXAMPLE:</b> If you get pressed at Legion Square and it turns into a shootout, you CANNOT retreat back to your block. It is now a street fight. If you catch your opps lacking, you must have a 45-second interaction.</div>
+            <div class="rule"><span class="tag blue">Vehicles</span><span class="rule-text">Interactions cannot start inside a vehicle, you must get out. If a faction orders you out of your vehicle to start an interaction, you must comply. Driving off when someone approaches to start an interaction is Fail RP. If an interaction turns into a vehicle pursuit, the chase must last <b>30 seconds</b> before you may shoot, and only to disable the vehicle, NOT to kill or injure. Chases cannot be brought back to block. You cannot stash items in a vehicle or anywhere else after an interaction has begun.</span></div>
+          </div>
+        </div>
+
+        <!-- DRUG CLAIMING -->
+        <div id="drugclaiming" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">💊</span>
+            <div>
+              <div class="sh-title">Drug Claiming</div>
+              <div class="sh-desc">How to claim and fight for drug spots</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">How to Claim</span><span class="rule-text">Show proof of all ingredients being collected and the drug being crafted, including locations needed for each ingredient. Once claimed, the claim stays open for <b>24 hours</b>. If another gang claims within that window, it becomes a turf-style war. If no other claim is submitted in 24 hours, the drug is yours.</span></div>
+            <div class="notice gold" style="margin:6px 0 4px;">⚔️ <b>MANDATORY WAR RULES:</b> 8 T-Count · No roofs or interiors · Only consumables may be robbed (guns only if agreed upon) · No vehicles after the war starts, no shooting from cars · The losing gang cannot run the drug or bench for 1 week · All members MUST have clipping software running. POV can be requested at any time, failure to provide may result in war forfeit or a rerun.</div>
+            <div class="rule"><span class="tag blue">Taking to War</span><span class="rule-text">Have <b>3 interactions</b> with the other gang at the drug location (bench or ingredient locations). If they don't show up to defend, provide proof of your gang going to the drug and making it known, either posting on Birdy or calling the opposing gang. You may take hostages at the drug location, but ONLY members already at the location. You cannot transport a hostage there. If the opposing gang still doesn't show even with a hostage, document it with clips.</span></div>
+          </div>
+        </div>
+
+        <!-- DRUG TAXING -->
+        <div id="drugtaxing" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">💊</span>
+            <div>
+              <div class="sh-title">Drug Taxing</div>
+              <div class="sh-desc">Tax limits, protection, and what you cannot tax</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="notice info" style="margin:10px 0 4px;">ℹ️ <b>WHAT IS TAXING?</b> Taxing is when a gang controls a drug location and demands a percentage of materials or crafted product from players using that location. Taxing is NOT a free pass to rob everything a player owns.</div>
+            <div class="rule"><span class="tag danger">Weed</span><span class="rule-text">Weed is a civilian drug: <b>gangs CANNOT tax weed.</b> Taxing/robbery is limited to ONLY the drugs produced or ingredients at that location.</span></div>
+            <div class="rule"><span class="tag blue">Limits</span><span class="rule-text"><b>Faction Members:</b> up to 50% max. <b>Civilians:</b> up to 25% max. If they refuse, you may rob or kill them (no flatbacking, proper interactions required).</span></div>
+            <div class="rule"><span class="tag default">Examples</span><span class="rule-text">Hard Candy spot → only Hard Candy may be taxed · Cough Syrup spot → only Cough Syrup may be taxed · Lean Bench → Lean ingredients or crafted Lean Cups · Coke Bench → Coke ingredients or crafted Cocaine.</span></div>
+            <div class="notice warn" style="margin:6px 0 4px;">🚫 <b>YOU MAY NOT TAX:</b> Weapons, radios, or phones · Unrelated items or bank/cash (unless a separate valid robbery occurs) · "Double Dip", taxing and then immediately fully robbing the same person.</div>
+            <div class="rule"><span class="tag green">Tax Protection</span><span class="rule-text">Once taxed, a player receives <b>1-hour Tax Protection</b> at that specific location. They cannot be taxed again by multiple gangs or chain-taxed across locations during this window. Example: Taxed at Lean Bench at 6:00 PM → cannot be taxed for Lean again until 7:00 PM.</span></div>
+            <div class="rule"><span class="tag default">Proof</span><span class="rule-text">Every tax interaction requires proof: screenshot or clip showing player name/ID, time, location, and items taxed, in the faction Discord under <b>#factionname-tax</b>. Failure to provide proof may result in items returned, scene voided, or staff punishment/strikes.</span></div>
+            <div class="notice gold" style="margin:6px 0 4px;">✅ <b>A VALID TAX SCENE REQUIRES:</b> Proper initiation and clear demands · Opportunity for the player to comply · High-quality RP interaction, no instantly running up yelling 'tax'.</div>
+            <div class="rule"><span class="tag danger">Tax Abuse</span><span class="rule-text">The following are considered abuse: repeatedly taxing the same player, taxing more than the allowed %, taxing unrelated items, fake taxes to bypass robbery rules, holding locations hostage with no RP. Staff reserve the right to void any tax scene deemed unfair, excessive, or low quality.</span></div>
+          </div>
+        </div>
+
+        <!-- FACTION VS CIV -->
+        <div id="factionvciv" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🧍</span>
+            <div>
+              <div class="sh-title">Faction vs Civilian</div>
+              <div class="sh-desc">When you can and cannot press civilians</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag default">Valid Reasons</span><span class="rule-text">Valid reasons to press a civilian: Wearing faction-affiliated attire (chains, flags, custom clothing) · Provoking or talking smack to faction members · Being caught actively crafting or selling illegal drugs or weapons.</span></div>
+            <div class="notice warn" style="margin:6px 0 4px;">⚠️ <b>RANDOMLY ROBBING OR KILLING CIVILIANS WITHOUT VALID RP = IMMEDIATE FACTION STRIKE.</b></div>
+            <div class="rule"><span class="tag danger">Civ Restrictions</span><span class="rule-text">Civilians may NOT press factions under any circumstances. Civilians are expected to value their lives and avoid provoking faction members.</span></div>
+          </div>
+        </div>
+
+        <!-- FACTION VS PD -->
+        <div id="pd" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🚨</span>
+            <div>
+              <div class="sh-title">Faction vs Police</div>
+              <div class="sh-desc">PD response rules, raids, and interaction guidelines</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag blue">PD Response</span><span class="rule-text">Police will respond to faction-related shootouts with lights and sirens, and must make themselves known. Factions may NOT order police to leave the scene.</span></div>
+            <div class="rule"><span class="tag default">Your Options</span><span class="rule-text">When police respond, choose one: <b>Stay and Fight</b>must include verbal communication · <b>Flee the Scene</b>escape to avoid arrest · <b>Roleplay the Scene</b>comply and RP the interaction.</span></div>
+            <div class="rule"><span class="tag danger">No Leading PD</span><span class="rule-text">Factions may NOT lead or bring PD back to their block after an interaction or while being actively chased.</span></div>
+            <div class="rule"><span class="tag blue">Raids</span><span class="rule-text">PD will provide a <b>24-hour warning</b> before a raid begins. Boss stashes and shared faction stashes may be raided. Personal properties may ONLY be raided with a valid warrant. All illegal items found will be seized. You may sell drugs and weapons during this time but may NOT store, move, or hide them. Factions may be given the option to forfeit 50% of illegal possessions to avoid further escalation.</span></div>
+            <div class="rule"><span class="tag danger">No KOS</span><span class="rule-text">You may NOT KOS (kill on sight) police officers, this is RDM. Cop baiting is strictly prohibited: intentionally luring police into an interaction solely to kill them. Police officers may be taken hostage, refer to PD SOPs for full rules.</span></div>
+            <div class="rule"><span class="tag default">Getaways</span><span class="rule-text">Using a motorcycle as a getaway vehicle while selling drugs is strictly prohibited. You CANNOT jump or dive into water to hide or evade capture. Crossing water using a boat or proper water vehicle is allowed. Entering water to avoid capture = Fail RP.</span></div>
+            <div class="notice info" style="margin:6px 0 10px;">🎭 <b>MASKING YOUR IDENTITY, WHAT IS AND ISN'T ALLOWED:</b><br>
+              <b>NOT Allowed:</b> Using a plastic surgeon to drastically alter your appearance to avoid arrest, evade police, or hide while under active warrant · Changing facial structure or adding age/wrinkles.<br>
+              <b>Allowed:</b> Changing outfits · Changing or recoloring hair · Wearing a mask.
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="page-cta">
+    <h2>Ready to build your faction?</h2>
+    <p>Submit your formation request in Discord and start writing your legacy in the city.</p>
+    <div class="cta-btns">
+      <a class="btn-discord" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Apply in Discord</a>
+      <a class="btn ghost" href="rules.html">📋 General Rules</a>
+      <a class="btn ghost" href="index.html">Back Home</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand reveal">
+        <img src="empire-logo.png" alt="Empire RP">
+        <p>A premium GTA V roleplay community. Built by players, for players.</p>
+        <a class="btn-discord sm" href="https://discord.gg/empirerp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#discord-logo"/></svg> Join our Discord</a>
+      </div>
+      <div class="footer-links reveal">
+        <a href="index.html#home">Home</a>
+        <a href="rules.html">Rules</a>
+        <a href="faction-rules.html">Faction Rules</a>
+      <a href="jobboard.html">Jobs</a>
+        <a href="showcase.html">Showcase</a>
+        <a href="events.html">Events</a>
+        <a href="index.html#features">Features</a>
+        <a href="index.html#start">Get Started</a>
+        <a href="https://discord.gg/empirerp" target="_blank" rel="noopener">Discord</a>
+        <a href="https://empireroleplay.tebex.io" target="_blank" rel="noopener">Store</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Empire Roleplay. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+      <p class="footer-copy">Built for the city by the Empire team.</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+  <script>
+    // Video background, force play immediately, fade in on first frame
+    (function () {
+      var v = document.getElementById('heroBgVideo');
+      if (!v) return;
+      var tryPlay = function () { v.play().catch(function () {}); };
+      tryPlay();
+      v.addEventListener('canplay', tryPlay, { once: true });
+      v.addEventListener('playing', function () { v.classList.add('loaded'); }, { once: true });
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) v.play().catch(function () {});
+      });
+    })();
+
+    // Collapsible sections
+    document.querySelectorAll('.section-header').forEach(function (header) {
+      header.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;
+        header.closest('.rule-section').classList.toggle('collapsed');
+      });
+    });
+
+    // Search
+    var input = document.getElementById('ruleSearch');
+    var countEl = document.getElementById('ruleCount');
+    var clearBtn = document.getElementById('searchClear');
+    var noResults = document.getElementById('noResults');
+    var allRules = Array.from(document.querySelectorAll('.rule'));
+    var allSections = Array.from(document.querySelectorAll('.rule-section'));
+    var originals = new Map(allRules.map(function (r) { return [r, r.querySelector('.rule-text').innerHTML]; }));
+    var TOTAL = allRules.length;
+
+    function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function filterRules() {
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var visible = 0;
+      allRules.forEach(function (rule) {
+        var rt = rule.querySelector('.rule-text');
+        rt.innerHTML = originals.get(rule);
+        var tagText = rule.querySelector('.tag').textContent;
+        var text = (tagText + ' ' + rt.textContent).toLowerCase();
+        var match = !ql || text.includes(ql);
+        rule.classList.toggle('no-match', !match);
+        if (match) {
+          visible++;
+          if (ql) {
+            var re = new RegExp('(' + escRe(q) + ')', 'gi');
+            rt.innerHTML = rt.innerHTML.replace(re, '<mark>$1</mark>');
+          }
+        }
+      });
+      var sectVisible = 0;
+      allSections.forEach(function (sec) {
+        var has = Array.from(sec.querySelectorAll('.rule')).some(function (r) { return !r.classList.contains('no-match'); });
+        sec.classList.toggle('no-match', !has);
+        if (has) {
+          sectVisible++;
+          if (ql) sec.classList.remove('collapsed');
+        }
+      });
+      noResults.classList.toggle('show', sectVisible === 0 && ql.length > 0);
+      clearBtn.style.display = ql ? 'block' : 'none';
+      countEl.textContent = ql
+        ? visible + ' rule' + (visible === 1 ? '' : 's') + ' matching "' + q + '"'
+        : 'Showing all ' + TOTAL + ' rules';
+    }
+
+    input.addEventListener('input', filterRules);
+    clearBtn.addEventListener('click', function () { input.value = ''; filterRules(); input.focus(); });
+    var clearLink = document.getElementById('clearSearch');
+    if (clearLink) clearLink.addEventListener('click', function (e) { e.preventDefault(); input.value = ''; filterRules(); });
+
+    // Sidebar active on scroll
+    // Tracks scroll position directly so the highlighted sidebar link always
+    // matches the section actually under the reading line (just below the
+    // fixed nav), instead of relying on IntersectionObserver enter/exit
+    // events, which can desync on short sections or fast scrolling.
+    var sideLinks = Array.from(document.querySelectorAll('.sidebar-link[href^="#"]'));
+    var sectionEls = Array.from(document.querySelectorAll('.rule-section[id]'));
+    var READ_LINE = 110; // px from top of viewport; just under the fixed nav
+
+    function setActiveLink(id) {
+      sideLinks.forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+
+    function updateActiveSection() {
+      if (!sectionEls.length) return;
+      var current = sectionEls[0];
+      for (var i = 0; i < sectionEls.length; i++) {
+        var rect = sectionEls[i].getBoundingClientRect();
+        if (rect.top - READ_LINE <= 0) {
+          current = sectionEls[i];
+        } else {
+          break;
+        }
+      }
+      // Near the bottom of the page, always lock to the last visible section.
+      var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (atBottom) current = sectionEls[sectionEls.length - 1];
+      setActiveLink(current.id);
+    }
+
+    var scrollTicking = false;
+    window.addEventListener('scroll', function () {
+      if (scrollTicking) return;
+      scrollTicking = true;
+      requestAnimationFrame(function () { updateActiveSection(); scrollTicking = false; });
+    }, { passive: true });
+    window.addEventListener('resize', updateActiveSection);
+    updateActiveSection();
+
+    filterRules();
+  </script>
 </body>
 </html>
