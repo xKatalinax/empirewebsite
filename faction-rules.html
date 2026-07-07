@@ -11,6 +11,24 @@
   <style>
     :root { --blue: #38b6ff; }
 
+    /* ── SMOOTH / EASY SCROLLING ── */
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    .rule-section[id] { scroll-margin-top: 100px; }
+
+    /* Back-to-top button */
+    .back-to-top {
+      position: fixed; right: 22px; bottom: 22px; z-index: 60;
+      width: 46px; height: 46px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #160b00; font-size: 20px; font-weight: 900;
+      box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 20px rgba(255,114,0,.3);
+      opacity: 0; pointer-events: none; transform: translateY(12px);
+      transition: opacity .25s, transform .25s; cursor: pointer; border: none;
+    }
+    .back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .back-to-top:hover { transform: translateY(-3px); }
+
     /* ── HERO ── */
     .hero {
       min-height: 52vh; display: grid; place-items: center;
@@ -74,7 +92,10 @@
     .page-wrap { display: grid; grid-template-columns: 240px 1fr; gap: 20px; align-items: start; }
 
     /* ── SIDEBAR ── */
-    .sidebar { position: sticky; top: 88px; }
+    .sidebar { position: sticky; top: 88px; max-height: calc(100vh - 104px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(246,177,58,.35) transparent; padding-right: 4px; }
+    .sidebar::-webkit-scrollbar { width: 5px; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(246,177,58,.3); border-radius: 99px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
     .sidebar-card { background: rgba(255,255,255,.032); border: 1px solid var(--line); border-radius: 20px; padding: 10px; margin-bottom: 14px; overflow: hidden; }
     .sidebar-label { color: var(--muted); font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .16em; padding: 8px 12px 10px; }
     .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 12px; color: var(--muted); font-weight: 800; font-size: 12px; transition: .2s; cursor: pointer; }
@@ -241,7 +262,7 @@
       <h1>Faction <em>Rules</em></h1>
       <p class="hero-sub">Everything you need to run, join, or build a faction in Empire RP. Bosses are accountable, read every word. Last updated June 10, 2026.</p>
       <div class="hero-pills">
-        <span class="pill"><span class="pill-dot"></span> 19 Sections</span>
+        <span class="pill"><span class="pill-dot"></span> 21 Sections</span>
         <span class="pill"><span class="pill-dot"></span> Last Updated June 10, 2026</span>
       </div>
     </div>
@@ -257,6 +278,8 @@
     <div class="result-bar">
       <span id="ruleCount" class="result-count">Showing all rules</span>
       <div class="section-pills">
+        <a class="spill" href="#updates">Updates</a>
+        <a class="spill" href="#leaderboard">Leaderboard</a>
         <a class="spill" href="#general">General</a>
         <a class="spill" href="#greenzone">Greenzone</a>
         <a class="spill" href="#pov">POV</a>
@@ -279,6 +302,8 @@
       <aside class="sidebar">
         <div class="sidebar-card">
           <div class="sidebar-label">Jump to Section</div>
+          <a class="sidebar-link" href="#updates"><span class="s-icon">🆕</span> Latest Updates</a>
+          <a class="sidebar-link" href="#leaderboard"><span class="s-icon">👑</span> Empire Leaderboard</a>
           <a class="sidebar-link" href="#general"><span class="s-icon">📃</span> General Rules</a>
           <a class="sidebar-link" href="#greenzone"><span class="s-icon">🟢</span> Greenzone</a>
           <a class="sidebar-link" href="#pov"><span class="s-icon">📷</span> POV / Clipping</a>
@@ -318,6 +343,60 @@
         <div class="notice gold" style="margin:0 0 18px;border-radius:18px;">
           <b>📋 FACTION BOSSES, READ THIS FIRST.</b> It is your responsibility to ensure ALL of your members are reading, following, and understanding the rules. This includes both the Faction Rulebook and the Empire Rulebook.<br><br>
           <b>⚠️ IGNORANCE OF THE RULES IS NOT AN EXCUSE.</b> By joining a faction you confirm you have read all rules and will be held <b>accountable</b>. If Faction Support catches you violating the Faction Rulebook or any Empire RP guidelines, you may be subject to removal.
+        </div>
+
+        <!-- LATEST UPDATES -->
+        <div id="updates" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">🆕</span>
+            <div>
+              <div class="sh-title">Latest Updates</div>
+              <div class="sh-desc">Newest rule changes — drugs, Faction Support, and activity</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="rule"><span class="tag danger">Drugs</span><span class="rule-text"><b>Gangs must post active taxing on their drug.</b> If you own a drug and go a full week without taxing, that drug will be taken from you and other gangs will have the chance to claim it (no excuses or exceptions). One tax a week doesn't count — it must be <b>over 10 taxes</b>, and not the same person over and over again.</span></div>
+            <div class="rule"><span class="tag danger">Faction Support</span><span class="rule-text">If Faction Support asks <b>ANY</b> gang who their specific member is and you refuse to tell Faction Support who they are, that gang will receive a <b>gang strike</b>.</span></div>
+            <div class="rule"><span class="tag blue">Activity</span><span class="rule-text"><b>EVERY gang is required to have at least 200 points a week</b> towards the leaderboard. This is to increase activity with the gangs. Failure to achieve 200 points after 7 days will result in an <b>inactivity strike</b>. A lot of you are active, so it should be easy.</span></div>
+          </div>
+        </div>
+
+        <!-- EMPIRE LEADERBOARD -->
+        <div id="leaderboard" class="rule-section">
+          <div class="section-header">
+            <span class="sh-icon">👑</span>
+            <div>
+              <div class="sh-title">Empire Leaderboard</div>
+              <div class="sh-desc">Earn points for good RP, trade for Empire Coins, win monthly loot</div>
+            </div>
+            <div class="sh-right"><span class="sh-toggle">▾</span></div>
+          </div>
+          <div class="rule-list">
+            <div class="notice gold" style="margin:10px 0 4px;">👑 <b>GANG LEADERBOARD SYSTEM.</b> We are introducing a gang leaderboard system into the city of Empire Roleplay. This is being added to reward gangs for good and proper RP. Gangs can do a series of activities to gain points towards their gang.</div>
+            <div style="padding: 10px 26px 4px;">
+              <div style="color:var(--gold);font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Points For Activities</div>
+              <table class="rule-table">
+                <tr><th>Activity</th><th>Points</th></tr>
+                <tr><td><b>Cooldown Wins</b></td><td>15 Points</td></tr>
+                <tr><td><b>Cooldown Losses</b></td><td>5 Points</td></tr>
+                <tr><td><b>Attending Events</b></td><td>30 Points</td></tr>
+                <tr><td><b>Winning Events</b></td><td>75 Points</td></tr>
+                <tr><td><b>Hostage Scenes</b> 🎬</td><td>20 Points</td></tr>
+                <tr><td><b>Gang Drug Deals</b> 🎬</td><td>25 Points</td></tr>
+                <tr><td><b>Taxing Drugs</b></td><td>20 Points</td></tr>
+                <tr><td><b>Good Scenes with PD</b></td><td>Points awarded</td></tr>
+                <tr><td><b>Heists</b> 🎬</td><td>50 Points</td></tr>
+                <tr><td><b>Good RP Scenes</b> 🎬</td><td>35 Points</td></tr>
+                <tr><td><b>Territories</b></td><td>15 Points</td></tr>
+                <tr><td><b>Winning Wars</b></td><td>60 Points</td></tr>
+              </table>
+            </div>
+            <div class="rule"><span class="tag green">Empire Coins</span><span class="rule-text">After getting a selected amount of points, <b>gang bosses can turn in points in exchange for Empire Coins</b>. Empire Coins can be used to purchase items from a bench that is located somewhere in the city.</span></div>
+            <div class="notice warn" style="margin:6px 0 4px;">🎬 <b>CLIPS REQUIRED.</b> Certain activities require a proper clip of the entire scene to acquire the points: <b>Hostage Scenes · Gang Drug Deals · Good RP Scenes · Heists</b>. Submit the activities requiring clips into your gang's leaderboard channel!</div>
+            <div class="rule"><span class="tag default">Monthly Prize</span><span class="rule-text">At the end of the month, whichever gang has the most points will receive a custom <b>Faction Package</b> containing a mixture of loot!</span></div>
+            <div class="notice info" style="margin:6px 0 10px;">ℹ️ <b>REMINDER:</b> Every gang is required to earn at least <b>200 points a week</b> towards the leaderboard. Failure to achieve 200 points after 7 days will result in an inactivity strike.</div>
+          </div>
         </div>
 
         <!-- GENERAL RULES -->
@@ -390,7 +469,7 @@
             <div class="rule"><span class="tag danger">Audio</span><span class="rule-text">All audio must be clearly audible, <b>game audio AND microphone audio.</b> If Faction Support determines audio cannot be clearly heard, the POV will be automatically denied.</span></div>
             <div class="rule"><span class="tag blue">Oversight</span><span class="rule-text">POV requests are at the sole discretion of Oversight. If required, you MUST provide it. Players are NOT entitled to receiving another player's POV.</span></div>
             <div class="rule"><span class="tag default">Requesting</span><span class="rule-text">Clip must be a <b>minimum of 60 seconds</b>: 50 seconds leading up to your death + 10 seconds after. Your POV must clearly show your death, POV will NOT be requested if you did not die. You must request POV within <b>4 hours</b> of your death. Requests submitted after 4 hours are automatically denied.</span></div>
-            <div class="rule"><span class="tag default">Providing</span><span class="rule-text">Clip must be a minimum of 60 seconds: 50 seconds leading up to your death/kill + 10 seconds after. You have <b>1 hour</b> from when Faction Support requests your POV to provide it. Failure to submit within 1 hour = punishment at Oversight discretion. Any disrespect, refusal, or arguing with staff regarding a POV request is treated as failure to provide POV.</span></div>
+            <div class="rule"><span class="tag default">Providing</span><span class="rule-text">Clip must be a minimum of 60 seconds: 50 seconds leading up to your death/kill + 10 seconds after. You have <b>12 hours</b> from when Faction Support requests your POV to provide it. Failure to submit in time = punishment at Oversight discretion. Any disrespect, refusal, or arguing with staff regarding a POV request is treated as failure to provide POV.</span></div>
             <div style="padding: 0 26px 14px;">
               <table class="rule-table">
                 <tr><th>Offense</th><th>Consequence</th></tr>
@@ -616,7 +695,7 @@
             <div class="sh-right"><span class="sh-toggle">▾</span></div>
           </div>
           <div class="rule-list">
-            <div class="notice gold" style="margin:10px 0 4px;">📋 <b>MANDATORY RULES WHEN PUSHING A FACTION BLOCK.</b> Minimum 30-second good roleplay interaction before a shootout can occur. Weapons CANNOT be drawn during the interaction period, even if you are on your own block.</div>
+            <div class="notice gold" style="margin:10px 0 4px;">📋 <b>MANDATORY RULES WHEN PUSHING A FACTION BLOCK.</b> Minimum 60-second good roleplay interaction before a shootout can occur. Weapons CANNOT be drawn during the interaction period, even if you are on your own block.</div>
             <div class="rule"><span class="tag blue">T-Count</span><span class="rule-text">If pushed on your block, you are allowed <b>unlimited T-Count within a 2-street radius</b> of your home block. Once outside that 2-street radius, T-Count is reduced from unlimited to 8.</span></div>
           </div>
         </div>
@@ -694,6 +773,8 @@
             <div class="rule"><span class="tag default">Proof</span><span class="rule-text">Every tax interaction requires proof: screenshot or clip showing player name/ID, time, location, and items taxed, in the faction Discord under <b>#factionname-tax</b>. Failure to provide proof may result in items returned, scene voided, or staff punishment/strikes.</span></div>
             <div class="notice gold" style="margin:6px 0 4px;">✅ <b>A VALID TAX SCENE REQUIRES:</b> Proper initiation and clear demands · Opportunity for the player to comply · High-quality RP interaction, no instantly running up yelling 'tax'.</div>
             <div class="rule"><span class="tag danger">Tax Abuse</span><span class="rule-text">The following are considered abuse: repeatedly taxing the same player, taxing more than the allowed %, taxing unrelated items, fake taxes to bypass robbery rules, holding locations hostage with no RP. Staff reserve the right to void any tax scene deemed unfair, excessive, or low quality.</span></div>
+            <div class="rule"><span class="tag default">Ownership</span><span class="rule-text"><b>Only the gang that currently owns a drug location may collect taxes from that location.</b> Any gang attempting to tax a location they do not own is committing rule abuse. Drug taxes may only be collected in the form of the drugs or ingredients produced at that location.</span></div>
+            <div class="notice warn" style="margin:6px 0 10px;">💊 <b>ACTIVE TAXING REQUIRED.</b> Gangs must post active taxing on their drug. If you own a drug and go a <b>full week without taxing</b>, that drug will be taken from you and other gangs will have the chance to claim it (no excuses or exceptions). One tax a week doesn't count — it must be <b>over 10 taxes</b>, and not the same person over and over again.</div>
           </div>
         </div>
 
@@ -778,6 +859,8 @@
       <p class="footer-copy">Built for the city by the Empire team.</p>
     </div>
   </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">▲</button>
 
   <script src="site.js"></script>
   <script>
@@ -894,6 +977,49 @@
     }, { passive: true });
     window.addEventListener('resize', updateActiveSection);
     updateActiveSection();
+
+    // Keep the active sidebar link visible inside the scrollable sidebar.
+    // Only runs when the active section changes, and only moves the
+    // sidebar's own scrollTop, never the page (scrollIntoView can scroll
+    // ancestor containers, which hijacks page scrolling).
+    var sidebarEl = document.querySelector('.sidebar');
+    var lastActiveId = null;
+    var _origSetActiveLink = setActiveLink;
+    setActiveLink = function (id) {
+      _origSetActiveLink(id);
+      if (id === lastActiveId || !sidebarEl) return;
+      lastActiveId = id;
+      var active = document.querySelector('.sidebar-link.active');
+      if (!active) return;
+      var top = active.offsetTop;
+      var bottom = top + active.offsetHeight;
+      if (top < sidebarEl.scrollTop) {
+        sidebarEl.scrollTop = top - 8;
+      } else if (bottom > sidebarEl.scrollTop + sidebarEl.clientHeight) {
+        sidebarEl.scrollTop = bottom - sidebarEl.clientHeight + 8;
+      }
+    };
+
+    // Auto-expand a collapsed section when navigating to it (sidebar, pills, or URL hash)
+    function expandTarget(hash) {
+      if (!hash) return;
+      var target = document.querySelector(hash + '.rule-section');
+      if (target) target.classList.remove('collapsed');
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function () { expandTarget(a.getAttribute('href')); });
+    });
+    window.addEventListener('hashchange', function () { expandTarget(location.hash); });
+    expandTarget(location.hash);
+
+    // Back-to-top button
+    var topBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', function () {
+      topBtn.classList.toggle('show', window.scrollY > 600);
+    }, { passive: true });
+    topBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
     filterRules();
   </script>
